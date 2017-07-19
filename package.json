@@ -1,0 +1,16 @@
+{
+  "name": "universal-scripts",
+  "version": "0.1.5",
+  "description": "This package includes scripts and configuration used by Create Universal App. Edit",
+  "main": "index.js",
+  "repository": "git@github.com:GlueDigital/universal-scripts.git",
+  "author": "Glue Digital <hola@glue.digital>",
+  "license": "MIT",
+  "bin": {
+    "universal-scripts": "./bin/universal-scripts.js"
+  },
+  "dependencies": {
+    "cross-spawn": "^5.1.0",
+    "fs-extra": "^4.0.0"
+  }
+}
