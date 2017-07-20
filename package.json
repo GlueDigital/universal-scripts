@@ -10,8 +10,10 @@
     "universal-scripts": "./bin/universal-scripts.js"
   },
   "dependencies": {
+    "chalk": "^2.0.1",
     "cross-spawn": "^5.1.0",
     "fs-extra": "^4.0.0",
+    "koa": "^2.3.0",
     "webpack": "^3.3.0"
   }
 }
