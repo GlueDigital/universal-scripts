@@ -17,6 +17,9 @@ module.exports = {
     publicPath: '/',
   },
   resolve: {
+    alias: {
+      'any-promise': 'core-js/fn/promise' // Prevents warning on webpack
+    },
     extensions: ['.js', 'jsx', 'es6'],
     modules: [
       path.resolve(__dirname, '..', 'node_modules'),
