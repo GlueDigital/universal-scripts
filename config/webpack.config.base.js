@@ -20,7 +20,7 @@ module.exports = {
     alias: {
       'any-promise': 'core-js/fn/promise' // Prevents warning on webpack
     },
-    extensions: ['.js', 'jsx', 'es6'],
+    extensions: ['.js', 'jsx'],
     modules: [
       path.resolve(__dirname, '..', 'node_modules'),
       path.resolve(appDirectory, 'node_modules'),
@@ -30,5 +30,18 @@ module.exports = {
   plugins: [
     new webpack.HotModuleReplacementPlugin({ quiet: true }),
     new webpack.NamedModulesPlugin()
-  ]
+  ],
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: require.resolve('babel-loader'),
+        options: {
+          presets: [require.resolve('babel-preset-react-app')],
+          cacheDirectory: true,
+        }
+      }
+    ]
+  }
 };

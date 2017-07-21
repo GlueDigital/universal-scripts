@@ -9,7 +9,7 @@ baseConfig.name = 'server';
 baseConfig.target = 'node';
 baseConfig.entry = baseConfig.entry.slice();
 baseConfig.entry[baseConfig.entry.length - 1] =
-  path.resolve(__dirname, '..', 'server', 'routerMiddleware');
+  path.resolve(__dirname, '..', 'server', 'lib', 'routerMiddleware');
 baseConfig.output = Object.assign({}, baseConfig.output);
 baseConfig.output.path = path.resolve(baseConfig.output.path, 'server');
 baseConfig.output.filename = 'server.js';

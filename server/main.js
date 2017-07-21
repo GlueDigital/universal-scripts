@@ -15,7 +15,7 @@ const initRouterMiddleware = (compiler, koaWebpackInstance) => {
   compiler.plugin('done', stats => {
     const filename = path.resolve(appDirectory, 'build', 'server', 'server.js');
     const newMiddleware = mfs.readFileSync(filename);
-    routerMiddleware = eval(newMiddleware.toString()); // Eeeek!
+    routerMiddleware = eval(newMiddleware.toString()).default; // Eeeek!
   })
 }
 const routerMiddlewareProxy = (ctx, next) => {
@@ -36,7 +36,8 @@ module.exports = (compiler, appPath) => {
     compiler: compiler,
     dev: {
       publicPath: '/',
-      quiet: true
+      quiet: true,
+      serverSideRender: true
     }
   })
   app.use(koaWebpackInstance)
@@ -54,17 +55,4 @@ module.exports = (compiler, appPath) => {
     chalk.green('Server running at:'),
     chalk.cyan.bold('http://localhost:' + port)
   );
-
-
-  /*
-  let routes = require('src/routes/index');
-  console.log(routes.createRoutes());
-
-  // HMR handling
-  if (module.hot) {
-    module.hot.accept('src/routes/index', () => {
-      routes = require('src/routes/index');
-    });
-  }
-  */
 }
