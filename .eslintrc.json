@@ -1,0 +1,13 @@
+{
+  "parser"  : "babel-eslint",
+  "extends": [
+    "standard",
+    "standard-react"
+  ],
+  "plugins": [
+    "babel"
+  ],
+  "rules": {
+    "jsx-quotes": ["error", "prefer-double"]
+  }
+}
