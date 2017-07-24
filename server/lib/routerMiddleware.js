@@ -27,7 +27,7 @@ export default async (ctx, next) => {
 
   // TODO: Run the router matching, fetchData, etc...
   const renderOutput = ''
-  const initialState = {}
+  // const initialState = {}
 
   // Get the headers from react-helmet
   const head = Helmet.rewind()
@@ -35,5 +35,4 @@ export default async (ctx, next) => {
   // Set the response
   ctx.status = 200
   ctx.body = renderHtmlLayout(head, renderOutput, scripts, styles)
-
 }

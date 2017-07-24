@@ -1,7 +1,4 @@
-'use strict';
-
-const path = require('path');
-const spawn = require('cross-spawn');
+'use strict'
 
 const builder = require('../lib/builder')
 const compiler = builder()

@@ -1,13 +1,12 @@
-'use strict';
+'use strict'
 
-const fs = require('fs');
-const path = require('path');
-const webpack = require('webpack');
+const fs = require('fs')
+const path = require('path')
+const webpack = require('webpack')
 
-const appDirectory = fs.realpathSync(process.cwd());
+const appDirectory = fs.realpathSync(process.cwd())
 
 module.exports = (isServerSide) => {
-
   let config = {
     name: isServerSide ? 'server' : 'client',
     target: isServerSide ? 'node' : 'web',
@@ -36,7 +35,7 @@ module.exports = (isServerSide) => {
         __DEV__: process.env.NODE_ENV === 'development',
         __PROD__: process.env.NODE_ENV === 'production',
         __SERVER__: isServerSide,
-        __CLIENT__: !isServerSide,
+        __CLIENT__: !isServerSide
       })
     ],
     module: {
@@ -47,7 +46,7 @@ module.exports = (isServerSide) => {
           loader: require.resolve('babel-loader'),
           options: {
             presets: [require.resolve('babel-preset-react-app')],
-            cacheDirectory: true,
+            cacheDirectory: true
           }
         }
       ]
@@ -57,14 +56,13 @@ module.exports = (isServerSide) => {
   if (isServerSide) {
     config.entry = [
       path.resolve(__dirname, '..', 'server', 'lib', 'routerMiddleware')
-    ];
+    ]
   } else {
     config.entry = [
       path.resolve(appDirectory, 'src', 'index.js'),
       'webpack-hot-middleware/client?name=client'
-    ];
-
+    ]
   }
 
-  return config;
-};
+  return config
+}
