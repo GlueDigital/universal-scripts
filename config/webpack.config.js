@@ -7,8 +7,41 @@ const webpack = require('webpack')
 const appDirectory = fs.realpathSync(process.cwd())
 
 module.exports = (isServerSide) => {
+  const styleLoader = {
+    loader: require.resolve('style-loader')
+  }
+
+  const cssLoader = {
+    loader: require.resolve('css-loader'),
+    query: {
+      sourceMap: true,
+      minimize: true,
+      autoprefixer: {
+        add: true,
+        remove: true,
+        browsers: ['last 2 versions']
+      },
+      discardComments: {
+        removeAll: true
+      },
+      discardUnused: false,
+      mergeIdents: false,
+      reduceIdents: false,
+      safe: true
+    }
+  }
+
+  const sassLoader = {
+    loader: require.resolve('sass-loader'),
+    options: {
+      sourceMap: true,
+      includePaths: [path.resolve('appDirectory', 'src', 'styles')]
+    }
+  }
+
   let config = {
     name: isServerSide ? 'server' : 'client',
+    devtool: 'cheap-module-source-map',
     target: isServerSide ? 'node' : 'web',
     output: {
       path: path.resolve(
@@ -48,6 +81,12 @@ module.exports = (isServerSide) => {
             presets: [require.resolve('babel-preset-react-app')],
             cacheDirectory: true
           }
+        }, {
+          test: /\.(scss|sass)$/,
+          use: [ styleLoader, cssLoader, sassLoader ]
+        }, {
+          test: /\.css$/,
+          use: [ styleLoader, cssLoader ]
         }
       ]
     }
