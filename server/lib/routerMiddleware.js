@@ -1,7 +1,10 @@
 import Helmet from 'react-helmet'
 import React from 'react'
+import { renderToString } from 'react-dom/server'
+import { match, RouterContext } from 'react-router'
 
 import renderHtmlLayout from './render-html-layout'
+import routes from 'src/routes'
 
 export default async (ctx, next) => {
   await next()
@@ -25,9 +28,24 @@ export default async (ctx, next) => {
     }
   }
 
-  // TODO: Run the router matching, fetchData, etc...
-  const renderOutput = ''
-  // const initialState = {}
+  // Run the router matcher
+  const renderProps = await new Promise((resolve, reject) => {
+    const matcher = { routes: routes(), location: ctx.req.url }
+    match(matcher, (error, redirectLocation, renderProps) => {
+      error ? reject(error) : resolve(renderProps)
+    })
+  })
+
+  // TODO: Create store...
+  // TODO: Exec fetchData handlers...
+
+  // Actual rendering
+  let renderOutput
+  if (renderProps) {
+    renderOutput = renderToString(<RouterContext {...renderProps} />)
+  } else {
+    // TODO: Handle 404
+  }
 
   // Get the headers from react-helmet
   const head = Helmet.rewind()

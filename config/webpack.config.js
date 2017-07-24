@@ -59,8 +59,9 @@ module.exports = (isServerSide) => {
     ]
   } else {
     config.entry = [
-      path.resolve(appDirectory, 'src', 'index.js'),
-      'webpack-hot-middleware/client?name=client'
+      'webpack-hot-middleware/client?name=client',
+      path.resolve(__dirname, '..', 'client', 'init'),
+      path.resolve(appDirectory, 'src', 'index.js')
     ]
   }
 
