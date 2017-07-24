@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/GlueDigital/universal-scripts.svg?branch=master)](https://travis-ci.org/GlueDigital/universal-scripts)
+
 # Universal Scripts
 Alternative scripts and configuration for [Create React App](https://github.com/facebookincubator/create-react-app), with enhaced functionality.
 
