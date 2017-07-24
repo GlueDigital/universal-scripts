@@ -6,7 +6,10 @@ const webpack = require('webpack')
 
 const appDirectory = fs.realpathSync(process.cwd())
 
-module.exports = (isServerSide) => {
+module.exports = (opts = {}) => {
+  const isServerSide = opts.isServerSide
+  const isWatch = opts.isWatch
+
   const styleLoader = {
     loader: require.resolve('style-loader')
   }
@@ -62,13 +65,13 @@ module.exports = (isServerSide) => {
       ]
     },
     plugins: [
-      new webpack.HotModuleReplacementPlugin({ quiet: true }),
       new webpack.NamedModulesPlugin(),
       new webpack.DefinePlugin({
         __DEV__: process.env.NODE_ENV === 'development',
         __PROD__: process.env.NODE_ENV === 'production',
         __SERVER__: isServerSide,
-        __CLIENT__: !isServerSide
+        __CLIENT__: !isServerSide,
+        __WATCH__: isWatch
       })
     ],
     module: {
@@ -92,10 +95,23 @@ module.exports = (isServerSide) => {
     }
   }
 
+  if (isWatch) {
+    // Only add HMR code when we're watching for code changes
+    config.plugins.push(new webpack.HotModuleReplacementPlugin({ quiet: true }))
+  }
+
   if (isServerSide) {
-    config.entry = [
-      path.resolve(__dirname, '..', 'server', 'lib', 'routerMiddleware')
-    ]
+    // For the in-memory server side HMR, we need to run the server outside
+    // of the build, as it will contain the dev server, and do HMR for the part
+    // which is built.
+    // But when doing a static build, we want the entire server on the output.
+    const serverPath = path.resolve(__dirname, '..', 'server')
+    if (isWatch) {
+      config.entry = [ path.resolve(serverPath, 'lib', 'routerMiddleware') ]
+    } else {
+      config.entry = [ path.resolve(serverPath, 'main') ]
+    }
+    config.externals = [require('webpack-node-externals')()]
   } else {
     config.entry = [
       'webpack-hot-middleware/client?name=client',

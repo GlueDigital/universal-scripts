@@ -9,5 +9,12 @@
   ],
   "rules": {
     "jsx-quotes": ["error", "prefer-double"]
+  },
+  "globals" : {
+    "__DEV__": false,
+    "__PROD__": false,
+    "__SERVER__": false,
+    "__CLIENT__": false,
+    "__WATCH__": false
   }
 }
