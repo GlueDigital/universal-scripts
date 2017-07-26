@@ -1,7 +1,7 @@
 {
   "name": "universal-scripts",
-  "version": "0.1.8",
-  "description": "This package includes scripts and configuration used by Create Universal App. Edit",
+  "version": "0.1.9",
+  "description": "This package includes scripts and configuration used by Create Universal App.",
   "main": "index.js",
   "repository": "git@github.com:GlueDigital/universal-scripts.git",
   "author": "Glue Digital <hola@glue.digital>",
