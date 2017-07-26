@@ -114,10 +114,12 @@ module.exports = (opts = {}) => {
     config.externals = [require('webpack-node-externals')()]
   } else {
     config.entry = [
-      'webpack-hot-middleware/client?name=client',
       path.resolve(__dirname, '..', 'client', 'init'),
       path.resolve(appDirectory, 'src', 'index.js')
     ]
+    if (isWatch) {
+      config.entry.unshift('webpack-hot-middleware/client?name=client')
+    }
   }
 
   return config

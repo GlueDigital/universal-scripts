@@ -59,6 +59,7 @@ const serve = (compiler) => {
   if (__WATCH__) {
     configureHMR(app, compiler)
   } else {
+    app.use(koaStatic(path.resolve(appDirectory, 'build', 'client'), {}))
     app.use(require('./lib/routerMiddleware').default)
   }
 

@@ -6,6 +6,8 @@ import { match, RouterContext } from 'react-router'
 import renderHtmlLayout from './render-html-layout'
 import routes from 'src/routes'
 
+import chunks from 'build/client/webpack-chunks.json'
+
 export default async (ctx, next) => {
   await next()
 
@@ -17,14 +19,17 @@ export default async (ctx, next) => {
   const styles = []
 
   // If the DEV middleware got some assets, add them.
-  if (ctx.state.webpackStats) {
-    const assets = ctx.state.webpackStats.stats[0].compilation.assets
-    for (const asset in assets) {
-      if (asset.endsWith('.js')) {
-        scripts.unshift(<script key={asset} src={'/' + asset} />)
-      } else if (asset.endsWith('.css')) {
-        styles.unshift(<link rel="stylesheet" href={'/' + asset} />)
-      }
+  let assets = []
+  if (!__WATCH__) {
+    assets = chunks.assets
+  } else if (ctx.state.webpackStats) {
+    assets = Object.keys(ctx.state.webpackStats.stats[0].compilation.assets)
+  }
+  for (const asset of assets) {
+    if (asset.endsWith('.js')) {
+      scripts.unshift(<script key={asset} src={'/' + asset} />)
+    } else if (asset.endsWith('.css')) {
+      styles.unshift(<link rel="stylesheet" href={'/' + asset} />)
     }
   }
 
