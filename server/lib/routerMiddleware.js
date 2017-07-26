@@ -6,7 +6,14 @@ import { match, RouterContext } from 'react-router'
 import renderHtmlLayout from './render-html-layout'
 import routes from 'src/routes'
 
-import chunks from 'build/client/webpack-chunks.json'
+import fs from 'fs'
+import path from 'path'
+
+let chunks = []
+if (!__WATCH__) {
+  const fname = path.resolve('build', 'client', 'webpack-chunks.json')
+  chunks = JSON.parse(fs.readFileSync(fname)).assets
+}
 
 export default async (ctx, next) => {
   await next()
@@ -21,7 +28,7 @@ export default async (ctx, next) => {
   // If the DEV middleware got some assets, add them.
   let assets = []
   if (!__WATCH__) {
-    assets = chunks.assets
+    assets = chunks
   } else if (ctx.state.webpackStats) {
     assets = Object.keys(ctx.state.webpackStats.stats[0].compilation.assets)
   }
