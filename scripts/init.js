@@ -4,6 +4,7 @@
 
 const fs = require('fs-extra')
 const path = require('path')
+const execSync = require('child_process').execSync
 
 module.exports = (
   appPath,
@@ -14,6 +15,7 @@ module.exports = (
 ) => {
   const ownPath = path.join(appPath, 'node_modules', 'universal-scripts')
   const appPackage = require(path.join(appPath, 'package.json'))
+  const ownPackage = require(path.join(ownPath, 'package.json'))
 
   // Setup the package.json
   appPackage.scripts = {
@@ -27,6 +29,25 @@ module.exports = (
     path.join(appPath, 'package.json'),
     JSON.stringify(appPackage, null, 2)
   )
+
+  // Determine if we should use yarn or npm
+  let shouldUseYarn
+  try {
+    execSync('yarn --version', { stdio: 'ignore' })
+    shouldUseYarn = true
+  } catch (e) {
+    shouldUseYarn = false
+  }
+
+  // Install our peer dependencies
+  const cmd = shouldUseYarn ? ['yarn', 'add'] : ['npm', 'install']
+  if (!shouldUseYarn) {
+    cmd.push('--save')
+  }
+  for (const peerDependency of Object.keys(ownPackage.peerDependencies)) {
+    cmd.push(peerDependency + '@' + ownPackage.peerDependencies[peerDependency])
+  }
+  execSync(cmd.join(' '), { stdio: 'inherit' })
 
   // Copy the template
   const templatePath = template

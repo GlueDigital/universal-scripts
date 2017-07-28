@@ -17,7 +17,7 @@ In addition to the features present on React Scripts, it features:
 
 ## Usage
 If you have yarn, just do:
-> $ yarn create react-app -- --scripts-version universal-scripts <app-name>
+> yarn create react-app -- --scripts-version universal-scripts &lt;app-name&gt;
 
 Otherwise, you should use the original Create React App.<br>
 If you haven't installed it yet, you can do it with:
