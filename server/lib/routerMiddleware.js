@@ -2,12 +2,15 @@ import Helmet from 'react-helmet'
 import React from 'react'
 import { renderToString } from 'react-dom/server'
 import { match, RouterContext } from 'react-router'
+import { Provider } from 'react-redux'
 
 import renderHtmlLayout from './render-html-layout'
-import routes from 'src/routes'
+import { createStore } from '../../lib/store'
 
 import fs from 'fs'
 import path from 'path'
+
+import routes from 'src/routes'
 
 let chunks = []
 if (!__WATCH__) {
@@ -48,16 +51,30 @@ export default async (ctx, next) => {
     })
   })
 
-  // TODO: Create store...
+  // Create store
+  const initialState = {}
+  const store = createStore(initialState)
+
   // TODO: Exec fetchData handlers...
 
   // Actual rendering
   let renderOutput
   if (renderProps) {
-    renderOutput = renderToString(<RouterContext {...renderProps} />)
+    renderOutput = renderToString(
+      <Provider store={store}>
+        <RouterContext {...renderProps} />
+      </Provider>
+    )
   } else {
     // TODO: Handle 404
   }
+
+  // Send store contents along the page
+  const storeOutput = JSON.stringify(store.getState())
+  const storeCode = { __html: '___INITIAL_STATE__=' + storeOutput }
+  scripts.unshift(
+    <script key="store" dangerouslySetInnerHTML={storeCode} />
+  )
 
   // Get the headers from react-helmet
   const head = Helmet.rewind()
