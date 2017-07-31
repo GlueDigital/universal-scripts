@@ -1,8 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Router, browserHistory } from 'react-router'
-import { Provider } from 'react-redux'
+import { Provider } from 'react-intl-redux'
+import { addLocaleData } from 'react-intl'
 
+import { localeData } from 'src/locales'
 import routes from 'src/routes'
 
 import { createStore } from '../lib/store'
@@ -15,6 +17,9 @@ const history = browserHistory
 // Initialize store
 const initialState = window.___INITIAL_STATE__
 const store = createStore(initialState)
+
+// Hook so user can add other locale data
+addLocaleData(localeData)
 
 // Render function
 let render = (routerKey = null) => {

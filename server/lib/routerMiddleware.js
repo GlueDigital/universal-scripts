@@ -2,7 +2,7 @@ import Helmet from 'react-helmet'
 import React from 'react'
 import { renderToString } from 'react-dom/server'
 import { match, RouterContext } from 'react-router'
-import { Provider } from 'react-redux'
+import { Provider } from 'react-intl-redux'
 
 import renderHtmlLayout from './render-html-layout'
 import { createStore } from '../../lib/store'
@@ -10,6 +10,7 @@ import { createStore } from '../../lib/store'
 import fs from 'fs'
 import path from 'path'
 
+import langs from 'src/locales'
 import routes from 'src/routes'
 
 let chunks = []
@@ -51,8 +52,19 @@ export default async (ctx, next) => {
     })
   })
 
+  // Determine language
+  const availableLangs = Object.keys(langs)
+  let lang = ctx.request.acceptsLanguages(availableLangs) || availableLangs[0]
+  const forceLang = ctx.cookies.get('lang')
+  if (forceLang && availableLangs.indexOf(forceLang) >= 0) lang = forceLang
+
   // Create store
-  const initialState = {}
+  const initialState = {
+    intl: {
+      locale: lang,
+      messages: langs[lang]
+    }
+  }
   const store = createStore(initialState)
 
   // TODO: Exec fetchData handlers...
