@@ -1,10 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Router, browserHistory } from 'react-router'
-import { Provider } from 'react-intl-redux'
+import { Provider, updateIntl } from 'react-intl-redux'
 import { addLocaleData } from 'react-intl'
 
-import { localeData } from 'src/locales'
+import locales, { localeData } from 'src/locales'
 import routes from 'src/routes'
 
 import { createStore } from '../lib/store'
@@ -16,6 +16,7 @@ const history = browserHistory
 
 // Initialize store
 const initialState = window.___INITIAL_STATE__
+initialState.intl.messages = locales[initialState.intl.locale]
 const store = createStore(initialState)
 
 // Hook so user can add other locale data
@@ -33,9 +34,18 @@ let render = (routerKey = null) => {
   )
 }
 
-// Enable HMR for routes
+// Enable HMR
 if (module.hot) {
+  // Routes (applies to any children too)
   module.hot.accept(['src/routes'], () => render(Math.random()))
+  // Intl
+  module.hot.accept(['src/locales'], () => {
+    const currentLang = store.getState().intl.locale
+    store.dispatch(updateIntl({
+      locale: currentLang,
+      messages: locales[currentLang]
+    }))
+  })
 }
 
 // Initial render

@@ -81,8 +81,12 @@ export default async (ctx, next) => {
     // TODO: Handle 404
   }
 
+  // Clean up the resulting state
+  const state = store.getState()
+  delete state.intl.messages
+
   // Send store contents along the page
-  const storeOutput = JSON.stringify(store.getState())
+  const storeOutput = JSON.stringify(state)
   const storeCode = { __html: '___INITIAL_STATE__=' + storeOutput }
   scripts.unshift(
     <script key="store" dangerouslySetInnerHTML={storeCode} />
