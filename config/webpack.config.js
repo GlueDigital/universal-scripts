@@ -71,7 +71,10 @@ module.exports = (opts = {}) => {
         __PROD__: process.env.NODE_ENV === 'production',
         __SERVER__: isServerSide,
         __CLIENT__: !isServerSide,
-        __WATCH__: isWatch
+        __WATCH__: isWatch,
+        'process.env': {
+          NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development')
+        }
       })
     ],
     module: {
