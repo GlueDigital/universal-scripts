@@ -51,7 +51,7 @@ module.exports = (opts = {}) => {
       path: path.resolve(
         appDirectory, 'build', isServerSide ? 'server' : 'client'),
       pathinfo: true,
-      filename: isServerSide ? 'server.js' : 'main.js',
+      filename: isServerSide ? 'server.js' : 'main.[hash].js',
       publicPath: '/'
     },
     resolve: {
@@ -148,7 +148,7 @@ module.exports = (opts = {}) => {
       })
       config.plugins.push(
         new ExtractTextPlugin({
-          filename: '[name].css',
+          filename: '[name].[contenthash].css',
           allChunks: true
         })
       )
