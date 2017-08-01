@@ -40,7 +40,7 @@ export default async (ctx, next) => {
     if (asset.endsWith('.js')) {
       scripts.unshift(<script key={asset} src={'/' + asset} />)
     } else if (asset.endsWith('.css')) {
-      styles.unshift(<link rel="stylesheet" href={'/' + asset} />)
+      styles.unshift(<link key={asset} rel="stylesheet" href={'/' + asset} />)
     }
   }
 
