@@ -120,6 +120,15 @@ module.exports = (opts = {}) => {
     if (isWatch) {
       config.entry.unshift('webpack-hot-middleware/client?name=client')
     }
+    if (process.env.NODE_ENV === 'production') {
+      config.plugins.push(new webpack.optimize.UglifyJsPlugin({
+        compress: {
+          unused: true,
+          dead_code: true,
+          warnings: false
+        }
+      }))
+    }
   }
 
   return config
