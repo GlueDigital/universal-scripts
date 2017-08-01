@@ -3,6 +3,7 @@
 const fs = require('fs')
 const path = require('path')
 const webpack = require('webpack')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 const appDirectory = fs.realpathSync(process.cwd())
 
@@ -114,15 +115,19 @@ module.exports = (opts = {}) => {
     } else {
       config.entry = [ path.resolve(serverPath, 'main') ]
     }
+    // Don't bundle node_modules for the server: node can access it directly
     config.externals = [require('webpack-node-externals')()]
   } else {
+    // Add our render entrypoint, and the user custom one
     config.entry = [
       path.resolve(__dirname, '..', 'client', 'init'),
       path.resolve(appDirectory, 'src', 'index.js')
     ]
+    // On watch mode, add the WHM client to do HMR
     if (isWatch) {
       config.entry.unshift('webpack-hot-middleware/client?name=client')
     }
+    // Production builds get minified JS
     if (process.env.NODE_ENV === 'production') {
       config.plugins.push(new webpack.optimize.UglifyJsPlugin({
         compress: {
@@ -131,6 +136,22 @@ module.exports = (opts = {}) => {
           warnings: false
         }
       }))
+    }
+    // Non-watch builds get CSS on a separate file
+    if (!isWatch) {
+      config.module.rules.filter((rule) =>
+        rule.use && rule.use.find((entry) =>
+          entry.loader === require.resolve('css-loader'))
+      ).forEach((rule) => {
+        const [first, ...rest] = rule.use
+        rule.use = ExtractTextPlugin.extract({ fallback: first, use: rest })
+      })
+      config.plugins.push(
+        new ExtractTextPlugin({
+          filename: '[name].css',
+          allChunks: true
+        })
+      )
     }
   }
 
