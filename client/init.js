@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Router, browserHistory } from 'react-router'
+import { Router, browserHistory, applyRouterMiddleware } from 'react-router'
 import { Provider, updateIntl } from 'react-intl-redux'
 import { addLocaleData } from 'react-intl'
 
@@ -8,6 +8,7 @@ import locales, { localeData } from 'src/locales'
 import routes from 'src/routes'
 
 import { createStore } from '../lib/store'
+import { fetchMiddleware } from '../lib/fetchData'
 
 const MOUNT_NODE = document.getElementById('root')
 
@@ -22,11 +23,14 @@ const store = createStore(initialState)
 // Hook so user can add other locale data
 addLocaleData(localeData)
 
+// Configure router middlewares
+const middlewares = applyRouterMiddleware(fetchMiddleware(store))
+
 // Render function
 let render = (routerKey = null) => {
   ReactDOM.render(
     <Provider store={store}>
-      <Router history={history} key={routerKey}>
+      <Router history={history} key={routerKey} render={middlewares}>
         {routes()}
       </Router>
     </Provider>,

@@ -6,6 +6,7 @@ import { Provider } from 'react-intl-redux'
 
 import renderHtmlLayout from './render-html-layout'
 import { createStore } from '../../lib/store'
+import { waitForPromises } from '../../lib/fetchData'
 
 import fs from 'fs'
 import path from 'path'
@@ -51,6 +52,7 @@ export default async (ctx, next) => {
       error ? reject(error) : resolve(renderProps)
     })
   })
+  if (!renderProps) return // TODO: What happened?
 
   // Determine language
   const availableLangs = Object.keys(langs)
@@ -67,7 +69,25 @@ export default async (ctx, next) => {
   }
   const store = createStore(initialState)
 
-  // TODO: Exec fetchData handlers...
+  // Call fetchData methods and wait for them to finish
+  const fetchResult = await waitForPromises(renderProps, store)
+
+  // Trigger any secondary effects from fetchData functions
+  if (fetchResult.__serverDirectives) {
+    const directives = fetchResult.__serverDirectives
+    // Cookies
+    if (directives.cookies && directives.cookies.forEach) {
+      directives.cookies.forEach(({name, value, ...options}) => {
+        ctx.cookies.set(name, value, options)
+      })
+    }
+    // Redirects
+    if (directives.redirect) {
+      ctx.redirect(directives.redirect)
+      ctx.body = ''
+      return
+    }
+  }
 
   // Actual rendering
   let renderOutput

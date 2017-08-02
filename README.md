@@ -3,10 +3,6 @@
 # Universal Scripts
 Alternative scripts and configuration for [Create React App](https://github.com/facebookincubator/create-react-app), with enhaced functionality.
 
-## Status
-Please note that this project is still under heavy development, and not ready for outside usage.<br>
-We plan to have a beta ready for testing in a few days. Please check back soon!
-
 ## Why Universal Scripts
 When building a real web app, you need a lot of features not found on most "learning" starter kits, such as the one provided by React. This package provides an opinionated alternative with what we believe is the minimum that any modern app needs.
 
@@ -26,6 +22,14 @@ If you haven't installed it yet, you can do it with:
 Then, to create a project, do:
 > create-react-app --scripts-version universal-scripts <app-name>
 
+## Fetch Data
+If any route or component needs to load external data before rendering, such as making an API call to fetch some data, you can use a static `fetchData` method on the component. The server will call it and if it returns a promise, wait for it before rendering it, while the client will call it on navigation. It will receive the component props, the dispatch function, and the store state, and it can return either a thunk, a promise, or any sync value.
+
+On the server, if you want the route to set cookies or result in a redirect in response to a fetchData method, you can return an object (or a promise resolving to it) with a `__serverDirectives` key, which should be another object, and can contain:
+ - A `cookies` array, containing objects for each cookie to create, with fields: name, value, and any other options that ctx.cookies can handle.
+ - A `redirect` string, with the destination of a redirection.
+
+For more info, check the [fetchData](lib/fetchData.js) documentation.
 
 ## How does it work?
 The build process is a bit complex, and most users won't need to bother with the details, but we'll explain them here for power users.
@@ -48,7 +52,7 @@ The server build is a bit harder. When on watch mode, the watch script runs `ser
 To do the server-side rendering, the router middleware takes the following steps:
 - Collect the asset list (either from the dev middleware, on *watch* mode, or from the `webpack-assets.json` generated on *build* mode).
 - Pass the request through the react-router to find the correct route to render.
-- Trigger any data-fetching functions required by components. **(PENDING)**
+- Trigger any data-fetching functions required by components.
 - Render the route.
 - Use react-helmet to extract any headers generated during the render.
 - Mix such headers with the assets from the first step, and build the final HTML.
