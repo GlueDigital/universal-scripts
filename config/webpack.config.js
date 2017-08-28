@@ -43,6 +43,19 @@ module.exports = (opts = {}) => {
     }
   }
 
+  const definitions = {
+    __DEV__: process.env.NODE_ENV === 'development',
+    __PROD__: process.env.NODE_ENV === 'production',
+    __SERVER__: isServerSide,
+    __CLIENT__: !isServerSide,
+    __WATCH__: isWatch
+  }
+  if (!isServerSide) {
+    definitions['process.env'] = {
+      NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development')
+    }
+  }
+
   let config = {
     name: isServerSide ? 'server' : 'client',
     devtool: 'cheap-module-source-map',
@@ -67,16 +80,7 @@ module.exports = (opts = {}) => {
     },
     plugins: [
       new webpack.NamedModulesPlugin(),
-      new webpack.DefinePlugin({
-        __DEV__: process.env.NODE_ENV === 'development',
-        __PROD__: process.env.NODE_ENV === 'production',
-        __SERVER__: isServerSide,
-        __CLIENT__: !isServerSide,
-        __WATCH__: isWatch,
-        'process.env': {
-          NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development')
-        }
-      })
+      new webpack.DefinePlugin(definitions)
     ],
     module: {
       rules: [
