@@ -6,6 +6,9 @@
   "repository": "git@github.com:GlueDigital/universal-scripts.git",
   "author": "Glue Digital <hola@glue.digital>",
   "license": "MIT",
+  "engines" : {
+    "node" : ">=7.6"
+  },
   "bin": {
     "universal-scripts": "./bin/universal-scripts.js"
   },

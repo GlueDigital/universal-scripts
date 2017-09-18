@@ -25,6 +25,10 @@ module.exports = (
     'heroku-postbuild': 'npm run build'
   }
 
+  appPackage.engines = {
+    node: '>=7.6'
+  }
+
   fs.writeFileSync(
     path.join(appPath, 'package.json'),
     JSON.stringify(appPackage, null, 2)
