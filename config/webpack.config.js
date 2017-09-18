@@ -43,6 +43,13 @@ module.exports = (opts = {}) => {
     }
   }
 
+  const sassChain = [ cssLoader, sassLoader ]
+  const cssChain = [ cssLoader ]
+  if (!isServerSide) {
+    sassChain.unshift(styleLoader)
+    cssChain.unshift(styleLoader)
+  }
+
   const definitions = {
     __DEV__: process.env.NODE_ENV === 'development',
     __PROD__: process.env.NODE_ENV === 'production',
@@ -94,10 +101,10 @@ module.exports = (opts = {}) => {
           }
         }, {
           test: /\.(scss|sass)$/,
-          use: [ styleLoader, cssLoader, sassLoader ]
+          use: sassChain
         }, {
           test: /\.css$/,
-          use: [ styleLoader, cssLoader ]
+          use: cssChain
         }
       ]
     }
