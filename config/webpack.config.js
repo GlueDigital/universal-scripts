@@ -87,7 +87,8 @@ module.exports = (opts = {}) => {
     },
     plugins: [
       new webpack.NamedModulesPlugin(),
-      new webpack.DefinePlugin(definitions)
+      new webpack.DefinePlugin(definitions),
+      new webpack.NoEmitOnErrorsPlugin()
     ],
     module: {
       rules: [

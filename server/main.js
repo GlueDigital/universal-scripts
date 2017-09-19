@@ -38,9 +38,15 @@ if (__WATCH__) {
     const mfs = koaWebpackInstance.dev.fileSystem
     compiler.plugin('done', stats => {
       const fname = path.resolve(appDirectory, 'build', 'server', 'server.js')
-      let newMiddleware = mfs.readFileSync(fname).toString()
-      routerMiddleware =
-        eval(newMiddleware).default // eslint-disable-line no-eval
+      try {
+        let newMiddleware = mfs.readFileSync(fname).toString()
+        routerMiddleware =
+          eval(newMiddleware).default // eslint-disable-line no-eval
+      } catch (e) {
+        console.warn(chalk.red.bold('Couldn\'t load middleware.'))
+        console.log(chalk.red('Please fix any build errors above, and ' +
+          'it will auto-reload.'))
+      }
     })
 
     // Finally add the router middleware too (through proxy so it can reload)
