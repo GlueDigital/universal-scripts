@@ -1,13 +1,13 @@
 {
   "name": "universal-scripts",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "Build universal apps without configuration.",
   "main": "index.js",
   "repository": "git@github.com:GlueDigital/universal-scripts.git",
   "author": "Glue Digital <hola@glue.digital>",
   "license": "MIT",
-  "engines" : {
-    "node" : ">=7.6"
+  "engines": {
+    "node": ">=7.6"
   },
   "bin": {
     "universal-scripts": "./bin/universal-scripts.js"
