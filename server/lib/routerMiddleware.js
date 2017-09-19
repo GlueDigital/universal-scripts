@@ -1,5 +1,6 @@
 import Helmet from 'react-helmet'
 import React from 'react'
+import chalk from 'chalk'
 import { renderToString } from 'react-dom/server'
 import { match, RouterContext } from 'react-router'
 import { Provider } from 'react-intl-redux'
@@ -18,6 +19,18 @@ let chunks = []
 if (!__WATCH__) {
   const fname = path.resolve('build', 'client', 'webpack-chunks.json')
   chunks = JSON.parse(fs.readFileSync(fname)).assets
+}
+
+const handleServerError = (ctx, error) => {
+  console.error(chalk.red('Error during render:\n') + error.stack)
+  ctx.status = 500
+  if (__DEV__) {
+    // Provide some better feedback for errors during DEV
+    ctx.body =
+      '<h1>Internal Server Error</h1>\n' +
+      '<p>An exception was caught during page rendering:</p>\n' +
+      '<pre>' + error.stack + '</pre>'
+  }
 }
 
 export default async (ctx, next) => {
@@ -70,7 +83,12 @@ export default async (ctx, next) => {
   const store = createStore(initialState)
 
   // Call fetchData methods and wait for them to finish
-  const fetchResult = await waitForPromises(renderProps, store)
+  let fetchResult
+  try {
+    fetchResult = await waitForPromises(renderProps, store)
+  } catch (e) {
+    return handleServerError(ctx, e)
+  }
 
   // Trigger any secondary effects from fetchData functions
   if (fetchResult.__serverDirectives) {
@@ -92,11 +110,15 @@ export default async (ctx, next) => {
   // Actual rendering
   let renderOutput
   if (renderProps) {
-    renderOutput = renderToString(
-      <Provider store={store}>
-        <RouterContext {...renderProps} />
-      </Provider>
-    )
+    try {
+      renderOutput = renderToString(
+        <Provider store={store}>
+          <RouterContext {...renderProps} />
+        </Provider>
+      )
+    } catch (e) {
+      return handleServerError(ctx, e)
+    }
   } else {
     // TODO: Handle 404
   }
