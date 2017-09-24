@@ -46,6 +46,7 @@ if (__WATCH__) {
         console.warn(chalk.red.bold('Couldn\'t load middleware.'))
         console.log(chalk.red('Please fix any build errors above, and ' +
           'it will auto-reload.'))
+        console.log('Details:', e)
       }
     })
 

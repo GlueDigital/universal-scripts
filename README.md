@@ -56,3 +56,6 @@ To do the server-side rendering, the router middleware takes the following steps
 - Render the route.
 - Use react-helmet to extract any headers generated during the render.
 - Mix such headers with the assets from the first step, and build the final HTML.
+
+### Server-only routes
+If you want to add some routes only for server-side, you can just add a file with your Koa middleware on 'src/routes/serverRoutes.js' and it will be added to the Koa instance. The main use of this feature is creating API endpoints on the same server instance.

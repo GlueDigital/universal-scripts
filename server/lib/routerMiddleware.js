@@ -13,12 +13,18 @@ import fs from 'fs'
 import path from 'path'
 
 import langs from 'src/locales'
-import routes from 'src/routes'
+import createRoutes from 'src/routes'
 
 let chunks = []
 if (!__WATCH__) {
   const fname = path.resolve('build', 'client', 'webpack-chunks.json')
   chunks = JSON.parse(fs.readFileSync(fname)).assets
+}
+
+// Optional server-only routes hook
+let handleServerRoutes = false
+if (fs.existsSync(path.resolve('src', 'routes', 'serverRoutes.js'))) {
+  handleServerRoutes = require('src/routes/serverRoutes').default
 }
 
 const handleServerError = (ctx, error) => {
@@ -34,7 +40,11 @@ const handleServerError = (ctx, error) => {
 }
 
 export default async (ctx, next) => {
-  await next()
+  if (handleServerRoutes) {
+    await handleServerRoutes(ctx, next)
+  } else {
+    await next()
+  }
 
   // If any middleware answered successfully before, do nothing.
   if ((ctx.body || ctx.status !== 404) && ctx.req.url !== '/') return
@@ -60,7 +70,7 @@ export default async (ctx, next) => {
 
   // Run the router matcher
   const renderProps = await new Promise((resolve, reject) => {
-    const matcher = { routes: routes(), location: ctx.req.url }
+    const matcher = { routes: createRoutes(), location: ctx.req.url }
     match(matcher, (error, redirectLocation, renderProps) => {
       error ? reject(error) : resolve(renderProps)
     })
