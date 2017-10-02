@@ -23,9 +23,8 @@ if (!__WATCH__) {
 
 // Optional server-only routes hook
 let handleServerRoutes = false
-if (fs.existsSync(path.resolve('src', 'routes', 'serverRoutes.js'))) {
-  handleServerRoutes = require('src/routes/serverRoutes').default
-}
+const req = require.context('src/routes', false, /^\.\/serverRoutes$/)
+if (req.keys().length) handleServerRoutes = req(req.keys()[0]).default
 
 const handleServerError = (ctx, error) => {
   console.error(chalk.red('Error during render:\n') + error.stack)
