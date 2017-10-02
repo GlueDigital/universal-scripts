@@ -129,7 +129,10 @@ module.exports = (opts = {}) => {
       config.entry = [ path.resolve(serverPath, 'main') ]
     }
     // Don't bundle node_modules for the server: node can access it directly
-    config.externals = [require('webpack-node-externals')()]
+    config.externals = [
+      require('webpack-node-externals')(),
+      'src/routes/serverRoutes'
+    ]
   } else {
     // Add our render entrypoint, and the user custom one
     config.entry = [

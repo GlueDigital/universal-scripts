@@ -117,6 +117,15 @@ export default async (ctx, next) => {
     }
   }
 
+  // Set helmet defaults
+  renderToString(
+    <Helmet>
+      <meta charSet="utf-8" />
+      <meta name="viewport"
+        content="width=device-width,minimum-scale=1,initial-scale=1" />
+    </Helmet>
+  )
+
   // Actual rendering
   let renderOutput
   if (renderProps) {
@@ -145,7 +154,7 @@ export default async (ctx, next) => {
   )
 
   // Get the headers from react-helmet
-  const head = Helmet.rewind()
+  const head = Helmet.renderStatic()
 
   // Set the response
   ctx.status = 200
