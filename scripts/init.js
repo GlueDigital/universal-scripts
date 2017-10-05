@@ -22,7 +22,7 @@ module.exports = (
     start: 'NODE_PATH=./node_modules universal-scripts start',
     build: 'NODE_PATH=./node_modules universal-scripts build',
     serve: 'node build/server/server.js',
-    lint: 'eslint .',
+    lint: 'eslint src',
     'heroku-postbuild': 'npm run build'
   }
 
