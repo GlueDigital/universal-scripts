@@ -2,6 +2,7 @@
 
 // Copy the template and get everything ready for developing.
 
+const chalk = require('chalk')
 const fs = require('fs-extra')
 const path = require('path')
 const execSync = require('child_process').execSync
@@ -62,6 +63,6 @@ module.exports = (
   fs.copySync(templatePath, appPath)
 
   // Done!
-  console.log('Init completed. Now you might want to run:')
-  console.log('  $ cd ' + appName + ' && npm start')
+  console.log(chalk.green.bold('Init completed.') + ' Now you might want to run:')
+  console.log(chalk.gray('  $ ') + chalk.cyan('cd ' + appName + ' && npm start'))
 }
