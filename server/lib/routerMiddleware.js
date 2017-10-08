@@ -61,9 +61,9 @@ export default async (ctx, next) => {
   }
   for (const asset of assets) {
     if (asset.endsWith('.js')) {
-      scripts.unshift(<script key={asset} src={'/' + asset} />)
+      scripts.push(<script key={asset} src={'/' + asset} />)
     } else if (asset.endsWith('.css')) {
-      styles.unshift(<link key={asset} rel="stylesheet" href={'/' + asset} />)
+      styles.push(<link key={asset} rel="stylesheet" href={'/' + asset} />)
     }
   }
 
