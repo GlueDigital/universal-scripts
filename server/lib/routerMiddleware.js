@@ -15,6 +15,8 @@ import path from 'path'
 import langs from 'src/locales'
 import createRoutes from 'src/routes'
 
+global.Intl = require('intl')
+
 let chunks = []
 if (!__WATCH__) {
   const fname = path.resolve('build', 'client', 'webpack-chunks.json')
