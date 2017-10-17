@@ -28,7 +28,7 @@ const middlewares = applyRouterMiddleware(fetchMiddleware(store))
 
 // Render function
 let render = (routerKey = null) => {
-  ReactDOM.render(
+  ReactDOM.hydrate(
     <Provider store={store}>
       <Router history={history} key={routerKey} render={middlewares}>
         {routes()}
