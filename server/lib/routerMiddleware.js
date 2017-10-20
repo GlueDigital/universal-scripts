@@ -8,6 +8,7 @@ import { Provider } from 'react-intl-redux'
 import renderHtmlLayout from './render-html-layout'
 import { createStore } from '../../lib/store'
 import { waitForPromises } from '../../lib/fetchData'
+import defaultHeaders from '../../lib/header'
 
 import fs from 'fs'
 import path from 'path'
@@ -119,13 +120,7 @@ export default async (ctx, next) => {
   }
 
   // Set helmet defaults
-  renderToString(
-    <Helmet>
-      <meta charSet="utf-8" />
-      <meta name="viewport"
-        content="width=device-width,minimum-scale=1,initial-scale=1" />
-    </Helmet>
-  )
+  renderToString(defaultHeaders())
 
   // Actual rendering
   let renderOutput

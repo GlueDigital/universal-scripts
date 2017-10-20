@@ -9,6 +9,7 @@ import routes from 'src/routes'
 
 import { createStore } from '../lib/store'
 import { fetchMiddleware } from '../lib/fetchData'
+import defaultHeaders from '../lib/header'
 
 // Used only if we're missing the initial state (e.g. no server-side rendering)
 const fakeInitialState = () => {
@@ -34,6 +35,11 @@ addLocaleData(localeData)
 
 // Configure router middlewares
 const middlewares = applyRouterMiddleware(fetchMiddleware(store))
+
+// Initialize react-helmet defaults
+// We do it off-DOM because Helmet doesn't mind it, and <Provider> can
+// only take one child, so it can't be done there.
+ReactDOM.render(defaultHeaders(), document.createElement('div'))
 
 // Render function
 let render = (routerKey = null) => {
