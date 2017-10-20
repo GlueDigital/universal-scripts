@@ -10,13 +10,22 @@ import routes from 'src/routes'
 import { createStore } from '../lib/store'
 import { fetchMiddleware } from '../lib/fetchData'
 
+// Used only if we're missing the initial state (e.g. no server-side rendering)
+const fakeInitialState = () => {
+  const browserLang = window.navigator.language || window.navigator.userLanguage
+  const availableLangs = Object.keys(locales)
+  const lang =
+    availableLangs.indexOf(browserLang) !== -1 ? browserLang : availableLangs[0]
+  return { intl: { locale: lang } }
+}
+
 const MOUNT_NODE = document.getElementById('root')
 
 // Configure history
 const history = browserHistory
 
 // Initialize store
-const initialState = window.___INITIAL_STATE__
+const initialState = window.___INITIAL_STATE__ || fakeInitialState()
 initialState.intl.messages = locales[initialState.intl.locale]
 const store = createStore(initialState)
 
