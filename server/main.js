@@ -60,14 +60,15 @@ const serve = (compiler) => {
   console.log(chalk.green('Starting server.'))
   const app = new Koa()
 
-  // Serve static files (but a file server would be better)
-  app.use(koaStatic(path.resolve(appDirectory, 'src', 'static'), {}))
-
-  // Add our server-side-rendering middleware
   if (__WATCH__) {
+    // Serve static files directly from src (no need to copy again and again)
+    app.use(koaStatic(path.resolve(appDirectory, 'src', 'static'), {}))
+    // Add the HMR and Dev Server middleware
     configureHMR(app, compiler)
   } else {
+    // Serve files from the build folder (includes copied assets)
     app.use(koaStatic(path.resolve(appDirectory, 'build', 'client'), {}))
+    // Add the server-side rendering middleware (no HMR)
     app.use(require('./lib/routerMiddleware').default)
   }
 

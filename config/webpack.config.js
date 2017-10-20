@@ -5,6 +5,7 @@ const fs = require('fs')
 const path = require('path')
 const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const appDirectory = fs.realpathSync(process.cwd())
 
@@ -19,6 +20,7 @@ module.exports = (opts = {}) => {
   const cssLoader = {
     loader: require.resolve('css-loader'),
     query: {
+      root: 'src/static',
       sourceMap: true,
       minimize: true,
       autoprefixer: {
@@ -107,6 +109,14 @@ module.exports = (opts = {}) => {
         }, {
           test: /\.css$/,
           use: cssChain
+        }, {
+          test: /\.(jpg|png|svg|ico|woff|woff2|otf|ttf|eot)$/,
+          loader: require.resolve('file-loader'),
+          options: {
+            name: '[path][name].[ext]?[md5:hash:hex:8]',
+            emitFile: false,
+            context: 'src/static'
+          }
         }
       ]
     }
@@ -152,8 +162,8 @@ module.exports = (opts = {}) => {
         }
       }))
     }
-    // Non-watch builds get CSS on a separate file
     if (!isWatch) {
+      // Non-watch builds get CSS on a separate file
       config.module.rules.filter((rule) =>
         rule.use && rule.use.find((entry) =>
           entry.loader === require.resolve('css-loader'))
@@ -166,6 +176,13 @@ module.exports = (opts = {}) => {
           filename: '[name].[contenthash].css',
           allChunks: true
         })
+      )
+      // Also copy static assets to output dir
+      config.plugins.push(
+        new CopyWebpackPlugin([{
+          from: path.resolve(appDirectory, 'src', 'static'),
+          to: path.resolve(appDirectory, 'build', 'client')
+        }])
       )
     }
   }

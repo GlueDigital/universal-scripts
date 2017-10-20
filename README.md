@@ -59,3 +59,8 @@ To do the server-side rendering, the router middleware takes the following steps
 
 ### Server-only routes
 If you want to add some routes only for server-side, you can just add a file with your Koa middleware on 'src/routes/serverRoutes.js' and it will be added to the Koa instance. The main use of this feature is creating API endpoints on the same server instance.
+
+### Static assets
+The files on `src/static` are served from that folder directly during watch mode, as we don't need to keep them in memory (which dev server does). When generating a non-watch build, they get copied directly to the build folder.
+
+When referenced from CSS, images and fonts get a suffix with a part of the file contents hash, for cache-busting.
