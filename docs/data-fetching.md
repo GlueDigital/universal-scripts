@@ -10,7 +10,7 @@ export class Home extends React.Component {
   static fetchData = () => {
     // Your code here
   }
-
+}
 ```
 
 From this function you can do any async process, including calling external endpoints with `fetch`, and return a promise or a [thunk](https://github.com/gaearon/redux-thunk).

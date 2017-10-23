@@ -26,9 +26,53 @@ aside.menu {
   float: right;
 }
 
+#header nav {
+  background: transparent;
+}
+
 code.highlighter-rouge {
   background-color: #191919;
   border: 1px solid #5a4e1c;
   margin: 0;
   padding: 2px;
+}
+
+
+/* Mobile fixes */
+@media print, screen and (max-width: 480px) {
+  aside.menu {
+    position: static;
+    height: auto;
+    margin-top: 40px;
+    width: 100%;
+  }
+  aside.menu ul {
+    margin: 0;
+  }
+  section {
+    margin-top: 0;
+    padding-top: 0;
+  }
+  section h2 {
+    margin-top: 20px
+  }
+  #header {
+    margin-top: 0;
+    height: 40px;
+  }
+  #header .header-about {
+    float: none;
+  }
+  nav .title {
+    text-align: center;
+  }
+  nav {
+    display: block;
+  }
+  nav .subtitle {
+    display: none;
+  }
+  nav li.fork {
+    display: none !important;
+  }
 }
