@@ -61,8 +61,8 @@ module.exports = (opts = {}) => {
     __WATCH__: isWatch
   }
   if (!isServerSide) {
-    for (const [key, value] of Object.entries(process.env)) {
-      definitions['process.env.' + key] = JSON.stringify(value)
+    for (const key in process.env) {
+      definitions['process.env.' + key] = JSON.stringify(process.env[key])
     }
   }
 
