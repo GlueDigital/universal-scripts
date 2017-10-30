@@ -120,7 +120,7 @@ export default async (ctx, next) => {
   }
 
   // Set helmet defaults
-  renderToString(defaultHeaders())
+  renderToString(defaultHeaders(store))
 
   // Actual rendering
   let renderOutput

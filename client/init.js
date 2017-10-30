@@ -39,7 +39,7 @@ const middlewares = applyRouterMiddleware(fetchMiddleware(store))
 // Initialize react-helmet defaults
 // We do it off-DOM because Helmet doesn't mind it, and <Provider> can
 // only take one child, so it can't be done there.
-ReactDOM.render(defaultHeaders(), document.createElement('div'))
+ReactDOM.render(defaultHeaders(store), document.createElement('div'))
 
 // Render function
 let render = (routerKey = null) => {
