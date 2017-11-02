@@ -61,6 +61,6 @@
     "react-router": "^3.0.5"
   },
   "scripts": {
-    "test": "eslint ."
+    "test": "bin/run-tests.sh"
   }
 }
