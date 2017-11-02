@@ -62,6 +62,12 @@ module.exports = (
 
   fs.copySync(templatePath, appPath)
 
+  // After copying tasks
+  fs.renameSync(
+    path.resolve(appPath, 'gitignore'),
+    path.resolve(appPath, '.gitignore')
+  )
+
   // Done!
   console.log(chalk.green.bold('Init completed.') + ' Now you might want to run:')
   console.log(chalk.gray('  $ ') + chalk.cyan('cd ' + appName + ' && npm start'))
