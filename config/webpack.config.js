@@ -146,8 +146,8 @@ module.exports = (opts = {}) => {
   } else {
     // Add our render entrypoint, and the user custom one
     config.entry = [
-      path.resolve(__dirname, '..', 'client', 'init'),
-      path.resolve(appDirectory, 'src', 'index.js')
+      path.resolve(appDirectory, 'src', 'index.js'),
+      path.resolve(__dirname, '..', 'client', 'init')
     ]
     // On watch mode, add the WHM client to do HMR
     if (isWatch) {
