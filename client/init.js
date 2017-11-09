@@ -68,4 +68,14 @@ if (module.hot) {
 }
 
 // Initial render
-render()
+if (!__WATCH__) {
+  render()
+} else {
+  // Style-loader takes some time, and a single setTimeout is not enough.
+  // Chaining two seems to consistently set us up right after it.
+  window.setTimeout(() => {
+    window.setTimeout(() => {
+      render()
+    }, 0)
+  }, 0)
+}
