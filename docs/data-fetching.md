@@ -79,6 +79,12 @@ Sometimes you need to set a cookie or do a redirect depending on the result of a
  - A `redirect` string, with the destination of a redirection.
 
 
+Accessing server request
+------------------------
+
+On the server side, sometimes you need access to the request headers, or the source ip. To make them available to your code, we put them on the store during the initial server side render, under the `req` key. Before sending the store to the client, we remove this key to reduce page size, as this info isn't usually useful on the client.
+
+
 Next steps
 ----------
 

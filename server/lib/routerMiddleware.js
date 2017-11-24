@@ -90,6 +90,10 @@ export default async (ctx, next) => {
     intl: {
       locale: lang,
       messages: langs[lang]
+    },
+    req: {
+      headers: ctx.request.headers,
+      ip: ctx.request.ip
     }
   }
   const store = createStore(initialState)
@@ -141,6 +145,7 @@ export default async (ctx, next) => {
   // Clean up the resulting state
   const state = store.getState()
   delete state.intl.messages
+  delete state.req
 
   // Send store contents along the page
   const storeOutput = JSON.stringify(state)
