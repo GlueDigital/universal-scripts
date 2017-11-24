@@ -20,7 +20,7 @@ npm start
 
 Then go to [http://localhost:3000](http://localhost:3000) to see your app.
 
-_Node: Universal Scripts requires Node 7.6 or higher to run._
+_Note: Universal Scripts requires Node 7.6 or higher to run._
 
 Why Use This?
 -------------

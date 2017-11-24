@@ -11,6 +11,7 @@ aside.menu {
   position: fixed;
   top: 64px;
   width: 200px;
+  box-sizing: border-box;
 }
 
 #header .header-about {
@@ -39,7 +40,7 @@ code.highlighter-rouge {
 
 
 /* Mobile fixes */
-@media print, screen and (max-width: 480px) {
+@media print, screen and (max-width: 640px) {
   aside.menu {
     position: static;
     height: auto;
@@ -74,5 +75,13 @@ code.highlighter-rouge {
   }
   nav li.fork {
     display: none !important;
+  }
+}
+
+/* Other responsive fixes */
+@media print, screen and (min-width: 641px) and (max-width: 1134px) {
+  .wrapper {
+    margin-left: 220px;
+    margin-right: 20px;
   }
 }
