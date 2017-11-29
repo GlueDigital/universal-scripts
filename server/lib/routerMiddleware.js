@@ -10,7 +10,7 @@ import { createStore } from '../../lib/store'
 import { waitForPromises } from '../../lib/fetchData'
 import defaultHeaders from '../../lib/header'
 
-import CLEANUP from 'universal-scripts'
+import { CLEANUP } from 'universal-scripts'
 
 import fs from 'fs'
 import path from 'path'
