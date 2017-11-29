@@ -6,9 +6,11 @@ import { match, RouterContext } from 'react-router'
 import { Provider } from 'react-intl-redux'
 
 import renderHtmlLayout from './render-html-layout'
-import { createStore, CLEANUP } from '../../lib/store'
+import { createStore } from '../../lib/store'
 import { waitForPromises } from '../../lib/fetchData'
 import defaultHeaders from '../../lib/header'
+
+import CLEANUP from 'universal-scripts'
 
 import fs from 'fs'
 import path from 'path'

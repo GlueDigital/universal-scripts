@@ -92,9 +92,9 @@ Just before serializing the store on the server to send it to the client, we dis
 
 To use this action on your reducers, just do something like:
 ```javascript
-import { CLEANUP } from 'universal-scripts/lib/store'
+import { CLEANUP } from 'universal-scripts'
 
-const myReducer = (store, action) {
+const myReducer = (store, action) => {
   switch (action.type) {
     case CLEANUP:
       return null // Your cleaned up value here
