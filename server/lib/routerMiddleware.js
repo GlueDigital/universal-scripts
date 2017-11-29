@@ -6,7 +6,7 @@ import { match, RouterContext } from 'react-router'
 import { Provider } from 'react-intl-redux'
 
 import renderHtmlLayout from './render-html-layout'
-import { createStore } from '../../lib/store'
+import { createStore, CLEANUP } from '../../lib/store'
 import { waitForPromises } from '../../lib/fetchData'
 import defaultHeaders from '../../lib/header'
 
@@ -143,9 +143,9 @@ export default async (ctx, next) => {
   }
 
   // Clean up the resulting state
+  store.dispatch({ type: CLEANUP })
   const state = store.getState()
-  delete state.intl.messages
-  delete state.req
+  delete state.req // This reducer doesn't exist client-side
 
   // Send store contents along the page
   const storeOutput = JSON.stringify(state)

@@ -85,6 +85,27 @@ Accessing server request
 On the server side, sometimes you need access to the request headers, or the source ip. To make them available to your code, we put them on the store during the initial server side render, under the `req` key. Before sending the store to the client, we remove this key to reduce page size, as this info isn't usually useful on the client.
 
 
+Store cleanup
+-------------
+
+Just before serializing the store on the server to send it to the client, we dispatch the `CLEANUP` action, to give reducers an opportunity to cleanup any values that you don't want to send to the client. This feature is used by the intl reducer to prevent sending the messages in the store, and by the request reducer to remove the request info.
+
+To use this action on your reducers, just do something like:
+```javascript
+import { CLEANUP } from 'universal-scripts/lib/store'
+
+const myReducer = (store, action) {
+  switch (action.type) {
+    case CLEANUP:
+      return null // Your cleaned up value here
+    // Other actions handling
+    default:
+      return state
+  }
+}
+```
+
+
 Next steps
 ----------
 
