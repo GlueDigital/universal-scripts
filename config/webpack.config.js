@@ -136,6 +136,7 @@ module.exports = (opts = {}) => {
     const serverPath = path.resolve(__dirname, '..', 'server')
     if (isWatch) {
       config.entry = [ path.resolve(serverPath, 'lib', 'routerMiddleware') ]
+      config.output.libraryTarget = 'commonjs2'
     } else {
       config.entry = [ path.resolve(serverPath, 'main') ]
     }
