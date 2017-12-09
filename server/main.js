@@ -4,7 +4,7 @@ const fs = require('fs')
 const Koa = require('koa')
 const koaStatic = require('koa-static')
 const path = require('path')
-const Module = module.constructor
+const requireFromString = require('require-from-string')
 
 const appDirectory = fs.realpathSync(process.cwd())
 const port = process.env.PORT || 3000
@@ -42,10 +42,7 @@ if (__WATCH__) {
       const fname = path.resolve(appDirectory, 'build', 'server', 'server.js')
       try {
         let newMiddleware = mfs.readFileSync(fname).toString()
-        const m = new Module()
-        m.paths = module.paths
-        m._compile(newMiddleware, 'routerMiddleware.js')
-        routerMiddleware = m.exports.default
+        routerMiddleware = requireFromString(newMiddleware).default
       } catch (e) {
         console.warn(chalk.red.bold('Couldn\'t load middleware.'))
         console.log(chalk.red('Please fix any build errors above, and ' +
