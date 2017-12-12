@@ -1,8 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Router, browserHistory, applyRouterMiddleware } from 'react-router'
+import { useBasename } from 'history'
 import { Provider, updateIntl } from 'react-intl-redux'
 import { addLocaleData } from 'react-intl'
+
+import 'url-polyfill'
 
 import locales, { localeData } from 'src/locales'
 import routes from 'src/routes'
@@ -23,7 +26,9 @@ const fakeInitialState = () => {
 const MOUNT_NODE = document.getElementById('root')
 
 // Configure history
-const history = browserHistory
+const publicPath = process.env.SUBDIRECTORY || '/'
+const basename = (new window.URL(publicPath, window.location)).pathname
+const history = useBasename(() => browserHistory)({ basename })
 
 // Initialize store
 const initialState = window.___INITIAL_STATE__ || fakeInitialState()

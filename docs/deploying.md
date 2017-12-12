@@ -22,3 +22,7 @@ Generating a static build to be served with a static file server is not official
 - Configure your web server to serve the `build/client` folder, and reply to all unknown routes with the index.htm file.
 
 The generated code will compensate for the missing initial state and DOM nodes, and the page will work.
+
+### Subdirectory
+
+The build system allows configuring a build (or watch mode) to run inside a subdirectory. Just set the ENV var `SUBDIRECTORY` to the absolute path of the app subdirectory (ie: `/client/`). Relative URLs are unsupported, as they would change meaning depending on which route gets loaded.

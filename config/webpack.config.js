@@ -75,7 +75,7 @@ module.exports = (opts = {}) => {
         appDirectory, 'build', isServerSide ? 'server' : 'client'),
       pathinfo: true,
       filename: isServerSide ? 'server.js' : 'main.[hash].js',
-      publicPath: '/'
+      publicPath: process.env.SUBDIRECTORY || '/'
     },
     resolve: {
       alias: {

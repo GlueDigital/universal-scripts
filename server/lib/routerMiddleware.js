@@ -44,6 +44,15 @@ const handleServerError = (ctx, error) => {
 }
 
 export default async (ctx, next) => {
+  // We are the ones in charge of changing the location according to basename
+  // because neither koa-static nor react-router handle it. Note that the dev
+  // middleware does handle it, but it will run before us anyway.
+  const basename = process.env.SUBDIRECTORY || '/'
+  if (ctx.req.url.startsWith(basename)) {
+    ctx.req.url = ctx.req.url.substr(basename.length - 1)
+  }
+
+  // Give other middlewares a chance to run
   if (handleServerRoutes) {
     await handleServerRoutes(ctx, next)
   } else {
@@ -66,15 +75,19 @@ export default async (ctx, next) => {
   }
   for (const asset of assets) {
     if (asset.endsWith('.js')) {
-      scripts.push(<script key={asset} src={'/' + asset} />)
+      scripts.push(<script key={asset} src={basename + asset} />)
     } else if (asset.endsWith('.css')) {
-      styles.push(<link key={asset} rel="stylesheet" href={'/' + asset} />)
+      styles.push(<link key={asset} rel="stylesheet" href={basename + asset} />)
     }
   }
 
   // Run the router matcher
   const renderProps = await new Promise((resolve, reject) => {
-    const matcher = { routes: createRoutes(), location: ctx.req.url }
+    const matcher = {
+      routes: createRoutes(),
+      location: ctx.req.url,
+      basename
+    }
     match(matcher, (error, redirectLocation, renderProps) => {
       error ? reject(error) : resolve(renderProps)
     })
