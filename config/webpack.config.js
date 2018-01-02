@@ -12,6 +12,7 @@ const appDirectory = fs.realpathSync(process.cwd())
 module.exports = (opts = {}) => {
   const isServerSide = opts.isServerSide
   const isWatch = opts.isWatch
+  const isProd = process.env.NODE_ENV === 'production'
 
   const styleLoader = {
     loader: require.resolve('style-loader')
@@ -22,19 +23,16 @@ module.exports = (opts = {}) => {
     query: {
       root: 'src/static',
       sourceMap: true,
-      minimize: true,
-      autoprefixer: {
-        add: true,
-        remove: true,
-        browsers: ['last 2 versions']
-      },
-      discardComments: {
-        removeAll: true
-      },
-      discardUnused: false,
-      mergeIdents: false,
-      reduceIdents: false,
-      safe: true
+      minimize: {
+        autoprefixer: {
+          add: true,
+          remove: true,
+          browsers: ['last 2 versions']
+        },
+        discardComments: {
+          removeAll: true
+        }
+      }
     }
   }
 
@@ -54,8 +52,8 @@ module.exports = (opts = {}) => {
   }
 
   const definitions = {
-    __DEV__: process.env.NODE_ENV === 'development',
-    __PROD__: process.env.NODE_ENV === 'production',
+    __PROD__: isProd,
+    __DEV__: !isProd,
     __SERVER__: isServerSide,
     __CLIENT__: !isServerSide,
     __WATCH__: isWatch
@@ -68,7 +66,7 @@ module.exports = (opts = {}) => {
 
   let config = {
     name: isServerSide ? 'server' : 'client',
-    devtool: 'cheap-module-source-map',
+    devtool: isProd ? 'source-map' : 'cheap-module-source-map',
     target: isServerSide ? 'node' : 'web',
     output: {
       path: path.resolve(
@@ -155,13 +153,15 @@ module.exports = (opts = {}) => {
       config.entry.unshift('webpack-hot-middleware/client?name=client')
     }
     // Production builds get minified JS
-    if (process.env.NODE_ENV === 'production') {
+    if (isProd) {
       config.plugins.push(new webpack.optimize.UglifyJsPlugin({
         compress: {
           unused: true,
           dead_code: true,
           warnings: false
-        }
+        },
+        sourceMap: true,
+        comments: false
       }))
     }
     if (!isWatch) {
