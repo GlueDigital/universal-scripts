@@ -30,8 +30,12 @@ if (__WATCH__) {
       compiler: compiler,
       dev: {
         publicPath: '/',
-        quiet: true,
-        serverSideRender: true
+        serverSideRender: true,
+        logLevel: 'warn',
+        stats: false
+      },
+      hot: {
+        logLevel: 'warn'
       }
     })
     app.use(koaWebpackInstance)

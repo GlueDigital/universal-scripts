@@ -121,11 +121,6 @@ module.exports = (opts = {}) => {
     }
   }
 
-  if (isWatch) {
-    // Only add HMR code when we're watching for code changes
-    config.plugins.push(new webpack.HotModuleReplacementPlugin({ quiet: true }))
-  }
-
   if (isServerSide) {
     // For the in-memory server side HMR, we need to run the server outside
     // of the build, as it will contain the dev server, and do HMR for the part
@@ -133,10 +128,14 @@ module.exports = (opts = {}) => {
     // But when doing a static build, we want the entire server on the output.
     const serverPath = path.resolve(__dirname, '..', 'server')
     if (isWatch) {
-      config.entry = [ path.resolve(serverPath, 'lib', 'routerMiddleware') ]
+      config.entry = {
+        server: [ path.resolve(serverPath, 'lib', 'routerMiddleware') ]
+      }
       config.output.libraryTarget = 'commonjs2'
     } else {
-      config.entry = [ path.resolve(serverPath, 'main') ]
+      config.entry = {
+        server: [ path.resolve(serverPath, 'main') ]
+      }
     }
     // Don't bundle node_modules for the server: node can access it directly
     config.externals = [
@@ -144,13 +143,11 @@ module.exports = (opts = {}) => {
     ]
   } else {
     // Add our render entrypoint, and the user custom one
-    config.entry = [
-      path.resolve(appDirectory, 'src', 'index.js'),
-      path.resolve(__dirname, '..', 'client', 'init')
-    ]
-    // On watch mode, add the WHM client to do HMR
-    if (isWatch) {
-      config.entry.unshift('webpack-hot-middleware/client?name=client')
+    config.entry = {
+      main: [
+        path.resolve(appDirectory, 'src', 'index.js'),
+        path.resolve(__dirname, '..', 'client', 'init')
+      ]
     }
     // Production builds get minified JS
     if (isProd) {
