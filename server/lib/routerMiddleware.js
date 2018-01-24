@@ -81,19 +81,6 @@ export default async (ctx, next) => {
     }
   }
 
-  // Run the router matcher
-  const renderProps = await new Promise((resolve, reject) => {
-    const matcher = {
-      routes: createRoutes(),
-      location: ctx.req.url,
-      basename
-    }
-    match(matcher, (error, redirectLocation, renderProps) => {
-      error ? reject(error) : resolve(renderProps)
-    })
-  })
-  if (!renderProps) return // TODO: What happened?
-
   // Determine language
   const availableLangs = Object.keys(langs)
   let lang = ctx.request.acceptsLanguages(availableLangs) || availableLangs[0]
@@ -113,29 +100,50 @@ export default async (ctx, next) => {
   }
   const store = createStore(initialState)
 
-  // Call fetchData methods and wait for them to finish
-  let fetchResult
-  try {
-    fetchResult = await waitForPromises(renderProps, store)
-  } catch (e) {
-    return handleServerError(ctx, e)
-  }
-
-  // Trigger any secondary effects from fetchData functions
-  if (fetchResult.__serverDirectives) {
-    const directives = fetchResult.__serverDirectives
-    // Cookies
-    if (directives.cookies && directives.cookies.forEach) {
-      directives.cookies.forEach(({name, value, ...options}) => {
-        ctx.cookies.set(name, value, options)
+  // Are we using the router?
+  let renderPage
+  if (!process.env.DISABLE_ROUTER) {
+    // Run the router matcher
+    const renderProps = await new Promise((resolve, reject) => {
+      const matcher = {
+        routes: createRoutes(),
+        location: ctx.req.url,
+        basename
+      }
+      match(matcher, (error, redirectLocation, renderProps) => {
+        error ? reject(error) : resolve(renderProps)
       })
+    })
+    if (!renderProps) return // TODO: What happened?
+
+    // Call fetchData methods and wait for them to finish
+    let fetchResult
+    try {
+      fetchResult = await waitForPromises(renderProps, store)
+    } catch (e) {
+      return handleServerError(ctx, e)
     }
-    // Redirects
-    if (directives.redirect) {
-      ctx.redirect(directives.redirect)
-      ctx.body = ''
-      return
+
+    // Trigger any secondary effects from fetchData functions
+    if (fetchResult.__serverDirectives) {
+      const directives = fetchResult.__serverDirectives
+      // Cookies
+      if (directives.cookies && directives.cookies.forEach) {
+        directives.cookies.forEach(({name, value, ...options}) => {
+          ctx.cookies.set(name, value, options)
+        })
+      }
+      // Redirects
+      if (directives.redirect) {
+        ctx.redirect(directives.redirect)
+        ctx.body = ''
+        return
+      }
     }
+    renderPage = <RouterContext {...renderProps} />
+  } else {
+    // No router: answer all requests with the root component at routes/index.js
+    renderPage = createRoutes()
   }
 
   // Set helmet defaults
@@ -143,18 +151,14 @@ export default async (ctx, next) => {
 
   // Actual rendering
   let renderOutput
-  if (renderProps) {
-    try {
-      renderOutput = renderToString(
-        <Provider store={store}>
-          <RouterContext {...renderProps} />
-        </Provider>
-      )
-    } catch (e) {
-      return handleServerError(ctx, e)
-    }
-  } else {
-    // TODO: Handle 404
+  try {
+    renderOutput = renderToString(
+      <Provider store={store}>
+        {renderPage}
+      </Provider>
+    )
+  } catch (e) {
+    return handleServerError(ctx, e)
   }
 
   // Clean up the resulting state
