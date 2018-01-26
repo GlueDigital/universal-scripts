@@ -14,7 +14,8 @@ import defaultHeaders from '../lib/header'
 
 // Used only if we're missing the initial state (e.g. no server-side rendering)
 const fakeInitialState = () => {
-  const browserLang = window.navigator.language || window.navigator.userLanguage
+  const browserLang = document.documentElement.lang ||
+    window.navigator.language || window.navigator.userLanguage
   const availableLangs = Object.keys(locales)
   const lang =
     availableLangs.indexOf(browserLang) !== -1 ? browserLang : availableLangs[0]
