@@ -95,6 +95,8 @@ export default async (ctx, next) => {
     },
     req: {
       headers: ctx.request.headers,
+      origin: ctx.request.origin,
+      path: ctx.request.path,
       ip: ctx.request.ip
     }
   }
