@@ -27,14 +27,27 @@ if (!__WATCH__) {
 }
 
 // Optional server-only routes hook
-let handleServerRoutes = false
-const req = require.context('src/routes', false, /^\.\/serverRoutes$/)
-if (req.keys().length) handleServerRoutes = req(req.keys()[0]).default
+const handleServerRoutes = (() => {
+  const req = require.context('src/routes', false, /^\.\/serverRoutes$/)
+  if (req.keys().length) return req(req.keys()[0]).default
+})()
+
+// Optional error 500 page
+const customError500 = (() => {
+  const req = require.context('src/routes', false, /^\.\/index$/)
+  const keys = req(req.keys()[0])
+  if (keys.error500 && fs.existsSync(keys.error500)) {
+    return fs.readFileSync(keys.error500, 'utf-8')
+  }
+})()
 
 const handleServerError = (ctx, error) => {
   console.error(chalk.red('Error during render:\n') + error.stack)
   ctx.status = 500
-  if (__DEV__) {
+  if (customError500) {
+    // Use the user-provided error page
+    ctx.body = customError500
+  } else if (__DEV__) {
     // Provide some better feedback for errors during DEV
     ctx.body =
       '<h1>Internal Server Error</h1>\n' +

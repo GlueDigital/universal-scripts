@@ -71,6 +71,21 @@ export default (state = {}, action) => {
 }
 ```
 
+Error handling
+--------------
+
+If a `fetchData` method throws an error, we abort rendering and show a server error page. On DEV mode, this page will contain the error details, while in PROD mode it will show a generic error message.
+
+To customize this behaviour, you can:
+ - Catch the error in your `fetchData` method, if you want to render the route anyway
+ - Define a `error500` key on your router file, with the path to a static HTML error page, and it will be served instead of the generic error.
+    Example:
+    ```javascript
+    export const error500 = 'src/static/assets/error500.htm'
+    ```
+
+
+
 Cookies and redirects
 ---------------------
 
