@@ -46,8 +46,10 @@ if (!process.env.DISABLE_ROUTER) {
   // Configure history
   const publicPath = process.env.SUBDIRECTORY || '/'
   const basename = (new window.URL(publicPath, window.location)).pathname
-  const history = useBasename(() => browserHistory)({ basename })
-
+  let history = browserHistory
+  if (basename !== '/') {
+    history = useBasename(() => browserHistory)({ basename })
+  }
   // Configure router middlewares
   const middlewares = applyRouterMiddleware(fetchMiddleware(store))
 
