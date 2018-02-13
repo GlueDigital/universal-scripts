@@ -123,7 +123,7 @@ export default async (ctx, next) => {
       const matcher = {
         routes: createRoutes(),
         location: ctx.req.url,
-        basename
+        basename: basename !== '/' && basename
       }
       match(matcher, (error, redirectLocation, renderProps) => {
         error ? reject(error) : resolve(renderProps)
