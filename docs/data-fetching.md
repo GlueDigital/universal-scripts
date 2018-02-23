@@ -121,6 +121,12 @@ const myReducer = (store, action) => {
 ```
 
 
+Middlewares
+-----------
+
+If you need to add any extra Redux middlewares to the store, you can create `src/store/middlewares.js` and export an array of middlewares to configure them. The thunk middleware will be added automatically.
+
+
 Next steps
 ----------
 
