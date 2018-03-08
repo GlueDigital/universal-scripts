@@ -42,7 +42,8 @@ if (__WATCH__) {
 
     // Add hook to compiler to reload router middleware on rebuild
     const mfs = koaWebpackInstance.dev.fileSystem
-    compiler.plugin('done', stats => {
+    const plugin = { name: 'universal-scripts' }
+    compiler.hooks.done.tap(plugin, stats => {
       const fname = path.resolve(appDirectory, 'build', 'server', 'server.js')
       try {
         let newMiddleware = mfs.readFileSync(fname).toString()

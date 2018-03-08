@@ -68,6 +68,7 @@ module.exports = (opts = {}) => {
     name: isServerSide ? 'server' : 'client',
     devtool: isProd ? 'source-map' : 'cheap-module-source-map',
     target: isServerSide ? 'node' : 'web',
+    mode: isProd ? 'production' : 'development',
     output: {
       path: path.resolve(
         appDirectory, 'build', isServerSide ? 'server' : 'client'),
