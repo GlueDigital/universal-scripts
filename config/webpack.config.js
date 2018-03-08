@@ -6,6 +6,7 @@ const path = require('path')
 const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
 const appDirectory = fs.realpathSync(process.cwd())
 
@@ -69,6 +70,7 @@ module.exports = (opts = {}) => {
     devtool: isProd ? 'source-map' : 'cheap-module-source-map',
     target: isServerSide ? 'node' : 'web',
     mode: isProd ? 'production' : 'development',
+    performance: { hints: false },
     output: {
       path: path.resolve(
         appDirectory, 'build', isServerSide ? 'server' : 'client'),
@@ -152,15 +154,19 @@ module.exports = (opts = {}) => {
     }
     // Production builds get minified JS
     if (isProd) {
-      config.plugins.push(new webpack.optimize.UglifyJsPlugin({
-        compress: {
-          unused: true,
-          dead_code: true,
-          warnings: false
-        },
-        sourceMap: true,
-        comments: false
-      }))
+      config.optimization = {
+        minimizer: [new UglifyJSPlugin({
+          uglifyOptions: {
+            compress: {
+              unused: true,
+              dead_code: true,
+              warnings: false
+            },
+            sourceMap: true,
+            comments: false
+          }
+        })]
+      }
     }
     if (!isWatch) {
       // Non-watch builds get CSS on a separate file
