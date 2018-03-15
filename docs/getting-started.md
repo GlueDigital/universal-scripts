@@ -10,7 +10,7 @@ Alternatively, you can install [Create React App](https://github.com/facebookinc
 
 Either way, when it finishes you'll have a project ready to start developing.
 Enter the project folder and run:
-> npm start
+> yarn start
 
 It will start a development server on _localhost:3000_, watching for changes in any files on your project, and live-reloading them, similar to other Create React App projects.
 
