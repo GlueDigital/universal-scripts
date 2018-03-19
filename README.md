@@ -15,7 +15,7 @@ Quick start
 We recommend using [Yarn](https://yarnpkg.com/):
 
 ```bash
-yarn create react-app -- --scripts-version universal-scripts my-app
+yarn create react-app --scripts-version universal-scripts my-app
 cd my-app
 yarn start
 ```

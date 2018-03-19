@@ -3,10 +3,10 @@ Getting started
 
 Creating a Universal Scripts project is very easy.
 If you have [Yarn](https://yarnpkg.com) already installed, just do:
-> yarn create react-app -- --scripts-version universal-scripts &lt;_app-name_&gt;
+> yarn create react-app \-\-scripts-version universal-scripts &lt;_app-name_&gt;
 
 Alternatively, you can install [Create React App](https://github.com/facebookincubator/create-react-app) following the project instructions, then do:
-> create-react-app --scripts-version universal-scripts &lt;_app-name_&gt;
+> create-react-app \-\-scripts-version universal-scripts &lt;_app-name_&gt;
 
 Either way, when it finishes you'll have a project ready to start developing.
 Enter the project folder and run:
