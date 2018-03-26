@@ -12,7 +12,7 @@ rm -rf universal-scripts.tgz demo
 echo "Scaffolding demo project..."
 npm pack
 mv universal-scripts-*.tgz universal-scripts.tgz
-yarn create react-app -- --scripts-version `pwd`/universal-scripts.tgz demo
+npx create-react-app --scripts-version `pwd`/universal-scripts.tgz demo
 
 # Build the new project
 echo "Building demo project..."
