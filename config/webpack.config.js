@@ -4,9 +4,10 @@ require('dotenv').config()
 const fs = require('fs')
 const path = require('path')
 const webpack = require('webpack')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 
 const appDirectory = fs.realpathSync(process.cwd())
 
@@ -155,17 +156,19 @@ module.exports = (opts = {}) => {
     // Production builds get minified JS
     if (isProd) {
       config.optimization = {
-        minimizer: [new UglifyJSPlugin({
-          uglifyOptions: {
-            compress: {
-              unused: true,
-              dead_code: true,
-              warnings: false
-            },
-            sourceMap: true,
-            comments: false
-          }
-        })]
+        minimizer: [
+          new UglifyJSPlugin({
+            uglifyOptions: {
+              cache: true,
+              parallel: true,
+              sourceMap: true,
+              output: {
+                comments: false
+              }
+            }
+          }),
+          new OptimizeCSSAssetsPlugin({})
+        ]
       }
     }
     if (!isWatch) {
@@ -174,13 +177,11 @@ module.exports = (opts = {}) => {
         rule.use && rule.use.find((entry) =>
           entry.loader === require.resolve('css-loader'))
       ).forEach((rule) => {
-        const [first, ...rest] = rule.use
-        rule.use = ExtractTextPlugin.extract({ fallback: first, use: rest })
+        rule.use = [MiniCssExtractPlugin.loader, ...rule.use.slice(1)]
       })
       config.plugins.push(
-        new ExtractTextPlugin({
-          filename: '[name].[contenthash].css',
-          allChunks: true
+        new MiniCssExtractPlugin({
+          filename: '[name].[contenthash].css'
         })
       )
       // Also copy static assets to output dir
