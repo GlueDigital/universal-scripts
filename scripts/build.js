@@ -1,5 +1,8 @@
 'use strict'
 
+// Babel will complain if no NODE_ENV. Set it if needed.
+process.env.NODE_ENV = process.env.NODE_ENV || 'production'
+
 const chalk = require('chalk')
 
 const builder = require('../lib/builder')

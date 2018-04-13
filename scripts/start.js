@@ -1,5 +1,8 @@
 'use strict'
 
+// Babel will complain if no NODE_ENV. Set it if needed.
+process.env.NODE_ENV = process.env.NODE_ENV || 'development'
+
 const builder = require('../lib/builder')
 const compiler = builder({ isWatch: true })
 
