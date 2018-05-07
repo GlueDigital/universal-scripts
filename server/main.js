@@ -74,7 +74,11 @@ const serve = (compiler) => {
     // Add the server-side rendering middleware (no HMR)
     app.use(require('./lib/routerMiddleware').default)
     // Serve files from the build folder (includes copied assets)
-    app.use(koaStatic(path.resolve(appDirectory, 'build', 'client'), {}))
+    app.use(koaStatic(path.resolve(appDirectory, 'build', 'client'), {
+      setHeaders: (res) => {
+        res.setHeader('Cache-Control', 'public,max-age=31536000,immutable')
+      }
+    }))
   }
 
   // Wrap it up
