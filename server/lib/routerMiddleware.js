@@ -10,7 +10,7 @@ import { createStore } from '../../lib/store'
 import { waitForPromises } from '../../lib/fetchData'
 import defaultHeaders from '../../lib/header'
 
-import { CLEANUP } from 'universal-scripts'
+import { CLEANUP, REQUEST_INIT } from 'universal-scripts'
 
 import fs from 'fs'
 import path from 'path'
@@ -105,15 +105,20 @@ export default async (ctx, next) => {
     intl: {
       locale: lang,
       messages: langs[lang]
-    },
-    req: {
+    }
+  }
+  const store = createStore(initialState)
+
+  // Dispatch a init event with the request data
+  store.dispatch({
+    type: REQUEST_INIT,
+    payload: {
       headers: ctx.request.headers,
       origin: ctx.request.origin,
       path: ctx.request.path,
       ip: ctx.request.ip
     }
-  }
-  const store = createStore(initialState)
+  })
 
   // Are we using the router?
   let renderPage

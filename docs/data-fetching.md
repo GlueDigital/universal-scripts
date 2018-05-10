@@ -97,7 +97,9 @@ Sometimes you need to set a cookie or do a redirect depending on the result of a
 Accessing server request
 ------------------------
 
-On the server side, sometimes you need access to the request headers, or the source ip. To make them available to your code, we put them on the store during the initial server side render, under the `req` key. Before sending the store to the client, we remove this key to reduce page size, as this info isn't usually useful on the client.
+On the server side, sometimes you need access to the request headers, or the source ip. To make them available to your code, we dispatch a `REQUEST_INIT` action at the beginning of each request, and a reducer adds them on the store under the `req` key. Before sending the store to the client, we remove this key to reduce page size, as this info isn't usually useful on the client.
+
+If you need access to this info in the client, or want to set some other reducer values depending on the request info, you can use that action on your reducers too.
 
 
 Store cleanup
