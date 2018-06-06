@@ -50,8 +50,18 @@ if (!process.env.DISABLE_ROUTER) {
   if (basename !== '/') {
     history = useBasename(() => browserHistory)({ basename })
   }
+
+  // Optional router middlewares (client-only)
+  const userRouterMiddlewares = (() => {
+    const req = require.context('src/routes', false, /^\.\/index$/)
+    const keys = req(req.keys()[0])
+    return keys.routerMiddlewares || []
+  })()
+
+  const allMiddlewares = [ ...userRouterMiddlewares, fetchMiddleware(store) ]
+
   // Configure router middlewares
-  const middlewares = applyRouterMiddleware(fetchMiddleware(store))
+  const middlewares = applyRouterMiddleware.apply(null, allMiddlewares)
 
   // With-router render function
   render = (routerKey = null) => {
