@@ -113,7 +113,7 @@ module.exports = (opts = {}) => {
           test: /\.css$/,
           use: cssChain
         }, {
-          test: /\.(jpg|png|svg|ico|woff|woff2|otf|ttf|eot)$/,
+          test: /\.(jpg|png|gif|webp|mp4|webm|svg|ico|woff|woff2|otf|ttf|eot)$/,
           loader: require.resolve('file-loader'),
           options: {
             name: '[path][name].[ext]?[md5:hash:hex:8]',
