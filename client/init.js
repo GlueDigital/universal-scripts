@@ -12,6 +12,8 @@ import { createStore } from '../lib/store'
 import { fetchMiddleware } from '../lib/fetchData'
 import defaultHeaders from '../lib/header'
 
+import { CLIENT_INIT } from 'universal-scripts'
+
 // Used only if we're missing the initial state (e.g. no server-side rendering)
 const fakeInitialState = () => {
   const browserLang = document.documentElement.lang ||
@@ -38,6 +40,10 @@ window.store = store
 
 // Hook so user can add other locale data
 addLocaleData(localeData)
+
+// Dispatch a init event before rendering.
+// This gives middlewares a chance to change the store before the render.
+store.dispatch({ type: CLIENT_INIT })
 
 // Initialize react-helmet defaults
 // We do it off-DOM because Helmet doesn't mind it, and <Provider> can
