@@ -24,24 +24,24 @@ if (__WATCH__) {
     }
   }
 
-  configureHMR = (app, compiler) => {
+  configureHMR = async (app, compiler) => {
     // Enable DEV middleware
-    const koaWebpackInstance = koaWebpack({
+    const koaWebpackInstance = await koaWebpack({
       compiler: compiler,
-      dev: {
+      devMiddleware: {
         publicPath: '/',
         serverSideRender: true,
         logLevel: 'warn',
         stats: false
       },
-      hot: {
+      hotClient: {
         logLevel: 'warn'
       }
     })
     app.use(koaWebpackInstance)
 
     // Add hook to compiler to reload router middleware on rebuild
-    const mfs = koaWebpackInstance.dev.fileSystem
+    const mfs = koaWebpackInstance.devMiddleware.fileSystem
     const plugin = { name: 'universal-scripts' }
     compiler.hooks.done.tap(plugin, stats => {
       const fname = path.resolve(appDirectory, 'build', 'server', 'server.js')
@@ -61,13 +61,13 @@ if (__WATCH__) {
   }
 }
 
-const serve = (compiler) => {
+const serve = async (compiler) => {
   console.log(chalk.green('Starting server.'))
   const app = new Koa()
 
   if (__WATCH__) {
     // Add the HMR and Dev Server middleware
-    configureHMR(app, compiler)
+    await configureHMR(app, compiler)
     // Serve static files directly from src (no need to copy again and again)
     app.use(koaStatic(path.resolve(appDirectory, 'src', 'static'), {}))
   } else {
