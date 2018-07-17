@@ -89,10 +89,10 @@ const serve = async (compiler) => {
   )
 }
 
-module.exports = serve
-
 if (!__WATCH__) {
   // On static build, this is the entry point, so for it to actually run,
   // we must call the exported function
   serve()
+} else {
+  module.exports = serve
 }
