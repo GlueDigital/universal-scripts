@@ -56,7 +56,7 @@ module.exports = (opts = {}) => {
   const definitions = {
     __PROD__: isProd,
     __DEV__: !isProd,
-    __SERVER__: isServerSide,
+    __SERVER__: !!isServerSide,
     __CLIENT__: !isServerSide,
     __WATCH__: isWatch
   }
