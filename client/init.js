@@ -122,9 +122,9 @@ const loadScript = (src, done) => {
 }
 
 const needsPolyfill = () =>
-  !window.Map || !window.Set || !window.Promise || !window.Intl
-    || !window.Symbol || !window.Array.prototype.includes
-    || !window.Array.prototype.findIndex
+  !window.Map || !window.Set || !window.Promise || !window.Intl ||
+  !window.Symbol || !window.Array.prototype.includes ||
+  !window.Array.prototype.findIndex || !window.Array.from
 
 // Function to conditionally load polyfills before render
 const polyfilledRender = () => {
