@@ -87,7 +87,7 @@ export default async (ctx, next) => {
     assets = Object.keys(ctx.state.webpackStats.stats[0].compilation.assets)
   }
   for (const asset of assets) {
-    if (asset.endsWith('.js')) {
+    if (asset.endsWith('.js') && !asset.startsWith('polyfills.')) {
       scripts.push(<script key={asset} src={basename + asset} />)
     } else if (asset.endsWith('.css')) {
       styles.push(<link key={asset} rel="stylesheet" href={basename + asset} />)

@@ -76,7 +76,8 @@ module.exports = (opts = {}) => {
       path: path.resolve(
         appDirectory, 'build', isServerSide ? 'server' : 'client'),
       pathinfo: true,
-      filename: isServerSide ? 'server.js' : 'main.[hash].js',
+      filename: isServerSide ? 'server.js' : (bundle) =>
+        bundle.chunk.id === 'polyfills' ? 'polyfills.js' : '[name].[hash].js',
       publicPath: process.env.SUBDIRECTORY || '/'
     },
     resolve: {
@@ -153,6 +154,13 @@ module.exports = (opts = {}) => {
         path.resolve(__dirname, '..', 'client', 'init')
       ]
     }
+    // Add a polyfills bundle, with either the ones picked by the user,
+    // or some sane defaults
+    const userPolyfills = path.resolve(appDirectory, 'src', 'polyfills.js')
+    const polyfills = fs.existsSync(userPolyfills)
+      ? userPolyfills
+      : path.resolve(__dirname, '..', 'client', 'polyfills.js')
+    config.entry.polyfills = [polyfills]
     // Production builds get minified JS
     if (isProd) {
       config.optimization = {

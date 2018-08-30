@@ -113,15 +113,37 @@ if (module.hot) {
   })
 }
 
+const loadScript = (src, done) => {
+  const js = document.createElement('script')
+  js.src = src
+  js.onload = () => done()
+  js.onerror = () => done()
+  document.head.appendChild(js)
+}
+
+const needsPolyfill = () =>
+  !window.Map || !window.Set || !window.Promise || !window.Intl
+    || !window.Symbol || !window.Array.prototype.includes
+    || !window.Array.prototype.findIndex
+
+// Function to conditionally load polyfills before render
+const polyfilledRender = () => {
+  if (needsPolyfill()) {
+    loadScript('/polyfills.js', render)
+  } else {
+    render()
+  }
+}
+
 // Initial render
 if (!__WATCH__) {
-  render()
+  polyfilledRender()
 } else {
   // Style-loader takes some time, and a single setTimeout is not enough.
   // Chaining two seems to consistently set us up right after it.
   window.setTimeout(() => {
     window.setTimeout(() => {
-      render()
+      polyfilledRender()
     }, 0)
   }, 0)
 }

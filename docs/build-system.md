@@ -14,6 +14,8 @@ Using the _multi build_ mode reduces the number of filesystem watchers needed, a
 ### Client build
 The client build has an entrypoint to start the React rendering, which is provided as part of this package, and another entrypoint which points to your app's `src/index.js` file, so you can add your own initialization code. When on _watch_ mode, another entrypoint is added with the HMR code from webpack-hot-middleware.
 
+A polyfills entrypoint is also provided, and it gets conditionally loaded on browsers that need them. If you want to customize it to add or remove some polyfills, just create a `src/polyfills.js` file, and it will be used instead.
+
 ### Server build
 The server build is a bit harder. When on watch mode, the watch script runs `server/main.js` itself, and it is the one who starts the compiler, which has the `routerMiddleware` as the entrypoint, so the server can hot-reload it from memory through the compiler. On the other hand, for the _build_ mode, the server can't be the one running the compiler, as we want to compile first and run it later. For this reason, this build has the server as the entrypoint, and it gets bundled with the routerMiddleware, without the HMR code.
 
