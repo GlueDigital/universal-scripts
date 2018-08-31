@@ -149,7 +149,7 @@ export default async (ctx, next) => {
       const directives = fetchResult.__serverDirectives
       // Cookies
       if (directives.cookies && directives.cookies.forEach) {
-        directives.cookies.forEach(({name, value, ...options}) => {
+        directives.cookies.forEach(({ name, value, ...options }) => {
           ctx.cookies.set(name, value, options)
         })
       }
