@@ -77,7 +77,7 @@ module.exports = (opts = {}) => {
         appDirectory, 'build', isServerSide ? 'server' : 'client'),
       pathinfo: true,
       filename: isServerSide ? 'server.js' : (bundle) =>
-        bundle.chunk.id === 'polyfills' ? 'polyfills.js' : '[name].[hash].js',
+        bundle.chunk.name === 'polyfills' ? 'polyfills.js' : '[name].[hash].js',
       publicPath: process.env.SUBDIRECTORY || '/'
     },
     resolve: {
