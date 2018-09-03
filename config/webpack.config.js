@@ -8,6 +8,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const PostCssUrl = require('postcss-url')
+const autoprefixer = require('autoprefixer')
 
 const appDirectory = fs.realpathSync(process.cwd())
 
@@ -22,19 +24,18 @@ module.exports = (opts = {}) => {
 
   const cssLoader = {
     loader: require.resolve('css-loader'),
-    query: {
-      root: 'src/static',
-      sourceMap: true,
-      minimize: {
-        autoprefixer: {
-          add: true,
-          remove: true,
-          browsers: ['last 2 versions']
-        },
-        discardComments: {
-          removeAll: true
-        }
-      }
+    query: { sourceMap: true, importLoaders: 1 }
+  }
+
+  const postcssLoader = {
+    loader: require.resolve('postcss-loader'),
+    options: {
+      ident: 'postcss',
+      to: 'src/static',
+      plugins: () => [
+        PostCssUrl({ url: (asset) => '~src/static' + asset.url }),
+        autoprefixer({ browsers: 'last 1 version, not dead' })
+      ]
     }
   }
 
@@ -46,8 +47,8 @@ module.exports = (opts = {}) => {
     }
   }
 
-  const sassChain = [ cssLoader, sassLoader ]
-  const cssChain = [ cssLoader ]
+  const sassChain = [ cssLoader, postcssLoader, sassLoader ]
+  const cssChain = [ cssLoader, postcssLoader ]
   if (!isServerSide) {
     sassChain.unshift(styleLoader)
     cssChain.unshift(styleLoader)
@@ -161,6 +162,7 @@ module.exports = (opts = {}) => {
       ? userPolyfills
       : path.resolve(__dirname, '..', 'client', 'polyfills.js')
     config.entry.polyfills = [polyfills]
+
     // Production builds get minified JS
     if (isProd) {
       config.optimization = {
@@ -175,10 +177,15 @@ module.exports = (opts = {}) => {
               }
             }
           }),
-          new OptimizeCSSAssetsPlugin({})
+          new OptimizeCSSAssetsPlugin({
+            cssProcessorPluginOptions: {
+              preset: ['default', { discardComments: { removeAll: true } }]
+            }
+          })
         ]
       }
     }
+
     if (!isWatch) {
       // Non-watch builds get CSS on a separate file
       config.module.rules.filter((rule) =>
