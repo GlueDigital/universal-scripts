@@ -33,6 +33,8 @@ The files on `src/static` are served from that folder directly during _watch_ mo
 
 When referenced from CSS, images and fonts get a suffix with a part of the file contents hash, for cache-busting.
 
+### Custom configuration
+If you need to fine-tune the build configuration on your project, you can create a file at `src/config/webpack.config.patch.js`, exporting a function which receives the current config and build settings, and returns the final config which will be used for the build. Take extra caution when modifying the config, as new Universal Scripts version might change the default config, causing your changes to fail.
 
 Next steps
 ----------
