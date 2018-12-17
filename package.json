@@ -23,8 +23,8 @@
     "universal-scripts": "./bin/universal-scripts.js"
   },
   "dependencies": {
-    "autoprefixer": "^9.4.2",
-    "@babel/core": "^7.2.0",
+    "autoprefixer": "^9.4.3",
+    "@babel/core": "^7.2.2",
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.4",
     "@babel/plugin-transform-runtime": "^7.2.0",
@@ -34,7 +34,7 @@
     "chalk": "^2.4.1",
     "copy-webpack-plugin": "^4.6.0",
     "cross-spawn": "^6.0.5",
-    "css-loader": "^2.0.0",
+    "css-loader": "^2.0.1",
     "dotenv": "^6.2.0",
     "eslint": "^5.10.0",
     "eslint-config-standard": "^12.0.0",
@@ -58,7 +58,7 @@
     "postcss-loader": "^3.0.0",
     "postcss-url": "^8.0.0",
     "react-helmet": "^5.2.0",
-    "react-intl-redux": "2.0.2",
+    "react-intl-redux": "2.1.0",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "regenerator-runtime": "^0.13.1",
