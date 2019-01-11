@@ -6,7 +6,7 @@ const path = require('path')
 const webpack = require('webpack')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const PostCssUrl = require('postcss-url')
 const autoprefixer = require('autoprefixer')
@@ -169,11 +169,11 @@ module.exports = (opts = {}) => {
     if (isProd) {
       config.optimization = {
         minimizer: [
-          new UglifyJSPlugin({
-            uglifyOptions: {
-              cache: true,
-              parallel: true,
-              sourceMap: true,
+          new TerserPlugin({
+            cache: true,
+            parallel: true,
+            sourceMap: true,
+            terserOptions: {
               output: {
                 comments: false
               }
