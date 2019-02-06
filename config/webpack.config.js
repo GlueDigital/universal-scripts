@@ -27,13 +27,18 @@ module.exports = (opts = {}) => {
     query: { sourceMap: true, importLoaders: 1 }
   }
 
+  const transformAssetUrl = (asset) => {
+    if (asset.url.indexOf('//') !== -1) return asset.url
+    return '~src/static' + asset.url
+  }
+
   const postcssLoader = {
     loader: require.resolve('postcss-loader'),
     options: {
       ident: 'postcss',
       to: 'src/static',
       plugins: () => [
-        PostCssUrl({ url: (asset) => '~src/static' + asset.url }),
+        PostCssUrl({ url: transformAssetUrl }),
         autoprefixer({ browsers: 'last 1 version, not dead' })
       ]
     }
