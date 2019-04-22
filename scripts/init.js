@@ -51,7 +51,9 @@ module.exports = (
     cmd.push('--save')
   }
   for (const peerDependency of Object.keys(ownPackage.peerDependencies)) {
-    cmd.push(peerDependency + '@' + ownPackage.peerDependencies[peerDependency])
+    const ownVersion = ownPackage.peerDependencies[peerDependency]
+    const version = ownVersion.split(' || ').pop()
+    cmd.push(peerDependency + '@' + version)
   }
   execSync(cmd.join(' '), { stdio: 'inherit' })
 
