@@ -1,6 +1,6 @@
 {
   "name": "universal-scripts",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Build universal apps without configuration.",
   "main": "index.js",
   "repository": "GlueDigital/universal-scripts",
@@ -35,6 +35,7 @@
     "copy-webpack-plugin": "^5.0.2",
     "cross-spawn": "^6.0.5",
     "css-loader": "^2.1.1",
+    "directory-named-webpack-plugin": "^4.0.1",
     "dotenv": "^7.0.0",
     "eslint": "^5.16.0",
     "eslint-config-standard": "^12.0.0",

@@ -8,6 +8,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin')
 const PostCssUrl = require('postcss-url')
 const autoprefixer = require('autoprefixer')
 
@@ -95,6 +96,9 @@ module.exports = (opts = {}) => {
         path.resolve(__dirname, '..', 'node_modules'),
         path.resolve(appDirectory, 'node_modules'),
         appDirectory
+      ],
+      plugins: [
+        new DirectoryNamedWebpackPlugin(true)
       ]
     },
     plugins: [
