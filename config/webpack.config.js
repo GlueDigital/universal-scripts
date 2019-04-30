@@ -98,7 +98,10 @@ module.exports = (opts = {}) => {
         appDirectory
       ],
       plugins: [
-        new DirectoryNamedWebpackPlugin(true)
+        new DirectoryNamedWebpackPlugin({
+          honorIndex: true,
+          exclude: /node_modules/
+        })
       ]
     },
     plugins: [
