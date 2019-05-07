@@ -83,7 +83,7 @@ export default async (ctx, next) => {
     assets = chunks
   } else if (ctx.state.webpackStats) {
     ctx.state.webpackStats.stats[0].compilation.entrypoints.forEach(e => {
-      e.chunks.forEach(c => assets = assets.concat(c.files))
+      e.chunks.forEach(c => { assets = assets.concat(c.files) })
     })
   }
   for (const asset of assets) {
