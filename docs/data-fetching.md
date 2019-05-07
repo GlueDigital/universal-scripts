@@ -92,6 +92,7 @@ Cookies and redirects
 Sometimes you need to set a cookie or do a redirect depending on the result of a `fetchData` call on the server, for example when performing authentication. To implement this, the server will analyse the value the promise resolves to, and if it is an object, will look for a `__serverDirectives` key, which is another object that can contain:
  - A `cookies` array, containing objects for each cookie to create, with fields: name, value, and any other options that [ctx.cookies](https://github.com/koajs/koa/blob/master/docs/api/context.md#ctxcookiessetname-value-options) can handle.
  - A `redirect` string, with the destination of a redirection.
+ - A `status` number, with the desired HTTP status for this request.
 
 
 Accessing server request

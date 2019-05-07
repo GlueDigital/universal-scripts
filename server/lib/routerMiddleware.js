@@ -72,6 +72,7 @@ export default async (ctx, next) => {
 
   // If any middleware answered successfully before, do nothing.
   if ((ctx.body || ctx.status !== 404) && ctx.req.url !== '/') return
+  ctx.status = 200
 
   // These will hold the scripts and styles that will be included on the page.
   const scripts = []
@@ -159,6 +160,10 @@ export default async (ctx, next) => {
         ctx.body = ''
         return
       }
+      // Status
+      if (directives.status >= 100 && directives.status < 600) {
+        ctx.status = directives.status
+      }
     }
     renderPage = <RouterContext {...renderProps} />
   } else {
@@ -197,6 +202,5 @@ export default async (ctx, next) => {
   const head = Helmet.renderStatic()
 
   // Set the response
-  ctx.status = 200
   ctx.body = renderHtmlLayout(head, renderOutput, scripts, styles)
 }
