@@ -21,7 +21,7 @@ import createRoutes from 'src/routes'
 let chunks = []
 if (!__WATCH__) {
   const fname = path.resolve('build', 'client', 'webpack-chunks.json')
-  chunks = JSON.parse(fs.readFileSync(fname)).assets
+  chunks = JSON.parse(fs.readFileSync(fname)).entrypoints
 }
 
 // Optional server-only routes hook
@@ -82,10 +82,12 @@ export default async (ctx, next) => {
   if (!__WATCH__) {
     assets = chunks
   } else if (ctx.state.webpackStats) {
-    assets = Object.keys(ctx.state.webpackStats.stats[0].compilation.assets)
+    ctx.state.webpackStats.stats[0].compilation.entrypoints.forEach(e => {
+      e.chunks.forEach(c => assets = assets.concat(c.files))
+    })
   }
   for (const asset of assets) {
-    if (asset.endsWith('.js') && !asset.startsWith('polyfills.')) {
+    if (asset.endsWith('.js') && asset !== 'polyfills.js') {
       scripts.push(<script key={asset} src={basename + asset} />)
     } else if (asset.endsWith('.css')) {
       styles.push(<link key={asset} rel="stylesheet" href={basename + asset} />)
