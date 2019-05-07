@@ -85,6 +85,7 @@ module.exports = (opts = {}) => {
       pathinfo: true,
       filename: isServerSide ? 'server.js' : (bundle) =>
         bundle.chunk.name === 'polyfills' ? 'polyfills.js' : '[name].[hash].js',
+      chunkFilename: '[name].[hash].js',
       publicPath: process.env.SUBDIRECTORY || '/'
     },
     resolve: {
@@ -177,27 +178,35 @@ module.exports = (opts = {}) => {
       : path.resolve(__dirname, '..', 'client', 'polyfills.js')
     config.entry.polyfills = [polyfills]
 
+    // No async vendor bundles
+    config.optimization = config.optimization || {}
+    config.optimization.splitChunks = {
+      cacheGroups: {
+        vendors: {
+          reuseExistingChunk: true
+        }
+      }
+    }
+
     // Production builds get minified JS
     if (isProd) {
-      config.optimization = {
-        minimizer: [
-          new TerserPlugin({
-            cache: true,
-            parallel: true,
-            sourceMap: true,
-            terserOptions: {
-              output: {
-                comments: false
-              }
+      config.optimization.minimizer = [
+        new TerserPlugin({
+          cache: true,
+          parallel: true,
+          sourceMap: true,
+          terserOptions: {
+            output: {
+              comments: false
             }
-          }),
-          new OptimizeCSSAssetsPlugin({
-            cssProcessorPluginOptions: {
-              preset: ['default', { discardComments: { removeAll: true } }]
-            }
-          })
-        ]
-      }
+          }
+        }),
+        new OptimizeCSSAssetsPlugin({
+          cssProcessorPluginOptions: {
+            preset: ['default', { discardComments: { removeAll: true } }]
+          }
+        })
+      ]
     }
 
     if (!isWatch) {
