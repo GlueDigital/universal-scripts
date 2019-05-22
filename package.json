@@ -1,6 +1,6 @@
 {
   "name": "universal-scripts",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Build universal apps without configuration.",
   "main": "index.js",
   "repository": "GlueDigital/universal-scripts",
@@ -33,6 +33,7 @@
     "babel-preset-react-app": "^9.0.0",
     "chalk": "^2.4.2",
     "copy-webpack-plugin": "^5.0.3",
+    "core-js": "^3.1.2",
     "cross-spawn": "^6.0.5",
     "css-loader": "^2.1.1",
     "directory-named-webpack-plugin": "^4.0.1",
