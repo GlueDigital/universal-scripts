@@ -40,7 +40,7 @@ module.exports = (opts = {}) => {
       to: 'src/static',
       plugins: () => [
         PostCssUrl({ url: transformAssetUrl }),
-        autoprefixer({ browsers: 'last 1 version, not dead' })
+        autoprefixer()
       ]
     }
   }
