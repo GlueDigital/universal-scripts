@@ -4,6 +4,7 @@ import chalk from 'chalk'
 import { renderToString } from 'react-dom/server'
 import { match, RouterContext } from 'react-router'
 import { Provider } from 'react-intl-redux'
+import jsesc from 'jsesc'
 
 import renderHtmlLayout from './render-html-layout'
 import { createStore } from '../../lib/store'
@@ -192,7 +193,7 @@ export default async (ctx, next) => {
   delete state.req // This reducer doesn't exist client-side
 
   // Send store contents along the page
-  const storeOutput = JSON.stringify(state)
+  const storeOutput = jsesc(state, { isScriptContext: true })
   const storeCode = { __html: '___INITIAL_STATE__=' + storeOutput }
   scripts.unshift(
     <script key="store" dangerouslySetInnerHTML={storeCode} />

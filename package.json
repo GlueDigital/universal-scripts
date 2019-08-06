@@ -1,6 +1,6 @@
 {
   "name": "universal-scripts",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Build universal apps without configuration.",
   "main": "index.js",
   "repository": "GlueDigital/universal-scripts",
@@ -52,6 +52,7 @@
     "fs-extra": "^8.0.1",
     "i": "^0.3.6",
     "intl": "^1.2.5",
+    "jsesc": "^2.5.2",
     "koa": "^2.7.0",
     "koa-static": "^5.0.0",
     "koa-webpack": "^5.2.3",
