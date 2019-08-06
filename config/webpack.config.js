@@ -53,8 +53,8 @@ module.exports = (opts = {}) => {
     }
   }
 
-  const sassChain = [ cssLoader, postcssLoader, sassLoader ]
-  const cssChain = [ cssLoader, postcssLoader ]
+  const sassChain = [cssLoader, postcssLoader, sassLoader]
+  const cssChain = [cssLoader, postcssLoader]
   if (!isServerSide) {
     sassChain.unshift(styleLoader)
     cssChain.unshift(styleLoader)
@@ -73,7 +73,7 @@ module.exports = (opts = {}) => {
     }
   }
 
-  let config = {
+  const config = {
     name: isServerSide ? 'server' : 'client',
     devtool: isProd ? 'source-map' : 'cheap-module-source-map',
     target: isServerSide ? 'node' : 'web',
@@ -148,12 +148,12 @@ module.exports = (opts = {}) => {
     const serverPath = path.resolve(__dirname, '..', 'server')
     if (isWatch) {
       config.entry = {
-        server: [ path.resolve(serverPath, 'lib', 'routerMiddleware') ]
+        server: [path.resolve(serverPath, 'lib', 'routerMiddleware')]
       }
       config.output.libraryTarget = 'commonjs2'
     } else {
       config.entry = {
-        server: [ path.resolve(serverPath, 'main') ]
+        server: [path.resolve(serverPath, 'main')]
       }
     }
     // Don't bundle node_modules for the server: node can access it directly

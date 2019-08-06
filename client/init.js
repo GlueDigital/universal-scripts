@@ -76,7 +76,7 @@ const initialize = () => {
       return keys.routerMiddlewares || []
     })()
 
-    const allMiddlewares = [ ...userRouterMiddlewares, fetchMiddleware(store) ]
+    const allMiddlewares = [...userRouterMiddlewares, fetchMiddleware(store)]
 
     // Configure router middlewares
     const middlewares = applyRouterMiddleware.apply(null, allMiddlewares)

@@ -46,7 +46,7 @@ if (__WATCH__) {
     compiler.hooks.done.tap(plugin, stats => {
       const fname = path.resolve(appDirectory, 'build', 'server', 'server.js')
       try {
-        let newMiddleware = mfs.readFileSync(fname).toString()
+        const newMiddleware = mfs.readFileSync(fname).toString()
         routerMiddleware = requireFromString(newMiddleware).default
       } catch (e) {
         console.warn(chalk.red.bold('Couldn\'t load middleware.'))
