@@ -14,7 +14,7 @@ const autoprefixer = require('autoprefixer')
 
 const appDirectory = fs.realpathSync(process.cwd())
 
-module.exports = (opts = {}) => {
+const enhancer = (opts = {}) => {
   const isServerSide = opts.isServerSide
   const isWatch = opts.isWatch
   const isProd = process.env.NODE_ENV === 'production'
@@ -233,4 +233,8 @@ module.exports = (opts = {}) => {
   }
 
   return config
+}
+
+module.exports = {
+  webpack: enhancer
 }
