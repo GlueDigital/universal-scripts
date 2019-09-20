@@ -2,12 +2,13 @@ require('dotenv').config()
 const chalk = require('chalk')
 const fs = require('fs')
 const Koa = require('koa')
-const koaStatic = require('koa-static')
 const path = require('path')
 const requireFromString = require('require-from-string')
+const config = require('../config')
 
 const appDirectory = fs.realpathSync(process.cwd())
 const port = process.env.PORT || 3000
+
 
 // Do we need HMR?
 let configureHMR
@@ -68,18 +69,13 @@ const serve = async (compiler) => {
   if (__WATCH__) {
     // Add the HMR and Dev Server middleware
     await configureHMR(app, compiler)
-    // Serve static files directly from src (no need to copy again and again)
-    app.use(koaStatic(path.resolve(appDirectory, 'src', 'static'), {}))
   } else {
     // Add the server-side rendering middleware (no HMR)
     app.use(require('./lib/routerMiddleware').default)
-    // Serve files from the build folder (includes copied assets)
-    app.use(koaStatic(path.resolve(appDirectory, 'build', 'client'), {
-      setHeaders: (res) => {
-        res.setHeader('Cache-Control', 'public,max-age=31536000,immutable')
-      }
-    }))
   }
+
+  // Run anything on the `app` hook
+  config.app.forEach(f => f(app))
 
   // Wrap it up
   app.listen(port)
