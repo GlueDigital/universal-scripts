@@ -12,8 +12,8 @@ const arrayMerger = (current, add) => {
 
 // Load the config directories, using array merger
 const appDirectory = fs.realpathSync(process.cwd())
-const userConfig = path.resolve(appDirectory, 'conf.d')
-const libConfig = path.resolve(__dirname, 'conf.d')
+const libConfig = path.resolve(__dirname, 'build.conf.d')
+const userConfig = path.resolve(appDirectory, 'build.conf.d')
 const config = jsconfd([libConfig, userConfig], { merge: arrayMerger })
 
 module.exports = config

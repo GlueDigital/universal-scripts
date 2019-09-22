@@ -5,6 +5,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const JsconfdPlugin = require('js.conf.d-webpack')
 const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin')
 const PostCssUrl = require('postcss-url')
 const autoprefixer = require('autoprefixer')
@@ -105,7 +106,20 @@ const enhancer = (opts = {}) => {
     plugins: [
       new webpack.NamedModulesPlugin(),
       new webpack.DefinePlugin(definitions),
-      new webpack.NoEmitOnErrorsPlugin()
+      new webpack.NoEmitOnErrorsPlugin(),
+      new JsconfdPlugin({
+        folders: [
+          path.resolve(__dirname, '..', 'runtime.conf.d'),
+          path.resolve(appDirectory, 'runtime.conf.d')
+        ],
+        merge: (current, add) => {
+          for (const key of Object.keys(add)) {
+            current[key] = current[key] || []
+            current[key].push(add[key])
+          }
+          return current
+        }
+      })
     ],
     module: {
       rules: [

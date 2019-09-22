@@ -52,7 +52,8 @@
     "fs-extra": "^8.1.0",
     "i": "^0.3.6",
     "intl": "^1.2.5",
-    "js.conf.d": "^1.1.1",
+    "js.conf.d": "^1.2.0",
+    "js.conf.d-webpack": "^1.1.0",
     "jsesc": "^2.5.2",
     "koa": "^2.7.0",
     "koa-static": "^5.0.0",
@@ -72,7 +73,7 @@
     "style-loader": "^1.0.0",
     "terser-webpack-plugin": "^1.4.1",
     "url-polyfill": "^1.1.7",
-    "webpack": "^4.39.1",
+    "webpack": "^4.40.2",
     "webpack-node-externals": "^1.7.2"
   },
   "peerDependencies": {

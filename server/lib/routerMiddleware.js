@@ -1,6 +1,6 @@
+import compose from 'koa-compose'
 import Helmet from 'react-helmet'
 import React from 'react'
-import chalk from 'chalk'
 import { renderToString } from 'react-dom/server'
 import { match, RouterContext } from 'react-router'
 import { Provider } from 'react-intl-redux'
@@ -19,6 +19,8 @@ import path from 'path'
 import langs from 'src/locales'
 import createRoutes from 'src/routes'
 
+import config from '#js.conf.d'
+
 let chunks = []
 if (!__WATCH__) {
   const fname = path.resolve('build', 'client', 'webpack-chunks.json')
@@ -31,31 +33,7 @@ const handleServerRoutes = (() => {
   if (req.keys().length) return req(req.keys()[0]).default
 })()
 
-// Optional error 500 page
-const customError500 = (() => {
-  const req = require.context('src/routes', false, /^\.\/index$/)
-  const keys = req(req.keys()[0])
-  if (keys.error500 && fs.existsSync(keys.error500)) {
-    return fs.readFileSync(keys.error500, 'utf-8')
-  }
-})()
-
-const handleServerError = (ctx, error) => {
-  console.error(chalk.red('Error during render:\n') + error.stack)
-  ctx.status = 500
-  if (customError500) {
-    // Use the user-provided error page
-    ctx.body = customError500
-  } else if (__DEV__) {
-    // Provide some better feedback for errors during DEV
-    ctx.body =
-      '<h1>Internal Server Error</h1>\n' +
-      '<p>An exception was caught during page rendering:</p>\n' +
-      '<pre>' + error.stack + '</pre>'
-  }
-}
-
-export default async (ctx, next) => {
+const renderMiddleware = async (ctx, next) => {
   // We are the ones in charge of changing the location according to basename
   // because neither koa-static nor react-router handle it. Note that the dev
   // middleware does handle it, but it will run before us anyway.
@@ -139,12 +117,7 @@ export default async (ctx, next) => {
     if (!renderProps) return // TODO: What happened?
 
     // Call fetchData methods and wait for them to finish
-    let fetchResult
-    try {
-      fetchResult = await waitForPromises(renderProps, store)
-    } catch (e) {
-      return handleServerError(ctx, e)
-    }
+    const fetchResult = await waitForPromises(renderProps, store)
 
     // Trigger any secondary effects from fetchData functions
     if (fetchResult.__serverDirectives) {
@@ -176,16 +149,11 @@ export default async (ctx, next) => {
   renderToString(defaultHeaders(store))
 
   // Actual rendering
-  let renderOutput
-  try {
-    renderOutput = renderToString(
-      <Provider store={store}>
-        {renderPage}
-      </Provider>
-    )
-  } catch (e) {
-    return handleServerError(ctx, e)
-  }
+  const renderOutput = renderToString(
+    <Provider store={store}>
+      {renderPage}
+    </Provider>
+  )
 
   // Clean up the resulting state
   store.dispatch({ type: CLEANUP })
@@ -205,3 +173,5 @@ export default async (ctx, next) => {
   // Set the response
   ctx.body = renderHtmlLayout(head, renderOutput, scripts, styles)
 }
+
+export default compose([...config.serverMiddleware, renderMiddleware])

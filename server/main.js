@@ -9,7 +9,6 @@ const config = require('../config')
 const appDirectory = fs.realpathSync(process.cwd())
 const port = process.env.PORT || 3000
 
-
 // Do we need HMR?
 let configureHMR
 if (__WATCH__) {
