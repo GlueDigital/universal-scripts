@@ -3,8 +3,10 @@ const path = require('path')
 const koaStatic = require('koa-static')
 
 const appDirectory = fs.realpathSync(process.cwd())
+// const basename = process.env.SUBDIRECTORY || '/'
 
 const appEnhancer = (app) => {
+  // TODO: pay attention to basename
   if (__WATCH__) {
     // Serve static files directly from src (no need to copy again and again)
     app.use(koaStatic(path.resolve(appDirectory, 'src', 'static'), {}))

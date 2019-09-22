@@ -159,7 +159,7 @@ const enhancer = (opts = {}) => {
     const serverPath = path.resolve(__dirname, '..', 'server')
     if (isWatch) {
       config.entry = {
-        server: [path.resolve(serverPath, 'lib', 'routerMiddleware')]
+        server: [path.resolve(serverPath, 'serverMiddleware')]
       }
       config.output.libraryTarget = 'commonjs2'
     } else {
