@@ -66,7 +66,7 @@ const serve = async (compiler) => {
   const app = new Koa()
 
   // Run anything on the `app` hook
-  config.app.forEach(f => f(app))
+  config.app && config.app.forEach(f => f(app))
 
   if (__WATCH__) {
     // Add the HMR and Dev Server middleware

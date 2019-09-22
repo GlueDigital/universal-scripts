@@ -4120,10 +4120,10 @@ js-yaml@~3.10.0:
     argparse "^1.0.7"
     esprima "^4.0.0"
 
-js.conf.d-webpack@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/js.conf.d-webpack/-/js.conf.d-webpack-1.1.1.tgz#393534a5657e67e6c70ca305bf4c897090a6b19f"
-  integrity sha512-KZj5iLLiGKCOCP5BA3FGnrjTfo5wlGQWh3tt++9tixRcMp1hdGif0wURWZeejfutWrvBFra1QDBuyldIM6UkQg==
+js.conf.d-webpack@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/js.conf.d-webpack/-/js.conf.d-webpack-1.1.2.tgz#bea4c8a98e17a32583a187e885baf3f73c50cbc5"
+  integrity sha512-OMB3pYg85MEfAZrU0urfzcF1J4RQeYebb62EZ5Ikzz5+l41F+ioVT1qbGbmL6jkaeaehsfIZGMhP3lhFn861ZQ==
   dependencies:
     js.conf.d "^1.2.0"
 

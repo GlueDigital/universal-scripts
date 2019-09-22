@@ -170,7 +170,7 @@ const enhancer = (opts = {}) => {
     // Don't bundle node_modules for the server: node can access it directly
     config.externals = [
       require('webpack-node-externals')({
-        whitelist: ['universal-scripts']
+        whitelist: ['universal-scripts', 'js.conf.d-webpack/src/__virtual-conf.js']
       })
     ]
   } else {
