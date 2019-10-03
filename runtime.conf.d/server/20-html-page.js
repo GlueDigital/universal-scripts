@@ -1,8 +1,7 @@
 import React from 'react'
-import Helmet from 'react-helmet'
+import { HelmetProvider } from 'react-helmet-async'
 import path from 'path'
 import fs from 'fs'
-import { renderToString } from 'react-dom/server'
 import defaultHeaders from '../../lib/header'
 import renderHtmlLayout from '../../lib/render-html-layout'
 
@@ -40,11 +39,13 @@ const generateHtml = async (ctx, next) => {
   ctx.assets = { scripts, styles }
   ctx.status = 200
 
+  ctx.helmetContext = {}
+
   // Run any other middlewares
   await next()
 
   // Get the headers from react-helmet
-  const head = Helmet.renderStatic()
+  const head = ctx.helmetContext.helmet
 
   // Set the response
   const renderOutput = ctx.body // Set from inside
@@ -53,9 +54,10 @@ const generateHtml = async (ctx, next) => {
 
 export const serverMiddleware = generateHtml
 
-const addDefaultHeaders = (ctx, next) => {
-  renderToString(defaultHeaders(ctx.store))
-  return next()
-}
+const addDefaultHeaders = async (ctx, next) =>
+  <HelmetProvider context={ctx.helmetContext}>
+    {defaultHeaders(ctx.store)}
+    {await next()}
+  </HelmetProvider>
 
 export const reactRoot = addDefaultHeaders
