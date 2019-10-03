@@ -3,8 +3,8 @@ import Helmet from 'react-helmet'
 import path from 'path'
 import fs from 'fs'
 import { renderToString } from 'react-dom/server'
-import defaultHeaders from '../lib/header'
-import renderHtmlLayout from '../lib/render-html-layout'
+import defaultHeaders from '../../lib/header'
+import renderHtmlLayout from '../../lib/render-html-layout'
 
 const basename = process.env.SUBDIRECTORY || '/'
 

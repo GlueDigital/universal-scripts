@@ -71,6 +71,8 @@ const enhancer = (opts = {}) => {
     }
   }
 
+  const side = isServerSide ? 'server' : 'client'
+
   const config = {
     name: isServerSide ? 'server' : 'client',
     devtool: isProd ? 'source-map' : 'cheap-module-source-map',
@@ -110,7 +112,9 @@ const enhancer = (opts = {}) => {
       new JsconfdPlugin({
         folders: [
           path.resolve(__dirname, '..', 'runtime.conf.d'),
-          path.resolve(appDirectory, 'runtime.conf.d')
+          path.resolve(__dirname, '..', 'runtime.conf.d', side),
+          path.resolve(appDirectory, 'runtime.conf.d'),
+          path.resolve(appDirectory, 'runtime.conf.d', side)
         ],
         merge: (current, add) => {
           for (const key of Object.keys(add)) {

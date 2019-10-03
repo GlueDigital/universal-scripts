@@ -1,4 +1,4 @@
-import React from 'react'
+import ReactDOM from 'react-dom'
 import { renderToString } from 'react-dom/server'
 
 const renderMiddleware = async (ctx, next) => {
@@ -13,3 +13,11 @@ const renderMiddleware = async (ctx, next) => {
 }
 
 export const serverMiddleware = renderMiddleware
+
+const clientRender = async (ctx) => {
+  const rootNode = document.getElementById('root')
+  const children = await ctx.triggerHook('reactRoot')(ctx, false)
+  ReactDOM.hydrate(children, rootNode)
+}
+
+export const clientInit = clientRender
