@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { BrowserRouter } from 'react-router-dom'
 import { Provider, updateIntl } from 'react-intl-redux'
 import { addLocaleData } from 'react-intl'
 
@@ -30,7 +31,7 @@ const initialize = () => {
     return { intl: { locale: lang } }
   }
 
-  const MOUNT_NODE = document.getElementById('root')
+  const rootNode = document.getElementById('root')
 
   // Initialize store
   const initialState = window.___INITIAL_STATE__ || fakeInitialState()
@@ -56,52 +57,15 @@ const initialize = () => {
   // only take one child, so it can't be done there.
   ReactDOM.render(defaultHeaders(store), document.createElement('div'))
 
-  // Should we use the router?
-  if (!process.env.DISABLE_ROUTER) {
-    const { Router, browserHistory, applyRouterMiddleware } = require('react-router')
-    const { useBasename } = require('history')
-
-    // Configure history
-    const publicPath = process.env.SUBDIRECTORY || '/'
-    const basename = (new window.URL(publicPath, window.location)).pathname
-    let history = browserHistory
-    if (basename !== '/') {
-      history = useBasename(() => browserHistory)({ basename })
-    }
-
-    // Optional router middlewares (client-only)
-    const userRouterMiddlewares = (() => {
-      const req = require.context('src/routes', false, /^\.\/index$/)
-      const keys = req(req.keys()[0])
-      return keys.routerMiddlewares || []
-    })()
-
-    const allMiddlewares = [...userRouterMiddlewares, fetchMiddleware(store)]
-
-    // Configure router middlewares
-    const middlewares = applyRouterMiddleware.apply(null, allMiddlewares)
-
-    // With-router render function
-    render = (routerKey = null) => {
-      ReactDOM.hydrate(
-        <Provider store={store}>
-          <Router history={history} key={routerKey} render={middlewares}>
-            {routes()}
-          </Router>
-        </Provider>,
-        MOUNT_NODE
-      )
-    }
-  } else {
-    // Without-router render function
-    render = () => {
-      ReactDOM.hydrate(
-        <Provider store={store}>
+  const render = () => {
+    ReactDOM.hydrate(
+      <Provider store={store}>
+        <BrowserRouter>
           {routes()}
-        </Provider>,
-        MOUNT_NODE
-      )
-    }
+        </BrowserRouter>
+      </Provider>,
+      rootNode
+    )
   }
 
   // Enable HMR
