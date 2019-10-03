@@ -1,14 +1,9 @@
 const fs = require('fs')
 const path = require('path')
 const webpack = require('webpack')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const TerserPlugin = require('terser-webpack-plugin')
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const JsconfdPlugin = require('js.conf.d-webpack')
 const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin')
-const PostCssUrl = require('postcss-url')
-const autoprefixer = require('autoprefixer')
 
 const appDirectory = fs.realpathSync(process.cwd())
 
@@ -16,60 +11,6 @@ const enhancer = (opts = {}) => {
   const isServerSide = opts.isServerSide
   const isWatch = opts.isWatch
   const isProd = process.env.NODE_ENV === 'production'
-
-  const styleLoader = {
-    loader: require.resolve('style-loader')
-  }
-
-  const cssLoader = {
-    loader: require.resolve('css-loader'),
-    query: { sourceMap: true, importLoaders: 1 }
-  }
-
-  const transformAssetUrl = (asset) => {
-    if (asset.url.indexOf('//') !== -1) return asset.url
-    return '~src/static' + asset.url
-  }
-
-  const postcssLoader = {
-    loader: require.resolve('postcss-loader'),
-    options: {
-      ident: 'postcss',
-      to: 'src/static',
-      plugins: () => [
-        PostCssUrl({ url: transformAssetUrl }),
-        autoprefixer()
-      ]
-    }
-  }
-
-  const sassLoader = {
-    loader: require.resolve('sass-loader'),
-    options: {
-      sourceMap: true,
-      includePaths: [path.resolve('appDirectory', 'src', 'styles')]
-    }
-  }
-
-  const sassChain = [cssLoader, postcssLoader, sassLoader]
-  const cssChain = [cssLoader, postcssLoader]
-  if (!isServerSide) {
-    sassChain.unshift(styleLoader)
-    cssChain.unshift(styleLoader)
-  }
-
-  const definitions = {
-    __PROD__: isProd,
-    __DEV__: !isProd,
-    __SERVER__: !!isServerSide,
-    __CLIENT__: !isServerSide,
-    __WATCH__: isWatch
-  }
-  if (!isServerSide) {
-    for (const key in process.env) {
-      definitions['process.env.' + key] = JSON.stringify(process.env[key])
-    }
-  }
 
   const side = isServerSide ? 'server' : 'client'
 
@@ -107,7 +48,6 @@ const enhancer = (opts = {}) => {
     },
     plugins: [
       new webpack.NamedModulesPlugin(),
-      new webpack.DefinePlugin(definitions),
       new webpack.NoEmitOnErrorsPlugin(),
       new JsconfdPlugin({
         folders: [
@@ -137,12 +77,6 @@ const enhancer = (opts = {}) => {
             cacheDirectory: true
           }
         }, {
-          test: /\.(scss|sass)$/,
-          use: sassChain
-        }, {
-          test: /\.css$/,
-          use: cssChain
-        }, {
           test: /\.(jpg|png|gif|webp|mp4|webm|svg|ico|woff|woff2|otf|ttf|eot)$/,
           loader: require.resolve('file-loader'),
           options: {
@@ -152,7 +86,8 @@ const enhancer = (opts = {}) => {
           }
         }
       ]
-    }
+    },
+    optimization: { minimizer: [] }
   }
 
   if (isServerSide) {
@@ -185,13 +120,6 @@ const enhancer = (opts = {}) => {
         path.resolve(__dirname, '..', 'client', 'init')
       ]
     }
-    // Add a polyfills bundle, with either the ones picked by the user,
-    // or some sane defaults
-    const userPolyfills = path.resolve(appDirectory, 'src', 'polyfills.js')
-    const polyfills = fs.existsSync(userPolyfills)
-      ? userPolyfills
-      : path.resolve(__dirname, '..', 'client', 'polyfills.js')
-    config.entry.polyfills = [polyfills]
 
     // No async vendor bundles
     config.optimization = config.optimization || {}
@@ -203,41 +131,8 @@ const enhancer = (opts = {}) => {
       }
     }
 
-    // Production builds get minified JS
-    if (isProd) {
-      config.optimization.minimizer = [
-        new TerserPlugin({
-          cache: true,
-          parallel: true,
-          sourceMap: true,
-          terserOptions: {
-            output: {
-              comments: false
-            }
-          }
-        }),
-        new OptimizeCSSAssetsPlugin({
-          cssProcessorPluginOptions: {
-            preset: ['default', { discardComments: { removeAll: true } }]
-          }
-        })
-      ]
-    }
-
     if (!isWatch) {
-      // Non-watch builds get CSS on a separate file
-      config.module.rules.filter((rule) =>
-        rule.use && rule.use.find((entry) =>
-          entry.loader === require.resolve('css-loader'))
-      ).forEach((rule) => {
-        rule.use = [MiniCssExtractPlugin.loader, ...rule.use.slice(1)]
-      })
-      config.plugins.push(
-        new MiniCssExtractPlugin({
-          filename: '[name].[contenthash].css'
-        })
-      )
-      // Also copy static assets to output dir
+      // Copy static assets to output dir
       config.plugins.push(
         new CopyWebpackPlugin([{
           from: path.resolve(appDirectory, 'src', 'static'),
