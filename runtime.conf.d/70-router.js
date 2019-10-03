@@ -57,3 +57,10 @@ const useRouter = async (ctx, next) => {
 }
 
 export const serverMiddleware = useRouter
+
+const routerRoot = (ctx) => {
+  // We don't really need next: we can't have children
+  return ctx.renderChildren
+}
+
+export const reactRoot = routerRoot

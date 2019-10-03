@@ -1,23 +1,15 @@
 import React from 'react'
 import { renderToString } from 'react-dom/server'
-import { Provider } from 'react-intl-redux'
-import defaultHeaders from '../lib/header'
 
 const renderMiddleware = async (ctx, next) => {
-  // Set helmet defaults
-  renderToString(defaultHeaders(ctx.store))
-
   // Run any other middlewares
   await next()
 
-  // Actual rendering
-  const renderOutput = renderToString(
-    <Provider store={ctx.store}>
-      {ctx.renderChildren || <React.Fragment />}
-    </Provider>
-  )
+  // Run the render hook to get the root element
+  const children = await ctx.triggerHook('reactRoot')(ctx, false)
 
-  ctx.body = renderOutput
+  // Actual rendering
+  ctx.body = renderToString(children)
 }
 
 export const serverMiddleware = renderMiddleware

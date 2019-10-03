@@ -1,4 +1,16 @@
 import compose from 'koa-compose'
 import config from '#js.conf.d'
 
-export default compose(config.serverMiddleware)
+// Simple system to trigger middleware-like hooks
+const triggerHook = name => (ctx, initial) =>
+  config[name] && config[name].reduceRight(
+    (thisNext, hook) => () => hook(ctx, thisNext),
+    () => initial
+  )()
+
+const triggeringMiddleware = (ctx, next) => {
+  ctx.triggerHook = triggerHook
+  return next()
+}
+
+export default compose([triggeringMiddleware, ...config.serverMiddleware])

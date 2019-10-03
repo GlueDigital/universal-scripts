@@ -2,6 +2,8 @@ import React from 'react'
 import Helmet from 'react-helmet'
 import path from 'path'
 import fs from 'fs'
+import { renderToString } from 'react-dom/server'
+import defaultHeaders from '../lib/header'
 import renderHtmlLayout from '../lib/render-html-layout'
 
 const basename = process.env.SUBDIRECTORY || '/'
@@ -50,3 +52,10 @@ const generateHtml = async (ctx, next) => {
 }
 
 export const serverMiddleware = generateHtml
+
+const addDefaultHeaders = (ctx, next) => {
+  renderToString(defaultHeaders(ctx.store))
+  return next()
+}
+
+export const reactRoot = addDefaultHeaders

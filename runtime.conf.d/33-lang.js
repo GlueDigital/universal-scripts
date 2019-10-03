@@ -1,4 +1,5 @@
-import { updateIntl } from 'react-intl-redux'
+import React from 'react'
+import { Provider, updateIntl } from 'react-intl-redux'
 import langs from 'src/locales'
 
 const addIntl = (ctx, next) => {
@@ -17,3 +18,10 @@ const addIntl = (ctx, next) => {
 }
 
 export const serverMiddleware = addIntl
+
+const renderIntlProvider = async (ctx, next) =>
+  <Provider store={ctx.store}>
+    {await next()}
+  </Provider>
+
+export const reactRoot = renderIntlProvider
