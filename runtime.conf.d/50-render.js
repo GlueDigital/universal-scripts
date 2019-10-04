@@ -1,5 +1,6 @@
 import ReactDOM from 'react-dom'
 import { renderToString } from 'react-dom/server'
+// import { renderToStringAsync } from 'react-async-ssr'
 
 const renderMiddleware = async (ctx, next) => {
   // Run any other middlewares
@@ -10,6 +11,7 @@ const renderMiddleware = async (ctx, next) => {
 
   // Actual rendering
   ctx.body = renderToString(children)
+  // ctx.body = renderToStringAsync(children)
 }
 
 export const serverMiddleware = renderMiddleware
