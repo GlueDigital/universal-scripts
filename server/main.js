@@ -47,7 +47,7 @@ if (__WATCH__) {
       const fname = path.resolve(appDirectory, 'build', 'server', 'server.js')
       try {
         const newMiddleware = mfs.readFileSync(fname).toString()
-        serverMiddleware = requireFromString(newMiddleware).default
+        serverMiddleware = requireFromString(newMiddleware, fname).default
       } catch (e) {
         console.warn(chalk.red.bold('Couldn\'t load middleware.'))
         console.log(chalk.red('Please fix any build errors above, and ' +

@@ -33,3 +33,8 @@ if (needsPolyfill()) {
 } else {
   initialize()
 }
+
+// Enable HMR
+if (module.hot) {
+  module.hot.accept()
+}

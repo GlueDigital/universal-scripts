@@ -2325,7 +2325,7 @@ debug@^2.2.0, debug@^2.3.3, debug@^2.6.8, debug@^2.6.9:
   dependencies:
     ms "2.0.0"
 
-debug@^3.1.0, debug@^3.2.6:
+debug@^3.0.0, debug@^3.1.0, debug@^3.2.6:
   version "3.2.6"
   resolved "https://registry.yarnpkg.com/debug/-/debug-3.2.6.tgz#e83d17de16d8a7efb7717edbe5fb10135eee629b"
   integrity sha512-mel+jf7nrtEl5Pn1Qx46zARXKDpBbvzezse7p7LqINmdoIk8PYP5SySaxEmYv6TZ0JyEKA1hsCId6DIhgITtWQ==
@@ -3901,14 +3901,15 @@ js-yaml@^3.13.1:
     argparse "^1.0.7"
     esprima "^4.0.0"
 
-js.conf.d-webpack@^1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/js.conf.d-webpack/-/js.conf.d-webpack-1.1.2.tgz#bea4c8a98e17a32583a187e885baf3f73c50cbc5"
-  integrity sha512-OMB3pYg85MEfAZrU0urfzcF1J4RQeYebb62EZ5Ikzz5+l41F+ioVT1qbGbmL6jkaeaehsfIZGMhP3lhFn861ZQ==
+js.conf.d-webpack@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/js.conf.d-webpack/-/js.conf.d-webpack-1.2.0.tgz#4315ec4fd40d3b98b1089d002610aa85ae4e1324"
+  integrity sha512-BNS5WHyXirJWIX08yepQlWiNA6Vxlmb2mWDfac7zy+HUuL4RogK6qhHFy4Cci29UqWoWTPn/id5b2JMjd84d+A==
   dependencies:
-    js.conf.d "^1.2.0"
+    js.conf.d "^1.2.1"
+    webpack-virtual-modules "^0.1.12"
 
-js.conf.d@^1.2.0, js.conf.d@^1.2.1:
+js.conf.d@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/js.conf.d/-/js.conf.d-1.2.1.tgz#ab75093f05267e0d9b055d51570864d2e53c9c21"
   integrity sha512-ZrCXYf97G/dr82BFAHZxQz4SvVT+ph/75GKHgBchqxxNml76tmOAs6o2uzpJoXYC7p2r4ue/jKnaopL0ARfHrA==
@@ -7008,6 +7009,13 @@ webpack-sources@^1.1.0, webpack-sources@^1.4.0, webpack-sources@^1.4.1:
   dependencies:
     source-list-map "^2.0.0"
     source-map "~0.6.1"
+
+webpack-virtual-modules@^0.1.12:
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/webpack-virtual-modules/-/webpack-virtual-modules-0.1.12.tgz#ff6430c1d6f514eff12bae773ec03e5043a81943"
+  integrity sha512-uwVhcpmh7WykpP2fD4T//5DLdMuanPHGXQHCnIrKoRg10GgVNy5z2oAcn26HLF67a6HCSzgc9xar+SMtZhOnXw==
+  dependencies:
+    debug "^3.0.0"
 
 webpack@^4.40.2:
   version "4.41.0"
