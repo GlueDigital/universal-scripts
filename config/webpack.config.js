@@ -118,6 +118,7 @@ module.exports = (opts = {}) => {
           loader: require.resolve('babel-loader'),
           options: {
             presets: [require.resolve('babel-preset-react-app')],
+            sourceType: 'unambiguous',
             compact: false,
             cacheDirectory: true
           }
