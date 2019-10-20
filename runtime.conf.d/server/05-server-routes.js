@@ -7,6 +7,7 @@ const handleServerRoutes = (() => {
 const serverRoutes = async (ctx, next) => {
   if (handleServerRoutes) {
     await handleServerRoutes(ctx, next)
+    return // No need to next() these
   }
   await next()
 }
