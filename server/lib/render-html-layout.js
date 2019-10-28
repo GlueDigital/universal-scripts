@@ -17,8 +17,11 @@ export default (head, renderOutput, scripts, styles) => {
         {styles}
       </head>
       <body>
-        <div key="root" id="root"
-          dangerouslySetInnerHTML={{ __html: renderOutput }} />
+        <div
+          key="root"
+          id="root"
+          dangerouslySetInnerHTML={{ __html: renderOutput }}
+        />
         {scripts}
       </body>
     </html>

@@ -49,7 +49,9 @@ module.exports = (opts = {}) => {
     loader: require.resolve('sass-loader'),
     options: {
       sourceMap: true,
-      includePaths: [path.resolve('appDirectory', 'src', 'styles')]
+      sassOptions: {
+        includePaths: [path.resolve('appDirectory', 'src', 'styles')]
+      }
     }
   }
 
