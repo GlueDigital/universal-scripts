@@ -25,8 +25,8 @@ const enhancer = (opts = {}) => {
         appDirectory, 'build', isServerSide ? 'server' : 'client'),
       pathinfo: true,
       filename: isServerSide ? 'server.js' : (bundle) =>
-        bundle.chunk.name === 'polyfills' ? 'polyfills.js' : '[name].[hash].js',
-      chunkFilename: '[name].[hash].js',
+        bundle.chunk.name === 'polyfills' ? 'polyfills.js' : '[name].[fullhash].js',
+      chunkFilename: '[name].[fullhash].js',
       publicPath: process.env.SUBDIRECTORY || '/'
     },
     resolve: {
@@ -47,7 +47,10 @@ const enhancer = (opts = {}) => {
       ]
     },
     plugins: [
-      new webpack.NamedModulesPlugin(),
+      new webpack.IgnorePlugin({
+        resourceRegExp: /^encoding$/,
+        contextRegExp: /node-fetch/
+      }),
       new webpack.NoEmitOnErrorsPlugin(),
       new JsconfdPlugin({
         folders: [
@@ -80,7 +83,7 @@ const enhancer = (opts = {}) => {
           test: /\.(jpg|png|gif|webp|mp4|webm|svg|ico|woff|woff2|otf|ttf|eot)$/,
           loader: require.resolve('file-loader'),
           options: {
-            name: '[path][name].[ext]?[md5:hash:hex:8]',
+            name: '[path][name].[ext]?[md5:fullhash:hex:8]',
             emitFile: false,
             context: 'src/static'
           }

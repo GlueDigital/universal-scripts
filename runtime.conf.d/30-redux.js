@@ -1,7 +1,7 @@
 import React from 'react'
 import { createStore } from '../lib/store'
 import { CLEANUP, REQUEST_INIT } from 'universal-scripts'
-import jsesc from 'jsesc'
+const jsesc = __SERVER__ ? require('jsesc') : false
 
 const addRedux = async (ctx, next) => {
   // Create store

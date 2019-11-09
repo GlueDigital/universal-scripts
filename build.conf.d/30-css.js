@@ -12,7 +12,7 @@ const enhancer = (opts = {}, config) => {
 
   const cssLoader = {
     loader: CssLoader,
-    query: { sourceMap: true, importLoaders: 1 }
+    options: { sourceMap: true, importLoaders: 1 }
   }
 
   const transformAssetUrl = (asset) => {
