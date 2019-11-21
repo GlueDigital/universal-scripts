@@ -1,7 +1,6 @@
 import React from 'react'
 import { Provider, updateIntl } from 'react-intl-redux'
-import langs, { localeData } from 'src/locales'
-import { addLocaleData } from 'react-intl'
+import langs from 'src/locales'
 
 const addIntl = (ctx, next) => {
   // Determine language
@@ -22,9 +21,6 @@ const addIntl = (ctx, next) => {
 export const serverMiddleware = addIntl
 
 const addClientIntl = (ctx, next) => {
-  // Add locale data
-  addLocaleData(localeData)
-
   // Determine language
   const availableLangs = Object.keys(langs)
   const storeIntl = ctx.store && ctx.store.getState().intl
