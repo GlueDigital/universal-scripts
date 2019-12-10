@@ -58,9 +58,12 @@ module.exports = (
   execSync(cmd.join(' '), { stdio: 'inherit' })
 
   // Copy the template
+  /*
   const templatePath = template
     ? path.resolve(originalDirectory, template)
     : path.join(ownPath, 'template')
+  */
+  const templatePath = path.join(ownPath, 'template')
 
   fs.copySync(templatePath, appPath)
 
