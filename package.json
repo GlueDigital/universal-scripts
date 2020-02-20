@@ -1,6 +1,6 @@
 {
   "name": "universal-scripts",
-  "version": "2.0.0-alpha.6",
+  "version": "2.0.0-beta.1",
   "description": "Build universal apps without configuration.",
   "main": "index.js",
   "repository": "GlueDigital/universal-scripts",
@@ -67,6 +67,7 @@
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "postcss-loader": "^3.0.0",
     "postcss-url": "^8.0.0",
+    "react-async-ssr": "^0.6.0",
     "react-helmet-async": "^1.0.4",
     "react-intl-redux": "2.2.0",
     "redux": "^4.0.5",

@@ -1,4 +1,5 @@
-import { renderToString } from 'react-dom/server'
+import { renderToStringAsync } from 'react-async-ssr'
+
 // import { renderToStringAsync } from 'react-async-ssr'
 
 const renderMiddleware = async (ctx, next) => {
@@ -9,8 +10,7 @@ const renderMiddleware = async (ctx, next) => {
   const children = await ctx.triggerHook('reactRoot')(ctx, false)
 
   // Actual rendering
-  ctx.body = renderToString(children)
-  // ctx.body = renderToStringAsync(children)
+  ctx.body = await renderToStringAsync(children)
 }
 
 export const serverMiddleware = renderMiddleware
