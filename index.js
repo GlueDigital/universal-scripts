@@ -1,5 +1,4 @@
 // Exports for user-code
-import { useFetch } from './lib/hooks'
 import langs from 'src/locales'
 import { updateIntl } from 'react-intl-redux'
 
@@ -11,5 +10,3 @@ export const setLang = lang => updateIntl({
   locale: lang,
   messages: langs[lang]
 })
-
-export { useFetch }
