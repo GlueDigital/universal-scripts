@@ -1,6 +1,6 @@
 {
   "name": "universal-scripts",
-  "version": "2.0.0-beta.2",
+  "version": "2.0.0-beta.3",
   "description": "Build universal apps without configuration.",
   "main": "index.js",
   "repository": "GlueDigital/universal-scripts",
@@ -74,7 +74,7 @@
     "redux-thunk": "^2.3.0",
     "regenerator-runtime": "^0.13.3",
     "require-from-string": "^2.0.2",
-    "ruse-fetch": "^1.0.1",
+    "ruse-fetch": "^1.0.3",
     "sass-loader": "^8.0.2",
     "style-loader": "^1.1.3",
     "terser-webpack-plugin": "^2.3.5",

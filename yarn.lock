@@ -6584,10 +6584,10 @@ run-queue@^1.0.0, run-queue@^1.0.3:
   dependencies:
     aproba "^1.1.1"
 
-ruse-fetch@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/ruse-fetch/-/ruse-fetch-1.0.1.tgz#525e7a8f402aa0e68f7773dd619176fd80a1e466"
-  integrity sha512-qe8DeqLMaXSZ8PhF9sR8PeiEyQQAjceLRF9XIvBJQSf5gzR2jwA4RMnRA9NNDhsAjidcQywcrEyZsyOG1gPC3g==
+ruse-fetch@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/ruse-fetch/-/ruse-fetch-1.0.3.tgz#6fadbbb77e371690ef244b153b43876d0711c820"
+  integrity sha512-C82NFDP8IksX77uc/BqKMRZMuXmQXgRKD32Fxiy4jXyQjRge4Fwu9T9X9FcWmspGTyjbIU4pQrjDmDF+dl+3nA==
 
 rxjs@^6.4.0:
   version "6.5.3"
