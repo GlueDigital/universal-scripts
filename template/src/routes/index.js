@@ -1,8 +1,12 @@
+import React from 'react'
+import { Switch, Route } from 'react-router-dom'
 import Home from './Home'
 
-const createRoutes = () => ({
-  path: '/',
-  component: Home
-})
+const App = () =>
+  <Switch>
+    <Route path="/" exact>
+      <Home />
+    </Route>
+  </Switch>
 
-export default createRoutes
+export default App

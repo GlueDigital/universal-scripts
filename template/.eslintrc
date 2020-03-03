@@ -1,15 +1,9 @@
 {
-  "parser"  : "babel-eslint",
   "extends" : [
+    "react-app",
     "standard",
     "standard-react"
   ],
-  "plugins": [
-    "babel"
-  ],
-  "env"     : {
-    "browser" : true
-  },
   "globals" : {
     "__DEV__"      : false,
     "__PROD__"     : false,
@@ -21,19 +15,6 @@
     "semi" : ["error", "never"],
     "max-len": ["error", 120, 2],
     "jsx-quotes": ["error", "prefer-double"],
-    "react/no-unused-prop-types": "off",
-    "padded-blocks": "off",
-    "no-mixed-operators": [
-      "error",
-      {
-        "groups": [
-          ["&", "|", "^", "~", "<<", ">>", ">>>"],
-          ["==", "!=", "===", "!==", ">", ">=", "<", "<="],
-          ["&&", "||"],
-          ["in", "instanceof"]
-        ],
-        "allowSamePrecedence": true
-      }
-    ]
+    "padded-blocks": "off"
   }
 }
