@@ -33,7 +33,7 @@ const enhancer = (opts = {}) => {
       alias: {
         'any-promise': 'core-js/fn/promise' // Prevents warning on webpack
       },
-      extensions: ['.js', '.jsx', '.json'],
+      extensions: ['.wasm', '.mjs', '.js', '.jsx', '.json', '.sass', '.scss', '.css'],
       modules: [
         path.resolve(__dirname, '..', 'node_modules'),
         path.resolve(appDirectory, 'node_modules'),
@@ -113,10 +113,9 @@ const enhancer = (opts = {}) => {
       })
     ]
   } else {
-    // Add our render entrypoint, and the user custom one
+    // Add our render entrypoint
     config.entry = {
       main: [
-        path.resolve(appDirectory, 'src', 'index.js'),
         path.resolve(__dirname, '..', 'client', 'init')
       ]
     }
