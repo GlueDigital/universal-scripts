@@ -10,6 +10,7 @@ Universal Scripts
 Alternative configuration for [Create React App](https://github.com/facebookincubator/create-react-app), with enhanced functionality, including server-side rendering and internationalization.
 
 - [Read the documentation](https://gluedigital.github.io/universal-scripts)
+- Migrating from v1? Check the [migration guide](https://gluedigital.github.io/universal-scripts/migration)
 - [Report an issue](https://github.com/GlueDigital/universal-scripts/issues/new)
 
 
