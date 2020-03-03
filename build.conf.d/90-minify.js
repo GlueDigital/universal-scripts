@@ -10,6 +10,7 @@ const enhancer = (opts = {}, config) => {
         cache: true,
         parallel: true,
         sourceMap: true,
+        extractComments: false,
         terserOptions: {
           output: {
             comments: false
