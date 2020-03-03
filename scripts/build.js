@@ -6,6 +6,9 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'production'
 
 const chalk = require('chalk')
 
+const fs = require('fs-extra')
+fs.remove('./build/')
+
 const builder = require('../lib/builder')
 
 const compiler = builder()
