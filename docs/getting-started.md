@@ -2,13 +2,10 @@ Getting started
 ---------------
 
 Creating a Universal Scripts project is very easy.
-If you have [npx](https://medium.com/@maybekatz/introducing-npx-an-npm-package-runner-55f7d4bd282b) available (comes with npm 5.2+), just do:
+Using [npx](https://medium.com/@maybekatz/introducing-npx-an-npm-package-runner-55f7d4bd282b), just do:
 > npx create-react-app \-\-scripts-version universal-scripts &lt;_app-name_&gt;
 
-Alternatively, you can install [Create React App](https://github.com/facebookincubator/create-react-app) following the project instructions, then do:
-> create-react-app \-\-scripts-version universal-scripts &lt;_app-name_&gt;
-
-Either way, when it finishes you'll have a project ready to start developing.
+When it finishes you'll have a project ready to start developing.
 Enter the project folder and run:
 > npm start
 

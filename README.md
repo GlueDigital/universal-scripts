@@ -17,7 +17,7 @@ Alternative configuration for [Create React App](https://github.com/facebookincu
 Quick start
 -----------
 
-If you have a recent version of Node (>= 7.6) and NPM (>= 5.2), just run:
+If you have any maintained version of Node (at least v10) and NPM, just run:
 
 ```bash
 npx create-react-app --scripts-version universal-scripts my-app
