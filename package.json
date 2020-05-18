@@ -69,7 +69,6 @@
     "postcss-url": "^8.0.0",
     "react-async-ssr": "^0.7.2",
     "react-helmet-async": "^1.0.6",
-    "react-intl-redux": "2.2.0",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "regenerator-runtime": "^0.13.5",

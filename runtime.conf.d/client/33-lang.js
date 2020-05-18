@@ -1,5 +1,7 @@
 import React from 'react'
-import { Provider, updateIntl } from 'react-intl-redux'
+import { IntlProvider } from 'react-intl'
+import { useSelector } from 'react-redux'
+import { setLang } from 'universal-scripts'
 import langs from 'src/locales'
 
 const addClientIntl = (ctx, next) => {
@@ -14,19 +16,25 @@ const addClientIntl = (ctx, next) => {
   lang = availableLangs.indexOf(lang) !== -1 ? lang : availableLangs[0]
 
   // Set it
-  ctx.store && ctx.store.dispatch(updateIntl({
-    locale: lang,
-    messages: langs[lang]
-  }))
+  ctx.store && ctx.store.dispatch(setLang(lang))
 
   return next()
 }
 
 export const clientInit = addClientIntl
 
+const ReduxIntlProvider = ({ children }) => {
+  const intl = useSelector(s => s.intl)
+  return (
+    <IntlProvider key={intl.locale} {...intl}>
+      {children}
+    </IntlProvider>
+  )
+}
+
 const renderIntlProvider = async (ctx, next) =>
-  <Provider store={ctx.store}>
+  <ReduxIntlProvider>
     {await next()}
-  </Provider>
+  </ReduxIntlProvider>
 
 export const reactRoot = renderIntlProvider

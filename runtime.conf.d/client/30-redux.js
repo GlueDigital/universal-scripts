@@ -1,3 +1,5 @@
+import React from 'react'
+import { Provider } from 'react-redux'
 import { createStore } from '../../lib/store'
 
 const clientRedux = (ctx, next) => {
@@ -20,3 +22,10 @@ const clientRedux = (ctx, next) => {
 }
 
 export const clientInit = clientRedux
+
+const renderIntlProvider = async (ctx, next) =>
+  <Provider store={ctx.store}>
+    {await next()}
+  </Provider>
+
+export const reactRoot = renderIntlProvider

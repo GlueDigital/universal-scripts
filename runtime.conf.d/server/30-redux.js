@@ -1,6 +1,7 @@
 import React from 'react'
 import { createStore } from '../../lib/store'
 import { CLEANUP, REQUEST_INIT } from 'universal-scripts'
+import { Provider } from 'react-redux'
 import jsesc from 'jsesc'
 
 const addRedux = async (ctx, next) => {
@@ -39,3 +40,10 @@ const addRedux = async (ctx, next) => {
 }
 
 export const serverMiddleware = addRedux
+
+const renderIntlProvider = async (ctx, next) =>
+  <Provider store={ctx.store}>
+    {await next()}
+  </Provider>
+
+export const reactRoot = renderIntlProvider
