@@ -24,9 +24,9 @@ const enhancer = (opts = {}) => {
       path: path.resolve(
         appDirectory, 'build', isServerSide ? 'server' : 'client'),
       pathinfo: true,
-      filename: isServerSide ? 'server.js' : (bundle) =>
+      filename: isServerSide ? '[name].js' : (bundle) =>
         bundle.chunk.name === 'polyfills' ? 'polyfills.js' : '[name].[hash].js',
-      chunkFilename: '[name].[hash].js',
+      chunkFilename: isServerSide ? '[name].js' : '[name].[hash].js',
       publicPath: process.env.SUBDIRECTORY || '/'
     },
     resolve: {
@@ -88,7 +88,16 @@ const enhancer = (opts = {}) => {
         }
       ]
     },
-    optimization: { minimizer: [] }
+    optimization: {
+      minimizer: [],
+      splitChunks: {
+        cacheGroups: {
+          vendors: {
+            reuseExistingChunk: true
+          }
+        }
+      }
+    }
   }
 
   if (isServerSide) {
@@ -119,16 +128,6 @@ const enhancer = (opts = {}) => {
       main: [
         path.resolve(__dirname, '..', 'client', 'init')
       ]
-    }
-
-    // No async vendor bundles
-    config.optimization = config.optimization || {}
-    config.optimization.splitChunks = {
-      cacheGroups: {
-        vendors: {
-          reuseExistingChunk: true
-        }
-      }
     }
 
     if (!isWatch) {
