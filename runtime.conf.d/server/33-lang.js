@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { IntlProvider } from 'react-intl'
 import { useSelector } from 'react-redux'
 import { setLang } from 'universal-scripts'
@@ -26,6 +27,10 @@ const ReduxIntlProvider = ({ children }) => {
       {children}
     </IntlProvider>
   )
+}
+
+ReduxIntlProvider.propTypes = {
+  children: PropTypes.node
 }
 
 const renderIntlProvider = async (ctx, next) =>
