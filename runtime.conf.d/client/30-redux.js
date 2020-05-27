@@ -1,6 +1,7 @@
 import React from 'react'
 import { Provider } from 'react-redux'
 import { createStore } from '../../lib/store'
+import { CLIENT_INIT } from 'universal-scripts'
 
 const clientRedux = (ctx, next) => {
   // Create store using server data (if available)
@@ -16,6 +17,10 @@ const clientRedux = (ctx, next) => {
   // It should NOT be a substitute to connect or the other Redux utils.
   // Use with caution.
   window.store = store
+
+  // Dispatch a CLIENT_INIT action to give middlewares, etc. a chance of
+  // updating the store before render
+  store.dispatch({ type: CLIENT_INIT })
 
   // Run any other middlewares
   return next()

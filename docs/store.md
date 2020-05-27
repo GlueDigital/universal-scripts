@@ -26,8 +26,11 @@ If you need to add any extra Redux middlewares to the store, you can create `src
 
 There are some actions that get dispatched during various stages of the render process, which can be used on your reducers:
 
-- `REQUEST_INIT`: Dispatched before starting rendering. Contains info about the request being rendered.
-- `CLEANUP`: Dispatched after render, but before serializing the store. Allows cleaning up any info that should not be serialized and sent to the client.
+- On the server:
+  - `REQUEST_INIT`: Dispatched before starting rendering. Contains info about the request being rendered.
+  - `CLEANUP`: Dispatched after render, but before serializing the store. Allows cleaning up any info that should not be serialized and sent to the client.
+- On the client
+  - `CLIENT_INIT`: Dispatched after store init, but before render. Allows middlewares to update the store before the first client render.
 
 You can import their action types like this:
 
