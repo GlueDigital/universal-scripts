@@ -119,7 +119,7 @@ const enhancer = (opts = {}) => {
     // Don't bundle node_modules for the server: node can access it directly
     config.externals = [
       require('webpack-node-externals')({
-        whitelist: ['universal-scripts', 'js.conf.d-webpack/src']
+        allowlist: ['universal-scripts', 'js.conf.d-webpack/src']
       })
     ]
   } else {
@@ -132,12 +132,18 @@ const enhancer = (opts = {}) => {
 
     if (!isWatch) {
       // Copy static assets to output dir
+      // /*
       config.plugins.push(
-        new CopyWebpackPlugin([{
-          from: path.resolve(appDirectory, 'src', 'static'),
-          to: path.resolve(appDirectory, 'build', 'client')
-        }])
+        new CopyWebpackPlugin({
+          patterns: [
+            {
+              from: path.resolve(appDirectory, 'src', 'static'),
+              to: path.resolve(appDirectory, 'build', 'client')
+            }
+          ]
+        })
       )
+      // */
     }
   }
 
