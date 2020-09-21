@@ -14,6 +14,13 @@ const enhancer = (opts = {}) => {
 
   const side = isServerSide ? 'server' : 'client'
 
+  const babelOptions = {
+    presets: [require.resolve('babel-preset-react-app')],
+    sourceType: 'unambiguous',
+    compact: false,
+    cacheDirectory: true
+  }
+
   const config = {
     name: isServerSide ? 'server' : 'client',
     devtool: isProd ? 'source-map' : 'cheap-module-source-map',
@@ -33,7 +40,7 @@ const enhancer = (opts = {}) => {
       alias: {
         'any-promise': 'core-js/fn/promise' // Prevents warning on webpack
       },
-      extensions: ['.wasm', '.mjs', '.js', '.jsx', '.json', '.sass', '.scss', '.css'],
+      extensions: ['.wasm', '.mjs', '.ts', '.js', '.tsx', '.jsx', '.json', '.sass', '.scss', '.css'],
       modules: [
         path.resolve(__dirname, '..', 'node_modules'),
         path.resolve(appDirectory, 'node_modules'),
@@ -68,15 +75,20 @@ const enhancer = (opts = {}) => {
     module: {
       rules: [
         {
-          test: /\.js$/,
+          test: /\.(js|jsx)$/,
           exclude: /universal-scripts\/node_modules/,
           loader: require.resolve('babel-loader'),
-          options: {
-            presets: [require.resolve('babel-preset-react-app')],
-            sourceType: 'unambiguous',
-            compact: false,
-            cacheDirectory: true
-          }
+          options: babelOptions
+        }, {
+          test: /\.(ts|tsx)$/,
+          use: [
+            {
+              loader: require.resolve('babel-loader'),
+              options: babelOptions
+            }, {
+              loader: require.resolve('ts-loader')
+            }
+          ]
         }, {
           test: /\.(jpg|png|gif|webp|mp4|webm|svg|ico|woff|woff2|otf|ttf|eot)$/,
           loader: require.resolve('file-loader'),

@@ -77,6 +77,8 @@
     "sass-loader": "^10.0.2",
     "style-loader": "^1.2.1",
     "terser-webpack-plugin": "^4.2.1",
+    "ts-loader": "^8.0.4",
+    "typescript": "^4.0.3",
     "url-polyfill": "^1.1.10",
     "webpack": "^4.44.1",
     "webpack-node-externals": "^2.5.2"
