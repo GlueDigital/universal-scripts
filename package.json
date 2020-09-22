@@ -34,6 +34,7 @@
     "chalk": "^4.1.0",
     "copy-webpack-plugin": "^6.1.0",
     "core-js": "^3.6.5",
+    "cra-template-universal": "^1.0.0",
     "cross-spawn": "^7.0.3",
     "css-loader": "^4.3.0",
     "directory-named-webpack-plugin": "^4.0.1",

@@ -57,15 +57,18 @@ module.exports = (
   }
   execSync(cmd.join(' '), { stdio: 'inherit' })
 
-  // Copy the template
-  /*
-  const templatePath = template
-    ? path.resolve(originalDirectory, template)
-    : path.join(ownPath, 'template')
-  */
-  const templatePath = path.join(ownPath, 'template')
+  // Determine the template to use
+  // If it is cra-template, override it with built-in
+  const templateName = (!template || template === 'cra-template') ? 'cra-template-universal' : template
+  console.log('Going ahead with', templateName, 'searching from', appPath)
+  const templatePath = path.dirname(
+    require.resolve(templateName + '/package.json', { paths: [appPath] })
+  )
 
-  fs.copySync(templatePath, appPath)
+  // Note: we're skipping some of the tasks react-scripts would have performed
+
+  // Copy the template
+  fs.copySync(path.join(templatePath, 'template'), appPath)
 
   // After copying tasks
   fs.renameSync(

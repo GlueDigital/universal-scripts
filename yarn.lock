@@ -3148,6 +3148,11 @@ cosmiconfig@^6.0.0:
     path-type "^4.0.0"
     yaml "^1.7.2"
 
+cra-template-universal@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/cra-template-universal/-/cra-template-universal-1.0.0.tgz#d4f7f23d9d065fd5f0e1ca346f30c2a77e457165"
+  integrity sha512-neaFinrZU8tzen+xv6swRng9qvC6wGb5Ks2d/OOUdOO5+sUXO0XO66Wf08ocrp/fPqOZoQHtb1ot8sNUmHPmow==
+
 create-ecdh@^4.0.0:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/create-ecdh/-/create-ecdh-4.0.3.tgz#c9111b6f33045c4697f144787f9254cdc77c45ff"
