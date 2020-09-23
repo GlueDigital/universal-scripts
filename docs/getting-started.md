@@ -24,6 +24,24 @@ Your new project already contains some predefined folders:
 - `src/styles`: Your stylesheets get loaded from the index.sass, so import them from there.
 
 
+TypeScript
+----------
+
+If you would rather use TypeScript, you can create your project using our alternate TypeScript template, by doing:
+
+> npx create-react-app \-\-scripts-version universal-scripts \-\-template universal-ts &lt;_app-name_&gt;
+
+All the config and structure is exactly the same, but using TypeScript.
+
+
+Custom templates
+----------------
+
+Just like stock Create React App, we support the use of custom templates during project init.
+
+Not all CRA templates will be compatible, though: they must contain the required entrypoints provided in our base template, [cra-template-universal](https://github.com/GlueDigital/cra-template-universal). If you want to create your custom template, we recommend using it as a starting point.
+
+
 Next steps
 ----------
 

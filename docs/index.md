@@ -5,9 +5,10 @@ _Universal Scripts_ is an alternative configuration for [Create React App](https
 
 - Server-Side Rendering (aka. _universal rendering_)
 - Internationalization with react-intl
+- HTML head customization with react-helmet-async
 - Redux state container
 - Sass (and SCSS) support
-- And of course, everything on React Scripts: ES6 support, React Router, etc.
+- And of course, everything on React Scripts: ES6 & TypeScript support, React Router, etc.
 
 Everything on a single package, easy to keep updated, and ready to deploy to your favourite platform.
 
@@ -23,7 +24,7 @@ Internationalization is needed on any site targeting a broad audience from multi
 
 [Redux](https://redux.js.org/) helps keep state organized and predictable, and is a great fit when working with universal rendering, as it allows easy state serialization to send initial content to the client.
 
-And we also included a few other goodies, like [Sass](https://sass-lang.com/), the best known CSS extension language, or [react-helmet](https://github.com/nfl/react-helmet), a way of managing the document head.
+And we also included a few other goodies, like [Sass](https://sass-lang.com/), the best known CSS extension language, or [react-helmet-async](https://github.com/staylor/react-helmet-async), a way of managing the document head.
 
 
 Sounds good?
