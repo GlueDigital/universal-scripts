@@ -16,7 +16,8 @@ const addRedux = async (ctx, next) => {
       headers: ctx.request.headers,
       origin: ctx.request.origin,
       path: ctx.request.path,
-      ip: ctx.request.ip
+      ip: ctx.request.ip,
+      cookies: parseCookies(ctx.request.headers.cookie)
     }
   })
 
@@ -38,6 +39,14 @@ const addRedux = async (ctx, next) => {
     <script key="store" dangerouslySetInnerHTML={storeCode} />
   )
 }
+
+const parseCookies = s => !s ? {} : s
+  .split(';')
+  .map(v => v.split('='))
+  .reduce((acc, v) => {
+    acc[decodeURIComponent(v[0].trim())] = decodeURIComponent(v[1].trim())
+    return acc
+  }, {})
 
 export const serverMiddleware = addRedux
 
