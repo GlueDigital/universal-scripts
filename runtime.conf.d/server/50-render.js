@@ -11,6 +11,11 @@ const renderMiddleware = async (ctx, next) => {
 
   // Actual rendering
   ctx.body = await renderToStringAsync(children)
+
+  if (ctx.renderCtx && ctx.renderCtx.url) {
+    // There was a redirect
+    ctx.redirect(ctx.renderCtx.url)
+  }
 }
 
 export const serverMiddleware = renderMiddleware

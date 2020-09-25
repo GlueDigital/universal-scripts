@@ -5,8 +5,9 @@ import App from 'src/routes'
 const routerRoot = (ctx) => {
   // On the server, pass the URL from context, and use StaticRouter
   const url = ctx.req.url
+  ctx.renderCtx = {}
   return (
-    <StaticRouter location={url}>
+    <StaticRouter location={url} context={ctx.renderCtx}>
       <App />
     </StaticRouter>
   )
