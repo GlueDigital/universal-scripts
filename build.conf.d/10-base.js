@@ -54,7 +54,6 @@ const enhancer = (opts = {}) => {
       ]
     },
     plugins: [
-      new webpack.NamedModulesPlugin(),
       new webpack.NoEmitOnErrorsPlugin(),
       new JsconfdPlugin({
         folders: [

@@ -12,7 +12,7 @@ const enhancer = (opts = {}, config) => {
 
   const cssLoader = {
     loader: CssLoader,
-    query: { sourceMap: true, importLoaders: 1 }
+    options: { sourceMap: true, importLoaders: 1 }
   }
 
   const transformAssetUrl = (asset) => {
@@ -23,12 +23,14 @@ const enhancer = (opts = {}, config) => {
   const postcssLoader = {
     loader: require.resolve('postcss-loader'),
     options: {
-      ident: 'postcss',
-      to: 'src/static',
-      plugins: () => [
-        PostCssUrl({ url: transformAssetUrl }),
-        autoprefixer()
-      ]
+      postcssOptions: {
+        ident: 'postcss',
+        to: 'src/static',
+        plugins: [
+          PostCssUrl({ url: transformAssetUrl }),
+          autoprefixer
+        ]
+      }
     }
   }
 
