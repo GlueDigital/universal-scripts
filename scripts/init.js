@@ -14,7 +14,6 @@ module.exports = (
   originalDirectory,
   template
 ) => {
-
   // Determine the template to use
   // If it is cra-template, override it with built-in
   const isDefaultTemplate = (!template || template === 'cra-template')
@@ -60,7 +59,7 @@ module.exports = (
 
   const toInstall = Object.entries({
     ...templatePackage.dependencies,
-    ...templatePackage.devDependencies,
+    ...templatePackage.devDependencies
   })
   if (toInstall.length) {
     console.log('Installing template dependencies...')
@@ -83,12 +82,12 @@ module.exports = (
     path.resolve(appPath, '.gitignore')
   )
 
-    // Uninstall template
-    console.log('Removing template package...')
-    const rmCmd = shouldUseYarn ? ['yarn', 'remove'] : ['npm', 'uninstall']
-    rmCmd.push(isDefaultTemplate ? 'cra-template' : templateName)
-    execSync(rmCmd.join(' '), { stdio: 'inherit' })
-  
+  // Uninstall template
+  console.log('Removing template package...')
+  const rmCmd = shouldUseYarn ? ['yarn', 'remove'] : ['npm', 'uninstall']
+  rmCmd.push(isDefaultTemplate ? 'cra-template' : templateName)
+  execSync(rmCmd.join(' '), { stdio: 'inherit' })
+
   // Done!
   console.log(chalk.green.bold('Init completed.') + ' Now you might want to run:')
   console.log(chalk.gray('  $ ') + chalk.cyan('cd ' + appName + ' && npm start'))
