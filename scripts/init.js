@@ -14,17 +14,27 @@ module.exports = (
   originalDirectory,
   template
 ) => {
-  const ownPath = path.join(appPath, 'node_modules', 'universal-scripts')
-  const appPackage = require(path.join(appPath, 'package.json'))
-  const ownPackage = require(path.join(ownPath, 'package.json'))
+
+  // Determine the template to use
+  // If it is cra-template, override it with built-in
+  const isDefaultTemplate = (!template || template === 'cra-template')
+  const templateName = isDefaultTemplate ? 'cra-template-universal' : template
+  const templatePath = path.dirname(
+    require.resolve(templateName + '/package.json', { paths: [appPath] })
+  )
+  const templateInfo = require(path.join(templatePath, 'template.json'))
 
   // Setup the package.json
+  const appPackage = require(path.join(appPath, 'package.json'))
+  const templatePackage = templateInfo.package || {}
+
   appPackage.scripts = {
     start: 'NODE_PATH=./node_modules universal-scripts start',
     build: 'NODE_PATH=./node_modules universal-scripts build',
     serve: 'node build/server/server.js',
     lint: 'eslint src',
-    'heroku-postbuild': 'npm run build'
+    'heroku-postbuild': 'npm run build',
+    ...templatePackage.scripts
   }
 
   appPackage.engines = {
@@ -45,29 +55,26 @@ module.exports = (
     shouldUseYarn = false
   }
 
-  // Install our peer dependencies
-  const cmd = shouldUseYarn ? ['yarn', 'add'] : ['npm', 'install']
-  if (!shouldUseYarn) {
-    cmd.push('--save')
-  }
-  for (const peerDependency of Object.keys(ownPackage.peerDependencies)) {
-    const ownVersion = ownPackage.peerDependencies[peerDependency]
-    const version = ownVersion.split(' || ').pop()
-    cmd.push(peerDependency + '@' + version)
-  }
-  execSync(cmd.join(' '), { stdio: 'inherit' })
+  // Install dependencies
+  const cmd = shouldUseYarn ? ['yarn', 'add'] : ['npm', 'install', '--save']
 
-  // Determine the template to use
-  // If it is cra-template, override it with built-in
-  const templateName = (!template || template === 'cra-template') ? 'cra-template-universal' : template
-  console.log('Going ahead with', templateName, 'searching from', appPath)
-  const templatePath = path.dirname(
-    require.resolve(templateName + '/package.json', { paths: [appPath] })
-  )
-
-  // Note: we're skipping some of the tasks react-scripts would have performed
+  const toInstall = Object.entries({
+    ...templatePackage.dependencies,
+    ...templatePackage.devDependencies,
+  })
+  if (toInstall.length) {
+    console.log('Installing template dependencies...')
+    cmd.push(...toInstall.map(([dependency, version]) =>
+      dependency + '@' + version
+    ))
+    execSync(cmd.join(' '), { stdio: 'inherit' })
+  } else {
+    console.log('Template has no dependencies; skipping install...')
+    console.log(templateInfo)
+  }
 
   // Copy the template
+  console.log('Copying template files...')
   fs.copySync(path.join(templatePath, 'template'), appPath)
 
   // After copying tasks
@@ -76,6 +83,12 @@ module.exports = (
     path.resolve(appPath, '.gitignore')
   )
 
+    // Uninstall template
+    console.log('Removing template package...')
+    const rmCmd = shouldUseYarn ? ['yarn', 'remove'] : ['npm', 'uninstall']
+    rmCmd.push(isDefaultTemplate ? 'cra-template' : templateName)
+    execSync(rmCmd.join(' '), { stdio: 'inherit' })
+  
   // Done!
   console.log(chalk.green.bold('Init completed.') + ' Now you might want to run:')
   console.log(chalk.gray('  $ ') + chalk.cyan('cd ' + appName + ' && npm start'))
