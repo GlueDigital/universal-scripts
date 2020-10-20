@@ -86,7 +86,11 @@ module.exports = (
   console.log('Removing template package...')
   const rmCmd = shouldUseYarn ? ['yarn', 'remove'] : ['npm', 'uninstall']
   rmCmd.push(isDefaultTemplate ? 'cra-template' : templateName)
-  execSync(rmCmd.join(' '), { stdio: 'inherit' })
+  try {
+    execSync(rmCmd.join(' '), { stdio: 'inherit' })
+  } catch (e) {
+    console.log('Removing template failed.')
+  }
 
   // Done!
   console.log(chalk.green.bold('Init completed.') + ' Now you might want to run:')

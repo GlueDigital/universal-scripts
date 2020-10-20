@@ -11,6 +11,7 @@ eslint .
 # Try to scaffold a new project
 echo "Scaffolding demo project..."
 npm pack
+mv universal-scripts-*.tgz universal-scripts-$(date +%s).tgz
 npx create-react-app --scripts-version `pwd`/universal-scripts-*.tgz demo
 
 # Build the new project
