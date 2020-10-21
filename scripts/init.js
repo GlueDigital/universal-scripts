@@ -30,6 +30,7 @@ module.exports = (
   appPackage.scripts = {
     start: 'NODE_PATH=./node_modules universal-scripts start',
     build: 'NODE_PATH=./node_modules universal-scripts build',
+    test: 'NODE_PATH=./node_modules universal-scripts test',
     serve: 'node build/server/server.js',
     lint: 'eslint src',
     'heroku-postbuild': 'npm run build',
