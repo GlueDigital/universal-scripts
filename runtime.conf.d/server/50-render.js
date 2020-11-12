@@ -11,6 +11,7 @@ const renderMiddleware = async (ctx, next) => {
 
   // Actual rendering
   ctx.body = await renderToStringAsync(children)
+  ctx.type = 'text/html'
 
   if (ctx.renderCtx && ctx.renderCtx.url) {
     // There was a redirect
