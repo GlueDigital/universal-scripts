@@ -2,7 +2,7 @@ import chalk from 'chalk'
 import fs from 'fs'
 
 // Optional error 500 page
-const customError500 = (() => {
+const customError500 = __SSR__ && (() => {
   const req = require.context('src/routes', false, /^\.\/index$/)
   const keys = req(req.keys()[0])
   if (keys.error500 && fs.existsSync(keys.error500)) {

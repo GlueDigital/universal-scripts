@@ -10,6 +10,9 @@ All the build config is managed with [js.conf.d](https://www.npmjs.com/package/j
 
 To learn more about the config pieces that are included by default, you can check the `build.conf.d` folder on this project's root.
 
+For some common configurations, support has been added to set them directly in your `package.json`, under the `universalOptions` key.  
+Currently, the following options are supported:
+- `noSsr`: disables server-side rendering (the server will return an empty index which loads the client scripts)
 
 ### Build modes
 

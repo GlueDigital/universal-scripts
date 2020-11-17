@@ -15,6 +15,7 @@
     "__PROD__": false,
     "__SERVER__": false,
     "__CLIENT__": false,
-    "__WATCH__": false
+    "__WATCH__": false,
+    "__SSR__": false
   }
 }

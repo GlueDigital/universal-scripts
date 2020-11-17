@@ -1,8 +1,10 @@
 import React from 'react'
 import { StaticRouter } from 'react-router-dom'
-import App from 'src/routes'
+
+const App = __SSR__ && require('src/routes').default
 
 const routerRoot = (ctx) => {
+  if (!App) return null
   // On the server, pass the URL from context, and use StaticRouter
   const url = ctx.req.url
   ctx.renderCtx = {}
