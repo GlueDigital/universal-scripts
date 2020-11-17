@@ -4,7 +4,7 @@ const enhancer = (opts = {}, config) => {
   const isProd = process.env.NODE_ENV === 'production'
 
   // Production builds get minified JS
-  if (!opts.isServerSide && isProd) {
+  if (opts.id !== 'client' && isProd) {
     config.optimization.minimizer.push(
       new TerserPlugin({
         cache: true,

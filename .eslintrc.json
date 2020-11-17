@@ -11,6 +11,7 @@
     "jsx-quotes": ["error", "prefer-double"]
   },
   "globals" : {
+    "__BUILD__": false,
     "__DEV__": false,
     "__PROD__": false,
     "__SERVER__": false,

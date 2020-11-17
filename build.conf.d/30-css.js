@@ -6,7 +6,11 @@ const autoprefixer = require('autoprefixer')
 const CssLoader = require.resolve('css-loader')
 
 const enhancer = (opts = {}, config) => {
-  const isServerSide = opts.isServerSide
+  // Extraneous builds don't usually need css support
+  if (opts.id !== 'client' && opts.id !== 'server') return config
+
+  // Easy access to current build config
+  const isServerSide = opts.id === 'server'
   const isWatch = opts.isWatch
   const isProd = process.env.NODE_ENV === 'production'
 

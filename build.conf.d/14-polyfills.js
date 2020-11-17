@@ -4,7 +4,7 @@ const path = require('path')
 const appDirectory = fs.realpathSync(process.cwd())
 
 const enhancer = (opts = {}, config) => {
-  if (!opts.isServerSide) {
+  if (opts.id === 'client') {
     // Add a polyfills bundle, with either the ones picked by the user,
     // or some sane defaults
     const userPolyfills = path.resolve(appDirectory, 'src', 'polyfills.js')

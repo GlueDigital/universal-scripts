@@ -1,18 +1,15 @@
 const fs = require('fs')
 const path = require('path')
 const webpack = require('webpack')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
 const JsconfdPlugin = require('js.conf.d-webpack')
 const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin')
 
 const appDirectory = fs.realpathSync(process.cwd())
 
 const enhancer = (opts = {}) => {
-  const isServerSide = opts.isServerSide
-  const isWatch = opts.isWatch
+  const id = opts.id
+  const isClientSide = id === 'client'
   const isProd = process.env.NODE_ENV === 'production'
-
-  const side = isServerSide ? 'server' : 'client'
 
   const babelOptions = {
     presets: [require.resolve('babel-preset-react-app')],
@@ -22,18 +19,18 @@ const enhancer = (opts = {}) => {
   }
 
   const config = {
-    name: isServerSide ? 'server' : 'client',
+    name: id,
     devtool: isProd ? 'source-map' : 'cheap-module-source-map',
-    target: isServerSide ? 'node' : 'web',
+    target: isClientSide ? 'web' : 'node',
     mode: isProd ? 'production' : 'development',
     performance: { hints: false },
     output: {
       path: path.resolve(
-        appDirectory, 'build', isServerSide ? 'server' : 'client'),
+        appDirectory, 'build', id),
       pathinfo: true,
-      filename: isServerSide ? '[name].js' : (bundle) =>
+      filename: !isClientSide ? '[name].js' : (bundle) =>
         bundle.chunk.name === 'polyfills' ? 'polyfills.js' : '[name].[hash].js',
-      chunkFilename: isServerSide ? '[name].js' : '[name].[hash].js',
+      chunkFilename: isClientSide ? '[name].[hash].js' : '[name].js',
       publicPath: process.env.SUBDIRECTORY || '/'
     },
     resolve: {
@@ -58,9 +55,9 @@ const enhancer = (opts = {}) => {
       new JsconfdPlugin({
         folders: [
           path.resolve(__dirname, '..', 'runtime.conf.d'),
-          path.resolve(__dirname, '..', 'runtime.conf.d', side),
+          path.resolve(__dirname, '..', 'runtime.conf.d', id),
           path.resolve(appDirectory, 'runtime.conf.d'),
-          path.resolve(appDirectory, 'runtime.conf.d', side)
+          path.resolve(appDirectory, 'runtime.conf.d', id)
         ],
         merge: (current, add) => {
           for (const key of Object.keys(add)) {
@@ -108,53 +105,6 @@ const enhancer = (opts = {}) => {
           }
         }
       }
-    }
-  }
-
-  if (isServerSide) {
-    // For the in-memory server side HMR, we need to run the server outside
-    // of the build, as it will contain the dev server, and do HMR for the part
-    // which is built.
-    // But when doing a static build, we want the entire server on the output.
-    const serverPath = path.resolve(__dirname, '..', 'server')
-    if (isWatch) {
-      config.entry = {
-        server: [path.resolve(serverPath, 'serverMiddleware')]
-      }
-      config.output.libraryTarget = 'commonjs2'
-    } else {
-      config.entry = {
-        server: [path.resolve(serverPath, 'main')]
-      }
-    }
-    // Don't bundle node_modules for the server: node can access it directly
-    config.externals = [
-      require('webpack-node-externals')({
-        allowlist: ['universal-scripts', 'js.conf.d-webpack/src']
-      })
-    ]
-  } else {
-    // Add our render entrypoint
-    config.entry = {
-      main: [
-        path.resolve(__dirname, '..', 'client', 'init')
-      ]
-    }
-
-    if (!isWatch) {
-      // Copy static assets to output dir
-      // /*
-      config.plugins.push(
-        new CopyWebpackPlugin({
-          patterns: [
-            {
-              from: path.resolve(appDirectory, 'src', 'static'),
-              to: path.resolve(appDirectory, 'build', 'client')
-            }
-          ]
-        })
-      )
-      // */
     }
   }
 
