@@ -14,6 +14,11 @@ const arrayMerger = (current, add) => {
 const appDirectory = fs.realpathSync(process.cwd())
 const libConfig = path.resolve(__dirname, 'build.conf.d')
 const userConfig = path.resolve(appDirectory, 'build.conf.d')
-const config = jsconfd([libConfig, userConfig], { merge: arrayMerger })
 
-module.exports = config
+const getConfig = (target) => {
+  const specificUserConfig = path.resolve(userConfig, target)
+  const config = jsconfd([libConfig, userConfig, specificUserConfig], { merge: arrayMerger })
+  return config
+}
+
+module.exports = getConfig
