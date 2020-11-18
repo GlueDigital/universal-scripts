@@ -1,10 +1,10 @@
 const TerserPlugin = require('terser-webpack-plugin')
 
-const enhancer = (opts = {}, config) => {
+const enhancer = (_, config) => {
   const isProd = process.env.NODE_ENV === 'production'
 
   // Production builds get minified JS
-  if (opts.id !== 'client' && isProd) {
+  if (isProd) {
     config.optimization.minimizer.push(
       new TerserPlugin({
         cache: true,
