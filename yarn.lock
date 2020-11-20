@@ -6509,10 +6509,10 @@ js-yaml@^3.13.1:
     argparse "^1.0.7"
     esprima "^4.0.0"
 
-js.conf.d-webpack@^1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/js.conf.d-webpack/-/js.conf.d-webpack-1.3.0.tgz#865ea63b321c1f443c63e2c016b7f73a94d64094"
-  integrity sha512-fwZ0n37b0QwcgCur0zTSry/XHJQKd6a+xSHHbij7TvnzmRnvr6wDOwlZH0bjTFw+5GqMnekEWAuboNJD6W6Hqg==
+js.conf.d-webpack@^1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/js.conf.d-webpack/-/js.conf.d-webpack-1.3.1.tgz#ffae3d8b82e148b5969f6adcda5ab04739a29437"
+  integrity sha512-tjLnL7xrmY6xC3XRNZaNCJe2NKWhMz5QsRzpP0jQkiyS2rxS+XtQ8rJ0XON9zpSOwsBGFBcTN6nZNXPG77v6fA==
   dependencies:
     js.conf.d "^1.3.0"
     webpack-virtual-modules "^0.3.1"

@@ -28,9 +28,9 @@ module.exports = (
   const templatePackage = templateInfo.package || {}
 
   appPackage.scripts = {
-    start: 'NODE_PATH=./node_modules universal-scripts start',
-    build: 'NODE_PATH=./node_modules universal-scripts build',
-    test: 'NODE_PATH=./node_modules universal-scripts test',
+    start: 'universal-scripts start',
+    build: 'universal-scripts build',
+    test: 'universal-scripts test',
     serve: 'node build/server/server.js',
     lint: 'eslint src',
     'heroku-postbuild': 'npm run build',
