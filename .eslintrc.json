@@ -2,13 +2,15 @@
   "parser"  : "babel-eslint",
   "extends": [
     "standard",
+    "standard-jsx",
     "standard-react"
   ],
   "plugins": [
     "babel"
   ],
   "rules": {
-    "jsx-quotes": ["error", "prefer-double"]
+    "jsx-quotes": ["error", "prefer-double"],
+    "multiline-ternary": "off"
   },
   "globals" : {
     "__BUILD__": false,
