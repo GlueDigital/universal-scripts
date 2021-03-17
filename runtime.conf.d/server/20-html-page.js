@@ -13,6 +13,12 @@ if (!__WATCH__) {
   chunks = JSON.parse(fs.readFileSync(fname)).entrypoints
 }
 
+let index = false
+if (!__WATCH__ && !__SSR__) {
+  const fname = path.resolve('build', 'client', 'index.htm')
+  index = fs.readFileSync(fname)
+}
+
 const generateHtml = async (ctx, next) => {
   // These will hold the scripts and styles that will be included on the page.
   const scripts = []
@@ -52,7 +58,13 @@ const generateHtml = async (ctx, next) => {
   ctx.body = renderHtmlLayout(head, renderOutput, scripts, styles)
 }
 
-export const serverMiddleware = generateHtml
+const staticHtml = async (ctx, next) => {
+  // We just use a prebuilt html
+  await next()
+  ctx.body = index
+}
+
+export const serverMiddleware = index ? staticHtml : generateHtml
 
 const addDefaultHeaders = async (ctx, next) =>
   <HelmetProvider context={ctx.helmetContext}>
