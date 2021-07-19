@@ -17,7 +17,8 @@ const addRedux = async (ctx, next) => {
       origin: ctx.request.origin,
       path: ctx.request.path,
       ip: ctx.request.ip,
-      cookies: parseCookies(ctx.request.headers.cookie)
+      cookies: parseCookies(ctx.request.headers.cookie),
+      ...ctx.initExtras // Allow passing in data from previous middlewares
     }
   })
 
