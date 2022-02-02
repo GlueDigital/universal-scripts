@@ -1,16 +1,24 @@
 // Exports for user-code
-import langs from 'src/locales'
+const langs = require('src/locales').default
 // import { updateIntl } from 'react-intl-redux'
 
-export const CLEANUP = '@@universal-scripts/cleanup'
-export const REQUEST_INIT = '@@universal-scripts/request-init'
-export const CLIENT_INIT = '@@universal-scripts/client-init'
-export const UPDATE_INTL = '@@intl/UPDATE'
+const CLEANUP = '@@universal-scripts/cleanup'
+const REQUEST_INIT = '@@universal-scripts/request-init'
+const CLIENT_INIT = '@@universal-scripts/client-init'
+const UPDATE_INTL = '@@intl/UPDATE'
 
-export const setLang = lang => ({
+const setLang = lang => ({
   type: UPDATE_INTL,
   payload: {
     locale: lang,
     messages: langs[lang]
   }
 })
+
+module.exports = {
+  CLEANUP,
+  REQUEST_INIT,
+  CLIENT_INIT,
+  UPDATE_INTL,
+  setLang
+}
