@@ -18,6 +18,10 @@ const config = {
   transformIgnorePatterns: [
     '[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$'
   ],
+  moduleNameMapper: {
+    '\\.(css|sass|scss)$': path.resolve(__dirname, '../lib/jest/emptyMock.js'),
+    '\\.(gif|jpg|jpeg|png|ttf|eot|svg)$': path.resolve(__dirname, '../lib/jest/emptyMock.js')
+  },
   setupFilesAfterEnv: []
 }
 
