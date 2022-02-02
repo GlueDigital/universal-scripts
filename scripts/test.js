@@ -12,6 +12,7 @@ const argv = process.argv.slice(2)
 
 const config = {
   roots: ['<rootDir>/src'],
+  moduleDirectories: ['node_modules', '.'],
   transform: {
     '^.+\\.(js|jsx|ts|tsx)$': path.resolve(__dirname, '../lib/jest/babelTransform')
   },
