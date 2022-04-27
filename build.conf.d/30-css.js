@@ -20,8 +20,8 @@ const enhancer = (opts = {}, config) => {
   }
 
   const transformAssetUrl = (asset) => {
-    if (asset.url.indexOf('//') !== -1) return asset.url
-    return '~src/static' + asset.url
+    const isRootImport = asset.url[0] === '/' && asset.url[1] !== '/'
+    return isRootImport ? '~src/static' + asset.url : asset.url
   }
 
   const postcssLoader = {
