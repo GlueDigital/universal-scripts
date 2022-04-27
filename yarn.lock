@@ -6461,9 +6461,9 @@ nan@^2.12.1, nan@^2.13.2:
   integrity sha512-M2ufzIiINKCuDfBSAUr1vWQ+vuVcA9kqx8JJUsbQi6yf1uGRyb7HfpdfUr5qLXf3B/t8dPvcjhKMmlfnP47EzQ==
 
 nanoid@^3.1.23:
-  version "3.1.23"
-  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.1.23.tgz#f744086ce7c2bc47ee0a8472574d5c78e4183a81"
-  integrity sha512-FiB0kzdP0FFVGDKlRLEQ1BgDzU87dy5NnzjeW9YZNt+/c3+q82EQDUwniSAUxp/F0gFNI1ZhKU1FqYsMuqZVnw==
+  version "3.3.3"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.3.tgz#fd8e8b7aa761fe807dba2d1b98fb7241bb724a25"
+  integrity sha512-p1sjXuopFs0xg+fPASzQ28agW1oHD7xDsd9Xkf3T15H3c/cifrFHVwrh74PdoklAPi+i7MdRsE47vm2r6JoB+w==
 
 nanomatch@^1.2.9:
   version "1.2.13"
@@ -8042,10 +8042,10 @@ run-queue@^1.0.0, run-queue@^1.0.3:
   dependencies:
     aproba "^1.1.1"
 
-ruse-fetch@^2.1.2:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/ruse-fetch/-/ruse-fetch-2.1.2.tgz#c934e186c247fe3f0f6cceb74be040423e6e19c5"
-  integrity sha512-h4WgA8NhmzIDeO66m3sWVL1zI+NOWnYY/3IiNIS/YDihCIwQlaTYFlRK4Gm57D+r+6Z+VlyT1Rq7Ol+Nz+7lmg==
+ruse-fetch@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/ruse-fetch/-/ruse-fetch-2.2.1.tgz#61379fbeec6be96f88458de67e070982b57130c1"
+  integrity sha512-hQa8BIFNXgb398acMmUoxBzi+OMdzkrjnh5pjI8LA4mLZb7U+BIenntURaMdCW1+V0plN51pkcfLumlGngt/6w==
 
 safe-buffer@5.1.2, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   version "5.1.2"
