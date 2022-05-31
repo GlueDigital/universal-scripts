@@ -43,11 +43,13 @@ if (__WATCH__) {
     // Add hook to compiler to reload server middleware on rebuild
     const mfs = koaWebpackInstance.devMiddleware.fileSystem
     const plugin = { name: 'universal-scripts' }
-    compiler.hooks.done.tap(plugin, stats => {
+    compiler.hooks.done.tap(plugin, async stats => {
       const fname = path.resolve(appDirectory, 'build', 'server', 'server.js')
       try {
         const newMiddleware = mfs.readFileSync(fname).toString()
-        serverMiddleware = requireFromString(newMiddleware, fname).default
+        const mw = requireFromString(newMiddleware, fname)
+        await mw.startup()
+        serverMiddleware = mw.default
       } catch (e) {
         console.warn(chalk.red.bold('Couldn\'t load middleware.'))
         console.log(chalk.red('Please fix any build errors above, and ' +
@@ -73,7 +75,9 @@ const serve = async (compiler) => {
     await configureHMR(app, compiler)
   } else {
     // Add the server-side rendering middleware (no HMR)
-    app.use(require('./serverMiddleware').default)
+    const mw = require('./serverMiddleware')
+    await mw.startup()
+    app.use(mw.default)
   }
 
   // Wrap it up
