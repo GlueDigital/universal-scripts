@@ -1,4 +1,4 @@
-import { renderToStringAsync } from 'react-async-ssr'
+import { renderToPipeableStream } from 'react-dom/server'
 
 // import { renderToStringAsync } from 'react-async-ssr'
 
@@ -10,13 +10,23 @@ const renderMiddleware = async (ctx, next) => {
   const children = await ctx.triggerHook('reactRoot')(ctx, false)
 
   // Actual rendering
-  ctx.body = await renderToStringAsync(children)
-  ctx.type = 'text/html'
-
-  if (ctx.renderCtx && ctx.renderCtx.url) {
-    // There was a redirect
-    ctx.redirect(ctx.renderCtx.url)
-  }
+  await new Promise((resolve, reject) => {
+    const stream = renderToPipeableStream(children, {
+      bootstrapScripts: ctx.assets?.scripts,
+      onAllReady: () => {
+        if (ctx.renderCtx && ctx.renderCtx.url) {
+          // There was a redirect
+          ctx.redirect(ctx.renderCtx.url)
+        } else {
+          ctx.stream = stream
+        }
+        resolve()
+      },
+      onError: (e) => {
+        reject(e)
+      }
+    })
+  })
 }
 
 export const serverMiddleware = renderMiddleware

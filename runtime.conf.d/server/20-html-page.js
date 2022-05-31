@@ -35,9 +35,9 @@ const generateHtml = async (ctx, next) => {
   }
   for (const asset of assets) {
     if (asset.endsWith('.js') && asset !== 'polyfills.js') {
-      scripts.push(<script key={asset} src={basename + asset} />)
+      scripts.push(basename + asset)
     } else if (asset.endsWith('.css')) {
-      styles.push(<link key={asset} rel="stylesheet" href={basename + asset} />)
+      styles.push(`<link rel="stylesheet" href="${basename + asset}" />`)
     }
   }
 
@@ -52,15 +52,22 @@ const generateHtml = async (ctx, next) => {
 
   // Get the headers from react-helmet
   const head = ctx.helmetContext.helmet
+  ctx.res.write(renderHtmlLayout(head, styles))
 
-  // Set the response
-  const renderOutput = ctx.body // Set from inside
-  ctx.body = renderHtmlLayout(head, renderOutput, scripts, styles)
+  // Add the stream, if any, from render
+  if (ctx.stream) {
+    ctx.respond = false
+    ctx.res.statusCode = 200
+    ctx.response.set('content-type', 'text/html')
+    ctx.stream.pipe(ctx.res)
+    ctx.res.end()
+  }
 }
 
 const staticHtml = async (ctx, next) => {
   // We just use a prebuilt html
   await next()
+  ctx.type = 'text/html'
   ctx.body = index
 }
 
