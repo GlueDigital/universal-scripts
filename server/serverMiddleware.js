@@ -13,6 +13,6 @@ const triggeringMiddleware = (ctx, next) => {
   return next()
 }
 
-export const startup = () => Promise.all(config.startup?.map(x => x()))
+export const startup = () => config.startup && Promise.all(config.startup.map(x => x()))
 
 export default compose([triggeringMiddleware, ...config.serverMiddleware])
