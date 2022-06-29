@@ -1,6 +1,6 @@
 {
   "name": "universal-scripts",
-  "version": "2.6.13",
+  "version": "2.6.14",
   "description": "Build universal apps without configuration.",
   "main": "index.js",
   "repository": "GlueDigital/universal-scripts",
