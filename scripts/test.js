@@ -10,7 +10,6 @@ const getConfig = require('../config')
 const argv = process.argv.slice(2)
 
 const configs = getConfig('test')
-console.log('>>>', configs)
 const config = configs.test.reduce((cfg, enhancer) => enhancer({}, cfg), {})
 
 argv.push('--config', JSON.stringify(config))
