@@ -35,10 +35,7 @@ const addRedux = async (ctx, next) => {
 
   // Send store contents along the page
   const storeOutput = jsesc(state, { isScriptContext: true })
-  const storeCode = { __html: '___INITIAL_STATE__=' + storeOutput }
-  ctx.assets && ctx.assets.scripts && ctx.assets.scripts.unshift(
-    <script key="store" dangerouslySetInnerHTML={storeCode} />
-  )
+  ctx.assets?.styles.unshift('<script>___INITIAL_STATE__=' + storeOutput + '</script>')
 }
 
 const parseCookies = s => !s ? {} : s
