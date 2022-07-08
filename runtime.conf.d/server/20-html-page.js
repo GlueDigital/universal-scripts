@@ -23,6 +23,7 @@ const generateHtml = async (ctx, next) => {
   // These will hold the scripts and styles that will be included on the page.
   const scripts = []
   const styles = []
+  const reqBasename = ctx.basename || basename
 
   // If the DEV middleware got some assets, add them.
   let assets = []
@@ -35,9 +36,9 @@ const generateHtml = async (ctx, next) => {
   }
   for (const asset of assets) {
     if (asset.endsWith('.js') && asset !== 'polyfills.js') {
-      scripts.push(basename + asset)
+      scripts.push(reqBasename + asset)
     } else if (asset.endsWith('.css')) {
-      styles.push(`<link rel="stylesheet" href="${basename + asset}" />`)
+      styles.push(`<link rel="stylesheet" href="${reqBasename + asset}" />`)
     }
   }
 
