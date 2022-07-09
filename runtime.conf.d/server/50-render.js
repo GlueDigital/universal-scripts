@@ -18,6 +18,7 @@ const renderMiddleware = async (ctx, next) => {
           // There was a redirect
           ctx.redirect(ctx.renderCtx.url)
         } else {
+          ctx.set('Content-Type', 'text/html; charset=utf-8')
           ctx.stream = stream
         }
         resolve()
