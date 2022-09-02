@@ -27,7 +27,7 @@ if (__WATCH__) {
   configureHMR = async (app, compiler) => {
     // Enable DEV middleware
     const koaWebpackInstance = await koaWebpack({
-      compiler: compiler,
+      compiler,
       devMiddleware: {
         publicPath: '/',
         serverSideRender: true,

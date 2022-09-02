@@ -1,16 +1,22 @@
 {
-  "parser"  : "babel-eslint",
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
   "extends": [
-    "standard",
-    "standard-jsx",
-    "standard-react"
+    "plugin:react/recommended",
+    "standard-with-typescript"
   ],
   "plugins": [
-    "babel"
+    "react",
+    "react-hooks"
   ],
   "rules": {
     "jsx-quotes": ["error", "prefer-double"],
-    "multiline-ternary": "off"
+    "multiline-ternary": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
   },
   "globals" : {
     "__BUILD__": false,
