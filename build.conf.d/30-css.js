@@ -7,7 +7,7 @@ const CssLoader = require.resolve('css-loader')
 
 const enhancer = (opts = {}, config) => {
   // Extraneous builds don't usually need css support
-  if (opts.id !== 'client' && opts.id !== 'server') return config
+  if (opts.id !== 'client' && opts.id !== 'server' && !opts.css) return config
 
   // Easy access to current build config
   const isServerSide = opts.id === 'server'
