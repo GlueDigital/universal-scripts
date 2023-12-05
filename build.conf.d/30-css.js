@@ -52,7 +52,12 @@ const enhancer = (opts = {}, config) => {
   const cssChain = [cssLoader, postcssLoader]
 
   if (!isServerSide) {
-    const styleLoader = { loader: require.resolve('style-loader') }
+    const styleLoaderOptions = {}
+    if (opts.css?.insert) styleLoaderOptions.insert = opts.css.insert
+    const styleLoader = {
+      loader: require.resolve('style-loader'),
+      options: styleLoaderOptions
+    }
     sassChain.unshift(styleLoader)
     cssChain.unshift(styleLoader)
   }
