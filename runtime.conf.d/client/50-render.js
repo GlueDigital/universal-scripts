@@ -1,13 +1,20 @@
 import ReactDOM from 'react-dom/client'
 
+let rendered
+
 const clientRender = async (ctx) => {
   const rootNode = document.getElementById('root')
   const children = await ctx.triggerHook('reactRoot')(ctx, false)
+  if (rendered) {
+    rendered.render(children)
+    return
+  }
   if (__SSR__) {
-    ReactDOM.hydrateRoot(rootNode, children)
+    rendered = ReactDOM.hydrateRoot(rootNode, children)
   } else {
     const root = ReactDOM.createRoot(rootNode)
     root.render(children)
+    rendered = root
   }
 }
 
