@@ -77,11 +77,19 @@ module.exports = (
   console.log('Copying template files...')
   fs.copySync(path.join(templatePath, 'template'), appPath)
 
+  const filesToRename = ['gitignore, eslintrc']
+
   // After copying tasks
-  fs.renameSync(
-    path.resolve(appPath, 'gitignore'),
-    path.resolve(appPath, '.gitignore')
-  )
+  filesToRename.forEach((file) => {
+    try {
+      fs.renameSync(
+        path.resolve(appPath, file),
+        path.resolve(appPath, `.${file}`)
+      )
+    } catch (err) {
+      console.log(`Error renaming file: ${file}`)
+    }
+  })
 
   // Uninstall template
   console.log('Removing template package...')
