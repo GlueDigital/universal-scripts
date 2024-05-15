@@ -42,7 +42,7 @@
     "css-loader": "^5.0.1",
     "directory-named-webpack-plugin": "^4.0.1",
     "dotenv": "^8.2.0",
-    "eslint": "^8.23.0",
+    "eslint": "^8.57.0",
     "eslint-config-standard-with-typescript": "^43.0.1",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-n": "^17.7.0",
