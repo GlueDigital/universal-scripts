@@ -7,7 +7,7 @@ const CssLoader = require.resolve('css-loader')
 
 const enhancer = (opts = {}, config) => {
   // Extraneous builds don't usually need css support
-  if (opts.id !== 'client' && opts.id !== 'server') return config
+  if (opts.id !== 'client' && opts.id !== 'server' && !opts.css) return config
 
   // Easy access to current build config
   const isServerSide = opts.id === 'server'
@@ -52,7 +52,12 @@ const enhancer = (opts = {}, config) => {
   const cssChain = [cssLoader, postcssLoader]
 
   if (!isServerSide) {
-    const styleLoader = { loader: require.resolve('style-loader') }
+    const styleLoaderOptions = {}
+    if (opts.css?.insert) styleLoaderOptions.insert = opts.css.insert
+    const styleLoader = {
+      loader: require.resolve('style-loader'),
+      options: styleLoaderOptions
+    }
     sassChain.unshift(styleLoader)
     cssChain.unshift(styleLoader)
   }
