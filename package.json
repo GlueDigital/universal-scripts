@@ -67,7 +67,7 @@
     "postcss": "^8.2.4",
     "postcss-loader": "^4.2.0",
     "postcss-url": "^10.1.1",
-    "react-helmet-async": "^1.0.9",
+    "react-helmet-async": "^2.0.5",
     "redux": "^4.1.0",
     "redux-thunk": "^2.3.0",
     "regenerator-runtime": "^0.13.7",
