@@ -38,7 +38,7 @@ module.exports = (
   }
 
   appPackage.engines = {
-    node: '>=7.6'
+    node: '>=14'
   }
 
   fs.writeFileSync(
@@ -77,14 +77,14 @@ module.exports = (
   console.log('Copying template files...')
   fs.copySync(path.join(templatePath, 'template'), appPath)
 
-  const filesToRename = ['gitignore, eslintrc']
+  const filesToRename = ['gitignore', 'eslintrc', 'prettierrc', 'prettierignore']
 
   // After copying tasks
   filesToRename.forEach((file) => {
     try {
       fs.renameSync(
         path.resolve(appPath, file),
-        path.resolve(appPath, `.${file}`)
+        path.resolve(appPath, '.' + file)
       )
     } catch (err) {
     }
