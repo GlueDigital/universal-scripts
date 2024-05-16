@@ -87,7 +87,6 @@ module.exports = (
         path.resolve(appPath, `.${file}`)
       )
     } catch (err) {
-      console.log(`Error renaming file: ${file}`)
     }
   })
 
