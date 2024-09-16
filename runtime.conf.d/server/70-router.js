@@ -12,16 +12,19 @@ try {
 
 const App = __SSR__ && require('src/routes').default
 
-const routerRoot = (ctx) => {
+const routerRoot = (req, res, next) => {
   if (!App) return null
   // On the server, pass the URL from context, and use StaticRouter
-  const url = ctx.req.url
-  ctx.renderCtx = {}
+  req.renderCtx = {}
+
+  const url = req.url
+
   return (
     <StaticRouter location={url}>
       <App />
     </StaticRouter>
   )
+
 }
 
 export const reactRoot = routerRoot

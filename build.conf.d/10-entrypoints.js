@@ -1,6 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const webpack = require('webpack')
 
 const appDirectory = fs.realpathSync(process.cwd())
 
@@ -14,6 +15,7 @@ const enhancer = (opts = {}, config) => {
     // But when doing a static build, we want the entire server on the output.
     const serverPath = path.resolve(__dirname, '..', 'server')
     if (isWatch) {
+      config.plugins.push(new webpack.HotModuleReplacementPlugin())
       config.entry = {
         server: [path.resolve(serverPath, 'serverMiddleware')]
       }
@@ -46,6 +48,9 @@ const enhancer = (opts = {}, config) => {
           ]
         })
       )
+    } else {
+      config.plugins.push(new webpack.HotModuleReplacementPlugin())
+      config.entry.main.push('webpack-hot-middleware/client?reload=true')
     }
     return config
   }

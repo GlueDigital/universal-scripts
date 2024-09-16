@@ -11,32 +11,21 @@ const enhancer = (opts = {}) => {
   const isClientSide = id === 'client'
   const isProd = process.env.NODE_ENV === 'production'
 
-  const babelOptions = {
-    presets: [require.resolve('babel-preset-react-app')],
-    sourceType: 'unambiguous',
-    compact: false,
-    cacheDirectory: true
-  }
-
   const config = {
     name: id,
     devtool: isProd ? 'source-map' : 'cheap-module-source-map',
     target: isClientSide ? 'web' : 'node',
     mode: isProd ? 'production' : 'development',
-    performance: { hints: false },
+    performance: { hints: 'warning' },
     output: {
       path: path.resolve(
         appDirectory, 'build', id),
       pathinfo: true,
-      filename: !isClientSide ? '[name].js' : (bundle) =>
-        bundle.chunk.name === 'polyfills' ? 'polyfills.js' : '[name].[hash].js',
-      chunkFilename: isClientSide ? '[name].[hash].js' : '[name].js',
+      filename: !isClientSide ? '[name].js' : '[name].[contenthash].js',
+      chunkFilename: isClientSide ? '[name].[contenthash].js' : '[name].js',
       publicPath: process.env.SUBDIRECTORY || '/'
     },
     resolve: {
-      alias: {
-        'any-promise': 'core-js/fn/promise' // Prevents warning on webpack
-      },
       extensions: ['.wasm', '.mjs', '.ts', '.js', '.tsx', '.jsx', '.json', '.sass', '.scss', '.css'],
       modules: [
         path.resolve(__dirname, '..', 'node_modules'),
@@ -51,7 +40,6 @@ const enhancer = (opts = {}) => {
       ]
     },
     plugins: [
-      new webpack.NoEmitOnErrorsPlugin(),
       new JsconfdPlugin({
         folders: [
           path.resolve(__dirname, '..', 'runtime.conf.d'),
@@ -66,34 +54,65 @@ const enhancer = (opts = {}) => {
           }
           return current
         }
-      })
+      }),
     ],
     module: {
       rules: [
         {
-          test: /\.(js|jsx)$/,
-          exclude: /universal-scripts\/node_modules/,
-          loader: require.resolve('babel-loader'),
-          options: babelOptions
+          test: /\.(js|jsx|mjs)$/,
+          exclude: /node_modules\/(?!universal-scripts)/,
+          loader: 'babel-loader',
+          options: {
+            presets: [
+              [
+                "@babel/preset-env",
+                {
+                  // targets: {
+                  //   edge: "17",
+                  //   firefox: "60",
+                  //   chrome: "67",
+                  //   safari: "11.1"
+                  // },
+                  useBuiltIns: "usage",
+                  corejs: 3
+                }
+              ],
+              "@babel/preset-react"
+            ],
+            plugins: ['@babel/plugin-transform-runtime'],
+            exclude: [
+              // \\ for Windows, / for macOS and Linux
+              /node_modules[\\/]core-js/,
+              /node_modules[\\/]webpack[\\/]buildin/,
+            ],
+          }
         }, {
           test: /\.(ts|tsx)$/,
+          exclude: /universal-scripts\/node_modules/,
           use: [
             {
-              loader: require.resolve('babel-loader'),
-              options: babelOptions
-            }, {
-              loader: require.resolve('ts-loader')
+              loader: 'babel-loader',
+              options: {
+                presets: ["@babel/preset-env", '@babel/preset-typescript',"@babel/preset-react"],
+                plugins: ['@babel/plugin-transform-runtime']
+              }
             }
           ]
-        }, {
-          test: /\.(jpg|png|gif|webp|mp4|webm|svg|ico|woff|woff2|otf|ttf|eot)$/,
-          loader: require.resolve('file-loader'),
-          options: {
-            name: '[path][name].[ext]?[md5:hash:hex:8]',
-            emitFile: false,
-            context: 'src/static'
+        },
+        {
+          test: /\.(jpg|png|gif|webp|svg|ico|avif|mp4|webm)$/i,
+          type: 'asset/resource',
+          generator: {
+            filename: 'static/[name].[contenthash][ext]'
           }
-        }
+        },
+        {
+          test: /\.(woff|woff2|eot|ttf|otf)$/i,
+          type: 'asset/resource',
+          generator: {
+            filename: 'static/[name].[contenthash][ext]'
+          }
+        },
       ]
     },
     optimization: {

@@ -1,10 +1,13 @@
 require('dotenv').config()
 const chalk = require('chalk')
 const fs = require('fs')
-const Koa = require('koa')
+const express = require('express')
+const webpackDevMiddleware = require('webpack-dev-middleware')
+const webpackHotMiddleware = require('webpack-hot-middleware')
 const path = require('path')
 const requireFromString = require('require-from-string')
 const config = require('../config')
+const cookieParser = require('cookie-parser');
 
 const appDirectory = fs.realpathSync(process.cwd())
 const port = process.env.PORT || 3000
@@ -13,35 +16,41 @@ const port = process.env.PORT || 3000
 let configureHMR
 if (__WATCH__) {
   // We need to hot-reload serverMiddleware, but we're the ones building it.
-  const koaWebpack = require('koa-webpack')
   let serverMiddleware = null
 
-  const serverMiddlewareProxy = (ctx, next) => {
+  const loadServerMiddlewareProxy = (app) => {
     if (serverMiddleware) {
-      return serverMiddleware(ctx, next)
+      app.use(serverMiddleware.shift())
+      app.use(serverMiddleware.shift())
+      async function myAwesomeMiddleware(req, res) {
+        const copy = [...serverMiddleware]
+        const next = () => {
+          const mw = copy.shift()
+          return !mw ? null : mw(req, res, next)
+        }
+        await next()
+      }
+      app.use(myAwesomeMiddleware)
     } else {
       console.log('Request received, but no middleware loaded yet')
     }
   }
 
-  configureHMR = async (app, compiler) => {
+  configureHMR = (app, compiler) => {
     // Enable DEV middleware
-    const koaWebpackInstance = await koaWebpack({
-      compiler,
-      devMiddleware: {
-        publicPath: '/',
-        serverSideRender: true,
-        logLevel: 'warn',
-        stats: false
-      },
-      hotClient: {
-        logLevel: 'warn'
-      }
+    const devMiddleware = webpackDevMiddleware(compiler, {
+      stats: 'minimal',
+      publicPath: '/',
+      serverSideRender: true,
     })
-    app.use(koaWebpackInstance)
+
+    const hotMiddleware = webpackHotMiddleware(compiler)
+
+    app.use(devMiddleware)
+    app.use(hotMiddleware)
 
     // Add hook to compiler to reload server middleware on rebuild
-    const mfs = koaWebpackInstance.devMiddleware.fileSystem
+    const mfs = devMiddleware.context.outputFileSystem
     const plugin = { name: 'universal-scripts' }
     compiler.hooks.done.tap(plugin, async stats => {
       const fname = path.resolve(appDirectory, 'build', 'server', 'server.js')
@@ -50,6 +59,7 @@ if (__WATCH__) {
         const mw = requireFromString(newMiddleware, fname)
         await mw.startup()
         serverMiddleware = mw.default
+        loadServerMiddlewareProxy(app)
       } catch (e) {
         console.warn(chalk.red.bold('Couldn\'t load middleware.'))
         console.log(chalk.red('Please fix any build errors above, and ' +
@@ -57,15 +67,14 @@ if (__WATCH__) {
         console.log('Details:', e)
       }
     })
-
-    // Finally add the server middleware too (through proxy so it can reload)
-    app.use(serverMiddlewareProxy)
   }
 }
 
 const serve = async (compiler) => {
   console.log(chalk.green('Starting server.'))
-  const app = new Koa()
+  const app = express()
+
+  app.use(cookieParser())
 
   // Run anything on the `app` hook
   config.app && config.app.forEach(f => f(app))

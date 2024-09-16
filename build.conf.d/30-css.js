@@ -1,6 +1,6 @@
 const path = require('path')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin")
 const PostCssUrl = require('postcss-url')
 const autoprefixer = require('autoprefixer')
 const CssLoader = require.resolve('css-loader')
@@ -25,7 +25,7 @@ const enhancer = (opts = {}, config) => {
   }
 
   const postcssLoader = {
-    loader: require.resolve('postcss-loader'),
+    loader: 'postcss-loader',
     options: {
       postcssOptions: {
         ident: 'postcss',
@@ -39,7 +39,7 @@ const enhancer = (opts = {}, config) => {
   }
 
   const sassLoader = {
-    loader: require.resolve('sass-loader'),
+    loader: 'sass-loader',
     options: {
       sourceMap: true,
       sassOptions: {
@@ -49,13 +49,13 @@ const enhancer = (opts = {}, config) => {
   }
 
   const sassChain = [cssLoader, postcssLoader, sassLoader]
-  const cssChain = [cssLoader, postcssLoader]
+  const cssChain = [MiniCssExtractPlugin.loader, cssLoader, postcssLoader]
 
   if (!isServerSide) {
     const styleLoaderOptions = {}
     if (opts.css?.insert) styleLoaderOptions.insert = opts.css.insert
     const styleLoader = {
-      loader: require.resolve('style-loader'),
+      loader: 'style-loader',
       options: styleLoaderOptions
     }
     sassChain.unshift(styleLoader)
@@ -75,11 +75,7 @@ const enhancer = (opts = {}, config) => {
     // Production builds get optimized CSS
     if (isProd) {
       config.optimization.minimizer.push(
-        new OptimizeCSSAssetsPlugin({
-          cssProcessorPluginOptions: {
-            preset: ['default', { discardComments: { removeAll: true } }]
-          }
-        })
+        new CssMinimizerPlugin()
       )
     }
 
@@ -87,7 +83,7 @@ const enhancer = (opts = {}, config) => {
     if (!isWatch) {
       config.module.rules.filter((rule) =>
         rule.use && rule.use.find((entry) =>
-          entry.loader === require.resolve('css-loader'))
+          entry.loader === 'css-loader')
       ).forEach((rule) => {
         rule.use = [MiniCssExtractPlugin.loader, ...rule.use.slice(1)]
       })

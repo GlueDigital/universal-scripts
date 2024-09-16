@@ -19,21 +19,24 @@ if (!__WATCH__ && !__SSR__) {
   index = fs.readFileSync(fname)
 }
 
-const generateHtml = async (ctx, next) => {
-  // These will hold the scripts and styles that will be included on the page.
+const generateHtml = async (req, res, next) => {
+  // Estos contendrán los scripts y estilos que se incluirán en la página.
   const scripts = []
   const styles = []
-  const reqBasename = ctx.basename || basename
+  const reqBasename = req.basename || basename
 
-  // If the DEV middleware got some assets, add them.
+  // Si el middleware DEV tiene algunos assets, añádelos.
   let assets = []
   if (!__WATCH__) {
     assets = chunks
-  } else if (ctx.state.webpackStats) {
-    ctx.state.webpackStats.stats[0].compilation.entrypoints.forEach(e => {
-      e.chunks.forEach(c => { assets = assets.concat(c.files) })
+  } else if (req.app.locals.webpackStats) {
+    req.app.locals.webpackStats.stats[0].compilation.entrypoints.forEach(e => {
+      e.chunks.forEach(c => {
+        assets = assets.concat(c.files)
+      })
     })
   }
+
   for (const asset of assets) {
     if (asset.endsWith('.js') && asset !== 'polyfills.js') {
       scripts.push(reqBasename + asset)
@@ -42,41 +45,41 @@ const generateHtml = async (ctx, next) => {
     }
   }
 
-  // Make our lists visible for inner middlewares too
-  ctx.assets = { scripts, styles }
-  ctx.status = 200
+  // Hacer visibles nuestros recursos para otros middlewares también
+  req.assets = { scripts, styles }
+  res.status(200)
 
-  ctx.helmetContext = {}
+  req.helmetContext = {}
 
-  // Run any other middlewares
+  // Ejecuta cualquier otro middleware
   await next()
 
-  // Get the headers from react-helmet
-  const head = ctx.helmetContext.helmet
-  ctx.res.write(renderHtmlLayout(head, styles))
+  // Obtener los headers de react-helmet
+  const head = req.helmetContext.helmet
+  res.write(renderHtmlLayout(head, styles))
 
-  // Add the stream, if any, from render
-  if (ctx.stream) {
-    ctx.respond = false
-    ctx.res.statusCode = 200
-    ctx.response.set('content-type', 'text/html')
-    ctx.stream.pipe(ctx.res)
-    ctx.res.end()
+  // Añadir el stream, si existe, desde la renderización
+  if (req.stream) {
+    res.status(200)
+    res.set('content-type', 'text/html')
+    req.stream.pipe(res)
+  } else {
+    res.end()
   }
 }
 
-const staticHtml = async (ctx, next) => {
-  // We just use a prebuilt html
+const staticHtml = async (req, res, next) => {
+  // Usamos un HTML preconstruido
   await next()
-  ctx.type = 'text/html'
-  ctx.body = index
+  res.type('text/html')
+  res.send(index) // 'index' debe ser el HTML preconstruido
 }
 
 export const serverMiddleware = index ? staticHtml : generateHtml
 
-const addDefaultHeaders = async (ctx, next) =>
-  <HelmetProvider context={ctx.helmetContext}>
-    {defaultHeaders(ctx.store)}
+const addDefaultHeaders = async (req, res, next) =>
+  <HelmetProvider context={req.helmetContext}>
+    {defaultHeaders(req.store)}
     {await next()}
   </HelmetProvider>
 

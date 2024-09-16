@@ -10,22 +10,28 @@ const customError500 = __SSR__ && (() => {
   }
 })()
 
-const handleErrors = async (ctx, next) => {
-  try {
-    await next()
-  } catch (error) {
-    console.error(chalk.red('Error during render:\n') + error.stack)
-    ctx.status = 500
-    if (customError500) {
-      // Use the user-provided error page
-      ctx.body = customError500
-    } else if (__DEV__) {
-      // Provide some better feedback for errors during DEV
-      ctx.body =
-        '<h1>Internal Server Error</h1>\n' +
-        '<p>An exception was caught during page rendering:</p>\n' +
-        '<pre>' + error.stack + '</pre>'
-    }
+const handleErrors = async (err, req, res, next) => {
+  // Loguea el error con la pila
+  console.error(chalk.red('Error during render:\n') + err.stack)
+
+  // Establece el estado HTTP a 500 (Internal Server Error)
+  res.status(500)
+
+  // Si existe una página de error personalizada (customError500), la usamos
+  if (customError500) {
+    res.send(customError500)
+  }
+  // Si estamos en un entorno de desarrollo (__DEV__), mostrar el stack del error
+  else if (__DEV__) {
+    res.send(
+      '<h1>Internal Server Error</h1>\n' +
+      '<p>An exception was caught during page rendering:</p>\n' +
+      '<pre>' + err.stack + '</pre>'
+    )
+  }
+  // Si no hay una página personalizada ni estamos en desarrollo, mostrar un mensaje genérico
+  else {
+    res.send('<h1>Internal Server Error</h1>')
   }
 }
 

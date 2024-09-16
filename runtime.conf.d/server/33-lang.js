@@ -1,21 +1,20 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { IntlProvider } from 'react-intl'
 import { useSelector } from 'react-redux'
 import { setLang } from 'universal-scripts'
 import langs from 'src/locales'
 
-const addIntl = (ctx, next) => {
+const addIntl = async (req, res, next) => {
   // Determine language
   const availableLangs = Object.keys(langs)
-  let lang = ctx.request.acceptsLanguages(availableLangs) || availableLangs[0]
-  const forceLang = ctx.cookies.get('lang')
+  let lang = req.acceptsLanguages(availableLangs) || availableLangs[0]
+  const forceLang = req.cookies['lang']
   if (forceLang && availableLangs.indexOf(forceLang) >= 0) lang = forceLang
 
   // Set it
-  ctx.store && ctx.store.dispatch(setLang(lang))
+  req.store && req.store.dispatch(setLang(lang))
 
-  return next()
+  return await next()
 }
 
 export const serverMiddleware = addIntl
@@ -29,11 +28,7 @@ const ReduxIntlProvider = ({ children }) => {
   )
 }
 
-ReduxIntlProvider.propTypes = {
-  children: PropTypes.node
-}
-
-const renderIntlProvider = async (ctx, next) =>
+const renderIntlProvider = async (req, res, next) =>
   <ReduxIntlProvider>
     {await next()}
   </ReduxIntlProvider>

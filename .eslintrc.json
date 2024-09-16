@@ -6,7 +6,7 @@
   },
   "extends": [
     "plugin:react/recommended",
-    "standard-with-typescript"
+    // "standard-with-typescript"
   ],
   "plugins": [
     "react",

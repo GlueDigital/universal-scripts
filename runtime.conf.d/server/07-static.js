@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import koaStatic from 'koa-static'
+import express from 'express'
 
 const appDirectory = fs.realpathSync(process.cwd())
 
@@ -10,13 +10,13 @@ const appDirectory = fs.realpathSync(process.cwd())
 let serveStatic
 if (__WATCH__) {
   // Serve static files directly from src (no need to copy again and again)
-  serveStatic = koaStatic(path.resolve(appDirectory, 'src', 'static'), {
-    hidden: true
+  serveStatic = express.static(path.resolve(appDirectory, 'src', 'static'), {
+    dotfiles: 'allow'
   })
 } else {
   // Serve files from the build folder (includes copied assets)
-  serveStatic = koaStatic(path.resolve(appDirectory, 'build', 'client'), {
-    hidden: true,
+  serveStatic = express.static(path.resolve(appDirectory, 'build', 'client'), {
+    dotfiles: 'allow',
     setHeaders: (res) => {
       res.setHeader('Cache-Control', 'public,max-age=31536000,immutable')
     }

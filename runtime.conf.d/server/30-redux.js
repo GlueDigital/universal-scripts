@@ -4,7 +4,7 @@ import { CLEANUP, REQUEST_INIT } from 'universal-scripts'
 import { Provider } from 'react-redux'
 import jsesc from 'jsesc'
 
-const addRedux = async (ctx, next) => {
+const addRedux = async (req, res, next) => {
   // Create store
   const initialState = {}
   const store = createStore(initialState)
@@ -13,17 +13,17 @@ const addRedux = async (ctx, next) => {
   store.dispatch({
     type: REQUEST_INIT,
     payload: {
-      headers: ctx.request.headers,
-      origin: ctx.request.origin,
-      path: ctx.request.path,
-      ip: ctx.request.ip,
-      cookies: parseCookies(ctx.request.headers.cookie),
-      ...ctx.initExtras // Allow passing in data from previous middlewares
+      headers: req.headers,
+      origin: req.origin,
+      path: req.path,
+      ip: req.ip,
+      cookies: parseCookies(req.headers.cookie),
+      ...req.initExtras // Allow passing in data from previous middlewares
     }
   })
 
   // Make it available through the context
-  ctx.store = store
+  req.store = store
 
   // Run any other middlewares
   await next()
@@ -35,7 +35,7 @@ const addRedux = async (ctx, next) => {
 
   // Send store contents along the page
   const storeOutput = jsesc(state, { isScriptContext: true })
-  ctx.assets?.styles.unshift('<script>___INITIAL_STATE__=' + storeOutput + '</script>')
+  req.assets?.styles.unshift('<script>___INITIAL_STATE__=' + storeOutput + '</script>')
 }
 
 const parseCookies = s => !s ? {} : s
@@ -48,8 +48,8 @@ const parseCookies = s => !s ? {} : s
 
 export const serverMiddleware = addRedux
 
-const renderIntlProvider = async (ctx, next) =>
-  <Provider store={ctx.store}>
+const renderIntlProvider = async (req, res, next) =>
+  <Provider store={req.store}>
     {await next()}
   </Provider>
 

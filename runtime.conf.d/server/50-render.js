@@ -8,16 +8,16 @@ const ErrorHandler = __SSR__ && (() => {
   return keys.ErrorHandler
 })()
 
-const render = (ctx, root) => new Promise((resolve, reject) => {
+const render = (req, res, root) => new Promise((resolve, reject) => {
   const stream = renderToPipeableStream(root, {
-    bootstrapScripts: ctx.assets?.scripts,
+    bootstrapScripts: req.assets?.scripts,
     onAllReady: () => {
-      if (ctx.renderCtx && ctx.renderCtx.url) {
+      if (req.renderCtx && req.renderCtx.url) {
         // There was a redirect
-        ctx.redirect(ctx.renderCtx.url)
+        res.redirect(req.renderCtx.url)
       } else {
-        ctx.set('Content-Type', 'text/html; charset=utf-8')
-        ctx.stream = stream
+        res.set('Content-Type', 'text/html; charset=utf-8')
+        stream.pipe(res)
       }
       resolve()
     },
@@ -27,23 +27,23 @@ const render = (ctx, root) => new Promise((resolve, reject) => {
   })
 })
 
-const renderMiddleware = async (ctx, next) => {
+const renderMiddleware = async (req, res, next) => {
   // Run any other middlewares
   await next()
 
   // Run the render hook to get the root element
-  const children = await ctx.triggerHook('reactRoot')(ctx, false)
+  const children = await req.triggerHook('reactRoot')(req, res, false)
 
   // Actual rendering
   try {
-    await render(ctx, children)
+    await render(req, res, children)
   } catch (err) {
     if (ErrorHandler) {
-      await render(ctx, <ErrorHandler error={err} />)
+      await render(req, res, <ErrorHandler error={err} />)
     } else {
-      await render(ctx, false)
+      await render(req, res, false)
     }
-    ctx.status = err.status || 500
+    res.status = err.status || 500
   }
 }
 
