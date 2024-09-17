@@ -76,7 +76,12 @@ const enhancer = (opts = {}) => {
                   corejs: 3
                 }
               ],
-              "@babel/preset-react",
+              [
+                "@babel/preset-react",
+                {
+                  runtime: 'automatic'
+                },
+              ]
             ],
             plugins: [
               '@babel/plugin-transform-runtime',
@@ -90,7 +95,22 @@ const enhancer = (opts = {}) => {
             {
               loader: 'babel-loader',
               options: {
-                presets: ["@babel/preset-env", '@babel/preset-typescript', "@babel/preset-react"],
+                presets: [
+                  [
+                    "@babel/preset-env",
+                    {
+                      useBuiltIns: "usage",
+                      corejs: 3
+                    }
+                  ],
+                  "@babel/preset-typescript",
+                  [
+                    "@babel/preset-react",
+                    {
+                      runtime: 'automatic'
+                    },
+                  ]
+                ],
                 plugins: [
                   '@babel/plugin-transform-runtime',
                   !isProd && isClientSide && require.resolve('react-refresh/babel'),
