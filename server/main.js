@@ -39,7 +39,7 @@ if (__WATCH__) {
   configureHMR = (app, compiler) => {
     // Enable DEV middleware
     const devMiddleware = webpackDevMiddleware(compiler, {
-      stats: 'minimal',
+      stats: 'normal',
       publicPath: '/',
       serverSideRender: true,
     })
@@ -48,6 +48,11 @@ if (__WATCH__) {
 
     app.use(devMiddleware)
     app.use(hotMiddleware)
+    
+    app.use((req, res, next) => {
+      req.clientStats = devMiddleware.context.stats.toJson().children[0]
+      next()
+    })
 
     // Add hook to compiler to reload server middleware on rebuild
     const mfs = devMiddleware.context.outputFileSystem

@@ -15,7 +15,6 @@ const enhancer = (opts = {}, config) => {
     // But when doing a static build, we want the entire server on the output.
     const serverPath = path.resolve(__dirname, '..', 'server')
     if (isWatch) {
-      config.plugins.push(new webpack.HotModuleReplacementPlugin())
       config.entry = {
         server: [path.resolve(serverPath, 'serverMiddleware')]
       }
@@ -30,11 +29,10 @@ const enhancer = (opts = {}, config) => {
 
   if (opts.id === 'client') {
     // Add our render entrypoint
-    config.entry = {
-      main: [
-        path.resolve(__dirname, '..', 'client', 'init')
-      ]
-    }
+    console.log({client : path.resolve(__dirname, '..', 'client', 'init')})
+    config.entry = [
+      path.resolve(__dirname, '..', 'client', 'init')
+    ]
 
     if (!isWatch) {
       // Copy static assets to output dir
@@ -50,7 +48,7 @@ const enhancer = (opts = {}, config) => {
       )
     } else {
       config.plugins.push(new webpack.HotModuleReplacementPlugin())
-      config.entry.main.push('webpack-hot-middleware/client?reload=true')
+      config.entry.push('webpack-hot-middleware/client?reload=true')
     }
     return config
   }

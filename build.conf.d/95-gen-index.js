@@ -33,6 +33,8 @@ class GenIndexPlugin {
     const publicPath = this.publicPath
     const assets = Object.keys(compilation.assets)
 
+    console.log(assets)
+
     let template = defaultTemplate
     const templateOverridePath = path.join(appDirectory, 'src', 'static', 'index.htm')
     if (fs.existsSync(templateOverridePath)) {
@@ -53,6 +55,8 @@ class GenIndexPlugin {
       .map((style) => `<link rel="stylesheet" href="${publicPath}${style}" />`)
       .join('')
 
+    console.log({scriptsFragment, stylesFragment})
+
     const index = template
       .replace('<!-- SCRIPTS -->', scriptsFragment)
       .replace('<!-- STYLES -->', stylesFragment)
@@ -66,6 +70,7 @@ class GenIndexPlugin {
 
 // Register the plugin in the build process, so it gets executed automatically
 const enhancer = (opts = {}, config) => {
+  console.log("THERE GEN INDEX")
   if (!ssr && opts.id === 'client' && !opts.isWatch) {
     config.plugins.push(new GenIndexPlugin())
   }

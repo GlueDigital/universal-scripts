@@ -29,11 +29,9 @@ const generateHtml = async (req, res, next) => {
   let assets = []
   if (!__WATCH__) {
     assets = chunks
-  } else if (req.app.locals.webpackStats) {
-    req.app.locals.webpackStats.stats[0].compilation.entrypoints.forEach(e => {
-      e.chunks.forEach(c => {
-        assets = assets.concat(c.files)
-      })
+  } else if (req.clientStats) {
+    req.clientStats.entrypoints.main.assets.forEach(asset => {
+      assets = assets.concat(asset.name)
     })
   }
 
@@ -61,8 +59,8 @@ const generateHtml = async (req, res, next) => {
   // Añadir el stream, si existe, desde la renderización
   if (req.stream) {
     res.status(200)
-    res.set('content-type', 'text/html')
     req.stream.pipe(res)
+    res.end()
   } else {
     res.end()
   }

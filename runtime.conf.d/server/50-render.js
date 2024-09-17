@@ -17,7 +17,7 @@ const render = (req, res, root) => new Promise((resolve, reject) => {
         res.redirect(req.renderCtx.url)
       } else {
         res.set('Content-Type', 'text/html; charset=utf-8')
-        stream.pipe(res)
+        req.stream = stream
       }
       resolve()
     },
