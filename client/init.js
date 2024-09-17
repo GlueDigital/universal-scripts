@@ -14,9 +14,6 @@ const initialize = () => {
 
 initialize()
 
-console.log("INIT CLIENT")
-
-
 // Enable HMR
 if (module.hot) {
   module.hot.accept()

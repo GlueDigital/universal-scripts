@@ -44,11 +44,11 @@ if (__WATCH__) {
       serverSideRender: true,
     })
 
-    const hotMiddleware = webpackHotMiddleware(compiler)
+    const hotMiddleware = webpackHotMiddleware(compiler.compilers[0])
 
     app.use(devMiddleware)
     app.use(hotMiddleware)
-    
+
     app.use((req, res, next) => {
       req.clientStats = devMiddleware.context.stats.toJson().children[0]
       next()

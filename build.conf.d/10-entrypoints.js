@@ -18,7 +18,9 @@ const enhancer = (opts = {}, config) => {
       config.entry = {
         server: [path.resolve(serverPath, 'serverMiddleware')]
       }
+      // config.entry.server.push('webpack-hot-middleware/client?reload=true')
       config.output.libraryTarget = 'commonjs2'
+      // config.plugins.push(new webpack.HotModuleReplacementPlugin())
     } else {
       config.entry = {
         server: [path.resolve(serverPath, 'main')]
@@ -29,10 +31,11 @@ const enhancer = (opts = {}, config) => {
 
   if (opts.id === 'client') {
     // Add our render entrypoint
-    console.log({client : path.resolve(__dirname, '..', 'client', 'init')})
-    config.entry = [
-      path.resolve(__dirname, '..', 'client', 'init')
-    ]
+    config.entry = {
+      main: [
+        path.resolve(__dirname, '..', 'client', 'init')
+      ]
+    }
 
     if (!isWatch) {
       // Copy static assets to output dir
@@ -48,7 +51,7 @@ const enhancer = (opts = {}, config) => {
       )
     } else {
       config.plugins.push(new webpack.HotModuleReplacementPlugin())
-      config.entry.push('webpack-hot-middleware/client?reload=true')
+      config.entry.main.push('webpack-hot-middleware/client?reload=true')
     }
     return config
   }
