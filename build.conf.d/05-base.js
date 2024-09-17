@@ -82,13 +82,16 @@ const enhancer = (opts = {}) => {
           }
         }, {
           test: /\.(ts|tsx)$/,
-          exclude: /universal-scripts\/node_modules/,
+          exclude: /node_modules\/(?!universal-scripts)/,
           use: [
             {
               loader: 'babel-loader',
               options: {
-                presets: ["@babel/preset-env", '@babel/preset-typescript',"@babel/preset-react"],
-                plugins: ['@babel/plugin-transform-runtime']
+                presets: ["@babel/preset-env", '@babel/preset-typescript', "@babel/preset-react"],
+                plugins: [
+                  '@babel/plugin-transform-runtime',
+                  !isProd && isClientSide && require.resolve('react-refresh/babel'),
+                ].filter(Boolean),
               }
             }
           ]
