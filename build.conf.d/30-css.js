@@ -49,7 +49,7 @@ const enhancer = (opts = {}, config) => {
   }
 
   const sassChain = [cssLoader, postcssLoader, sassLoader]
-  const cssChain = [MiniCssExtractPlugin.loader, cssLoader, postcssLoader]
+  const cssChain = [cssLoader, postcssLoader]
 
   if (!isServerSide) {
     const styleLoaderOptions = {}

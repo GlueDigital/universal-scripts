@@ -3,6 +3,7 @@ const path = require('path')
 const webpack = require('webpack')
 const JsconfdPlugin = require('js.conf.d-webpack')
 const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin')
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 
 const appDirectory = fs.realpathSync(process.cwd())
 
@@ -55,7 +56,8 @@ const enhancer = (opts = {}) => {
           return current
         }
       }),
-    ],
+      !isProd && isClientSide && new ReactRefreshWebpackPlugin(),
+    ].filter(Boolean),
     module: {
       rules: [
         {
@@ -71,9 +73,12 @@ const enhancer = (opts = {}) => {
                   corejs: 3
                 }
               ],
-              "@babel/preset-react"
+              "@babel/preset-react",
             ],
-            plugins: ['@babel/plugin-transform-runtime'],
+            plugins: [
+              '@babel/plugin-transform-runtime',
+              !isProd && isClientSide && require.resolve('react-refresh/babel'),
+            ].filter(Boolean),
           }
         }, {
           test: /\.(ts|tsx)$/,
