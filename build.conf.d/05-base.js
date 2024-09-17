@@ -38,7 +38,10 @@ const enhancer = (opts = {}) => {
           honorIndex: true,
           exclude: /node_modules/
         })
-      ]
+      ],
+      alias: {
+        "@components": path.resolve(process.cwd(), "src/components")
+      }
     },
     plugins: [
       new JsconfdPlugin({
