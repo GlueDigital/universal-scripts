@@ -38,7 +38,7 @@ module.exports = (
   }
 
   appPackage.engines = {
-    node: '>=14'
+    node: '>=18'
   }
 
   fs.writeFileSync(
@@ -57,17 +57,28 @@ module.exports = (
 
   // Install dependencies
   const cmd = shouldUseYarn ? ['yarn', 'add'] : ['npm', 'install', '--save']
+  const cmdDev = shouldUseYarn ? ['yarn', 'add', '-D'] : ['npm', 'install', '-D']
 
-  const toInstall = Object.entries({
-    ...templatePackage.dependencies,
-    ...templatePackage.devDependencies
-  })
-  if (toInstall.length) {
+  const toInstallDeps = Object.entries(templatePackage.dependencies)
+  const toInstallDevDeps = Object.entries(templatePackage.devDependencies)
+
+  if (toInstallDeps.length) {
     console.log('Installing template dependencies...')
-    cmd.push(...toInstall.map(([dependency, version]) =>
+    cmd.push(...toInstallDeps.map(([dependency, version]) =>
       dependency + '@' + version
     ))
     execSync(cmd.join(' '), { stdio: 'inherit' })
+  } else {
+    console.log('Template has no dependencies; skipping install...')
+    console.log(templateInfo)
+  }
+
+  if (toInstallDevDeps.length) {
+    console.log('Installing template dev dependencies...')
+    cmdDev.push(...toInstallDevDeps.map(([dependency, version]) =>
+      dependency + '@' + version
+    ))
+    execSync(cmdDev.join(' '), { stdio: 'inherit' })
   } else {
     console.log('Template has no dependencies; skipping install...')
     console.log(templateInfo)
