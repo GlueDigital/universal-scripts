@@ -28,7 +28,7 @@ const generateHtml = async (req, res, next) => {
   // Si el middleware DEV tiene algunos assets, añádelos.
   let assets = []
   if (!__WATCH__) {
-    assets = chunks
+    assets = chunks.map((chunk) => chunk.name)
   } else if (req.clientStats) {
     req.clientStats.entrypoints.main.assets.forEach(asset => {
       assets = assets.concat(asset.name)
@@ -36,7 +36,7 @@ const generateHtml = async (req, res, next) => {
   }
 
   for (const asset of assets) {
-    if (asset.endsWith('.js') && asset !== 'polyfills.js') {
+    if (asset.endsWith('.js')) {
       scripts.push(reqBasename + asset)
     } else if (asset.endsWith('.css')) {
       styles.push(`<link rel="stylesheet" href="${reqBasename + asset}" />`)

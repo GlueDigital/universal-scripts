@@ -1,9 +1,8 @@
 const path = require('path')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin")
-const PostCssUrl = require('postcss-url')
-const autoprefixer = require('autoprefixer')
-const CssLoader = require.resolve('css-loader')
+// const PostCssUrl = require('postcss-url')
+// const postcssPresetEnv = require('postcss-preset-env')
 
 const enhancer = (opts = {}, config) => {
   // Extraneous builds don't usually need css support
@@ -15,7 +14,7 @@ const enhancer = (opts = {}, config) => {
   const isProd = process.env.NODE_ENV === 'production'
 
   const cssLoader = {
-    loader: CssLoader,
+    loader: 'css-loader',
     options: { sourceMap: true, importLoaders: 1 }
   }
 
@@ -31,8 +30,8 @@ const enhancer = (opts = {}, config) => {
         ident: 'postcss',
         to: 'src/static',
         plugins: [
-          PostCssUrl({ url: transformAssetUrl }),
-          autoprefixer
+          "postcss-preset-env",
+          // PostCssUrl({ url: transformAssetUrl }),
         ]
       }
     }
@@ -85,6 +84,7 @@ const enhancer = (opts = {}, config) => {
         rule.use && rule.use.find((entry) =>
           entry.loader === 'css-loader')
       ).forEach((rule) => {
+        console.log(rule)
         rule.use = [MiniCssExtractPlugin.loader, ...rule.use.slice(1)]
       })
 

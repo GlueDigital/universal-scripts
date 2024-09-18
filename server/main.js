@@ -12,6 +12,15 @@ const cookieParser = require('cookie-parser');
 const appDirectory = fs.realpathSync(process.cwd())
 const port = process.env.PORT || 3000
 
+const myAwesomeMiddleware = (serverMiddleware) => async (req, res) => {
+  const copy = [...serverMiddleware]
+  const next = () => {
+    const mw = copy.shift()
+    return !mw ? null : mw(req, res, next)
+  }
+  await next()
+}
+
 // Do we need HMR?
 let configureHMR
 if (__WATCH__) {
@@ -22,15 +31,7 @@ if (__WATCH__) {
     if (serverMiddleware) {
       app.use(serverMiddleware.shift())
       app.use(serverMiddleware.shift())
-      async function myAwesomeMiddleware(req, res) {
-        const copy = [...serverMiddleware]
-        const next = () => {
-          const mw = copy.shift()
-          return !mw ? null : mw(req, res, next)
-        }
-        await next()
-      }
-      app.use(myAwesomeMiddleware)
+      app.use(myAwesomeMiddleware(serverMiddleware))
     } else {
       console.log('Request received, but no middleware loaded yet')
     }
@@ -91,7 +92,10 @@ const serve = async (compiler) => {
     // Add the server-side rendering middleware (no HMR)
     const mw = require('./serverMiddleware')
     await mw.startup()
-    app.use(mw.default)
+    const serverMiddleware = mw.default
+    app.use(serverMiddleware.shift())
+    app.use(serverMiddleware.shift())
+    app.use(myAwesomeMiddleware(serverMiddleware))
   }
 
   // Wrap it up

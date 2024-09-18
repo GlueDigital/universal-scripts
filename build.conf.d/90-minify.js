@@ -5,18 +5,9 @@ const enhancer = (_, config) => {
 
   // Production builds get minified JS
   if (isProd) {
+    config.optimization.minimize = true
     config.optimization.minimizer.push(
-      new TerserPlugin({
-        cache: true,
-        parallel: true,
-        sourceMap: true,
-        extractComments: false,
-        terserOptions: {
-          output: {
-            comments: false
-          }
-        }
-      })
+      new TerserPlugin()
     )
   }
 

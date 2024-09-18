@@ -19,7 +19,7 @@ const enhancer = (opts = {}, config) => {
         server: [path.resolve(serverPath, 'serverMiddleware')]
       }
       // config.entry.server.push('webpack-hot-middleware/client?reload=true')
-      config.output.libraryTarget = 'commonjs2'
+      config.output.libraryTarget = 'module'
       // config.plugins.push(new webpack.HotModuleReplacementPlugin())
     } else {
       config.entry = {

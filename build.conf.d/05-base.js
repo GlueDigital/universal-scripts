@@ -68,6 +68,7 @@ const enhancer = (opts = {}) => {
           exclude: /node_modules\/(?!universal-scripts)/,
           loader: 'babel-loader',
           options: {
+            sourceType: 'unambiguous',
             presets: [
               [
                 "@babel/preset-env",
@@ -95,6 +96,7 @@ const enhancer = (opts = {}) => {
             {
               loader: 'babel-loader',
               options: {
+                sourceType: 'unambiguous',
                 presets: [
                   [
                     "@babel/preset-env",
