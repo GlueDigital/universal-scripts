@@ -141,8 +141,9 @@ const enhancer = (opts = {}) => {
       minimizer: [],
       splitChunks: {
         cacheGroups: {
-          vendors: {
-            reuseExistingChunk: true
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
           }
         }
       }

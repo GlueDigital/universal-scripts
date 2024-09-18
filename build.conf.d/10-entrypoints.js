@@ -5,6 +5,31 @@ const webpack = require('webpack')
 
 const appDirectory = fs.realpathSync(process.cwd())
 
+const optimization = {
+  cacheGroups: {
+    vendor: {
+      test: /[\\/]node_modules[\\/]/,
+      priority: -5,
+      name: 'vendors',
+      chunks: "initial",
+      reuseExistingChunk: true,
+      minSize: 0,
+    },
+    default: {
+      minChunks: 2,
+      priority: -20,
+      reuseExistingChunk: true,
+    },
+    defaultVendors: false,
+    reactPackage: {
+      test: /[\\/]node_modules[\\/](react|react-dom|react-router|react-router-dom)[\\/]/,
+      name: 'vendor_react',
+      chunks: "all",
+      priority: 10,
+     }
+  }
+}
+
 const enhancer = (opts = {}, config) => {
   const isWatch = opts.isWatch
 
@@ -15,17 +40,20 @@ const enhancer = (opts = {}, config) => {
     // But when doing a static build, we want the entire server on the output.
     const serverPath = path.resolve(__dirname, '..', 'server')
     if (isWatch) {
+      // config.optimization.runtimeChunk = 'single'
       config.entry = {
         server: [path.resolve(serverPath, 'serverMiddleware')]
       }
       // config.entry.server.push('webpack-hot-middleware/client?reload=true')
-      config.output.libraryTarget = 'module'
+      config.output.libraryTarget = 'commonjs2'
       // config.plugins.push(new webpack.HotModuleReplacementPlugin())
     } else {
       config.entry = {
         server: [path.resolve(serverPath, 'main')]
       }
+      config.optimization.splitChunks = optimization
     }
+
     return config
   }
 
@@ -36,6 +64,8 @@ const enhancer = (opts = {}, config) => {
         path.resolve(__dirname, '..', 'client', 'init')
       ]
     }
+
+    config.optimization.splitChunks = optimization
 
     if (!isWatch) {
       // Copy static assets to output dir
@@ -50,6 +80,7 @@ const enhancer = (opts = {}, config) => {
         })
       )
     } else {
+      config.optimization.runtimeChunk = 'single'
       config.plugins.push(new webpack.HotModuleReplacementPlugin())
       config.entry.main.push('webpack-hot-middleware/client?reload=true')
     }
