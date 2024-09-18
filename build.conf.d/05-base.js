@@ -40,7 +40,9 @@ const enhancer = (opts = {}) => {
         })
       ],
       alias: {
-        "@components": path.resolve(process.cwd(), "src/components")
+        "@components": path.resolve(process.cwd(), "src/components"),
+        "@utils": path.resolve(process.cwd(), "src/utils"),
+        "@routes": path.resolve(process.cwd(), "src/routes"),
       }
     },
     plugins: [
