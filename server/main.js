@@ -27,11 +27,17 @@ if (__WATCH__) {
   // We need to hot-reload serverMiddleware, but we're the ones building it.
   let serverMiddleware = null
 
-  const loadServerMiddlewareProxy = (app) => {
-    if (serverMiddleware) {
-      app.use(serverMiddleware.shift())
-      app.use(serverMiddleware.shift())
-      app.use(myAwesomeMiddleware(serverMiddleware))
+  const loadServerMiddlewareProxy = (req, res, next) => {
+    if (serverMiddleware !== null && serverMiddleware.length) {
+      const myAwesomeMiddleware = async (req, res) => {
+        const copy = [...serverMiddleware]
+        const next = () => {
+          const mw = copy.shift()
+          return !mw ? null : mw(req, res, next)
+        }
+        await next()
+      }
+      return myAwesomeMiddleware(req, res, next)
     } else {
       console.log('Request received, but no middleware loaded yet')
     }
@@ -65,7 +71,6 @@ if (__WATCH__) {
         const mw = requireFromString(newMiddleware, fname)
         await mw.startup()
         serverMiddleware = mw.default
-        loadServerMiddlewareProxy(app)
       } catch (e) {
         console.warn(chalk.red.bold('Couldn\'t load middleware.'))
         console.log(chalk.red('Please fix any build errors above, and ' +
@@ -73,6 +78,8 @@ if (__WATCH__) {
         console.log('Details:', e)
       }
     })
+
+    app.use(loadServerMiddlewareProxy)
   }
 }
 
@@ -92,10 +99,7 @@ const serve = async (compiler) => {
     // Add the server-side rendering middleware (no HMR)
     const mw = require('./serverMiddleware')
     await mw.startup()
-    const serverMiddleware = mw.default
-    app.use(serverMiddleware.shift())
-    app.use(serverMiddleware.shift())
-    app.use(myAwesomeMiddleware(serverMiddleware))
+    app.use(myAwesomeMiddleware(mw.default))
   }
 
   // Wrap it up
