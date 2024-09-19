@@ -84,7 +84,6 @@ const enhancer = (opts = {}, config) => {
         rule.use && rule.use.find((entry) =>
           entry.loader === 'css-loader')
       ).forEach((rule) => {
-        console.log(rule)
         rule.use = [MiniCssExtractPlugin.loader, ...rule.use.slice(1)]
       })
 
