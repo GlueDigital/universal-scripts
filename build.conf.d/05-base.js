@@ -43,6 +43,7 @@ const enhancer = (opts = {}) => {
         "@components": path.resolve(process.cwd(), "src/components"),
         "@utils": path.resolve(process.cwd(), "src/utils"),
         "@routes": path.resolve(process.cwd(), "src/routes"),
+        "@static": path.resolve(process.cwd(), "src/static"),
       }
     },
     plugins: [
@@ -125,14 +126,14 @@ const enhancer = (opts = {}) => {
         },
         {
           test: /\.(jpg|png|gif|webp|svg|ico|avif|mp4|webm)$/i,
-          type: 'asset/resource',
+          type: 'asset',
           generator: {
             filename: 'static/[name].[contenthash][ext]'
           }
         },
         {
           test: /\.(woff|woff2|eot|ttf|otf)$/i,
-          type: 'asset/resource',
+          type: 'asset',
           generator: {
             filename: 'static/[name].[contenthash][ext]'
           }
