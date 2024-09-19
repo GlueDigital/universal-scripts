@@ -20,12 +20,12 @@ if (!__WATCH__ && !__SSR__) {
 }
 
 const generateHtml = async (req, res, next) => {
-  // Estos contendrán los scripts y estilos que se incluirán en la página.
+  // Scripts and styles of the page
   const scripts = []
   const styles = []
   const reqBasename = req.basename || basename
 
-  // Si el middleware DEV tiene algunos assets, añádelos.
+  // Add assets from build process or from client stats in watch mode
   let assets = []
   if (!__WATCH__) {
     assets = chunks.map((chunk) => chunk.name)
@@ -49,14 +49,13 @@ const generateHtml = async (req, res, next) => {
 
   req.helmetContext = {}
 
-  // Ejecuta cualquier otro middleware
   await next()
 
-  // Obtener los headers de react-helmet
+  // Obtain headers from React Helmet
   const head = req.helmetContext.helmet
   res.write(renderHtmlLayout(head, styles))
 
-  // Añadir el stream, si existe, desde la renderización
+  // Send stream to client
   if (req.stream) {
     res.status(200)
     req.stream.pipe(res)
@@ -67,7 +66,7 @@ const generateHtml = async (req, res, next) => {
 }
 
 const staticHtml = async (req, res, next) => {
-  // Usamos un HTML preconstruido
+  // Use Static HTML template
   await next()
   res.type('text/html')
   res.send(index) // 'index' debe ser el HTML preconstruido
