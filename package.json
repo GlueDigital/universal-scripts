@@ -1,6 +1,6 @@
 {
   "name": "universal-scripts",
-  "version": "3.0.24",
+  "version": "3.0.0",
   "description": "Build universal apps without configuration.",
   "main": "index.js",
   "repository": "GlueDigital/universal-scripts",
@@ -76,7 +76,7 @@
   "peerDependencies": {
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-intl": "^5.25.1",
+    "react-intl": "^6.6.8",
     "react-redux": "^8.0.2",
     "react-router-dom": "^6.26.2"
   },
