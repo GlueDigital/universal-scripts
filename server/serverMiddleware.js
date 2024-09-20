@@ -14,4 +14,6 @@ const triggeringMiddleware = (req, res, next) => {
 
 export const startup = () => config.startup && Promise.all(config.startup.map(x => x()))
 
+export const rawConfig = config
+
 export default [triggeringMiddleware, ...config.serverMiddleware]

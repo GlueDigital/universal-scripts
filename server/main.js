@@ -12,32 +12,46 @@ const cookieParser = require('cookie-parser');
 const appDirectory = fs.realpathSync(process.cwd())
 const port = process.env.PORT || 3000
 
-const myAwesomeMiddleware = (serverMiddleware) => async (req, res) => {
+// Group and an array of middlewares into a single one, because express doesnt support promises on next functions
+const groupMiddlewares = (serverMiddleware) => async (req, res, nxt) => {
   const copy = [...serverMiddleware]
-  const next = () => {
+  const next = (err) => {
+    // With our custom next we dont pass err arg to express. So we need this workaround
+    if (err) return nxt(err)
     const mw = copy.shift()
     return !mw ? null : mw(req, res, next)
   }
   await next()
 }
 
-// Do we need HMR?
+// Group and an array of middlewares into a single one, because express doesnt support promises on next functions
+const groupErrorMiddlewares = (serverErrorMiddleware) => async (err, req, res) => {
+  const copy = [...serverErrorMiddleware]
+  const next = () => {
+    const mw = copy.shift()
+    return !mw ? null : mw(err, req, res, next)
+  }
+  await next()
+}
+
 let configureHMR
+
 if (__WATCH__) {
   // We need to hot-reload serverMiddleware, but we're the ones building it.
   let serverMiddleware = null
+  let serverErrorMiddleware = null
 
   const loadServerMiddlewareProxy = (req, res, next) => {
     if (serverMiddleware !== null && serverMiddleware.length) {
-      const myAwesomeMiddleware = async (req, res) => {
-        const copy = [...serverMiddleware]
-        const next = () => {
-          const mw = copy.shift()
-          return !mw ? null : mw(req, res, next)
-        }
-        await next()
-      }
-      return myAwesomeMiddleware(req, res, next)
+      return groupMiddlewares(serverMiddleware)(req, res, next)
+    } else {
+      console.log('Request received, but no middleware loaded yet')
+    }
+  }
+
+  const loadServerErrorMiddlewareProxy = (err, req, res, next) => {
+    if (serverErrorMiddleware !== null && serverErrorMiddleware.length) {
+      return groupErrorMiddlewares(serverErrorMiddleware)(err, req, res, next)
     } else {
       console.log('Request received, but no middleware loaded yet')
     }
@@ -71,6 +85,7 @@ if (__WATCH__) {
         const mw = requireFromString(newMiddleware, fname)
         await mw.startup()
         serverMiddleware = mw.default
+        serverErrorMiddleware = mw.rawConfig.serverErrorMiddleware
       } catch (e) {
         console.warn(chalk.red.bold('Couldn\'t load middleware.'))
         console.log(chalk.red('Please fix any build errors above, and ' +
@@ -80,6 +95,7 @@ if (__WATCH__) {
     })
 
     app.use(loadServerMiddlewareProxy)
+    app.use(loadServerErrorMiddlewareProxy)
   }
 }
 
@@ -88,6 +104,8 @@ const serve = async (compiler) => {
   const app = express()
 
   app.use(cookieParser())
+  app.disable('x-powered-by')
+  app.use(express.json())
 
   // Run anything on the `app` hook
   config.app && config.app.forEach(f => f(app))
@@ -99,7 +117,8 @@ const serve = async (compiler) => {
     // Add the server-side rendering middleware (no HMR)
     const mw = require('./serverMiddleware')
     await mw.startup()
-    app.use(myAwesomeMiddleware(mw.default))
+    app.use(groupMiddlewares(mw.default))
+    app.use(groupErrorMiddlewares(mw.rawConfig.serverErrorMiddleware))
   }
 
   // Wrap it up
