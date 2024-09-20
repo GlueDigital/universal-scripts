@@ -44,6 +44,7 @@ const enhancer = (opts = {}) => {
         "@utils": path.resolve(process.cwd(), "src/utils"),
         "@routes": path.resolve(process.cwd(), "src/routes"),
         "@static": path.resolve(process.cwd(), "src/static"),
+        "@hooks": path.resolve(process.cwd(), "src/hooks"),
       }
     },
     plugins: [
