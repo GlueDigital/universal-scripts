@@ -1,6 +1,6 @@
 {
   "name": "universal-scripts",
-  "version": "3.0.45",
+  "version": "3.0.0",
   "description": "Build universal apps without configuration.",
   "main": "index.js",
   "repository": "GlueDigital/universal-scripts",
@@ -13,7 +13,8 @@
     "webpack",
     "ssr",
     "redux",
-    "sass"
+    "sass",
+    "swc"
   ],
   "license": "MIT",
   "engines": {
