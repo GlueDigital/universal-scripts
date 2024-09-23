@@ -17,14 +17,15 @@ const enhancer = (opts = {}) => {
     devtool: isProd ? 'source-map' : 'cheap-module-source-map',
     target: isClientSide ? 'web' : 'node',
     mode: isProd ? 'production' : 'development',
-    performance: { hints: 'warning' },
+    performance: { hints: false },
     output: {
       path: path.resolve(
         appDirectory, 'build', id),
       pathinfo: true,
       filename: !isClientSide ? '[name].js' : '[name].[contenthash].js',
       chunkFilename: isClientSide ? '[name].[contenthash].js' : '[name].js',
-      publicPath: process.env.SUBDIRECTORY || '/'
+      publicPath: process.env.SUBDIRECTORY || '/',
+      clean: true
     },
     resolve: {
       extensions: ['.wasm', '.mjs', '.ts', '.js', '.tsx', '.jsx', '.json', '.sass', '.scss', '.css'],
@@ -49,6 +50,7 @@ const enhancer = (opts = {}) => {
       }
     },
     plugins: [
+      new webpack.ProgressPlugin(),
       new JsconfdPlugin({
         folders: [
           path.resolve(__dirname, '..', 'runtime.conf.d'),
