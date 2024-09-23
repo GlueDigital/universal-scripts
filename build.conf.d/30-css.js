@@ -1,7 +1,7 @@
 const path = require('path')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin")
-// const PostCssUrl = require('postcss-url')
+const PostCssUrl = require('postcss-url')
 // const postcssPresetEnv = require('postcss-preset-env')
 
 const enhancer = (opts = {}, config) => {
@@ -31,7 +31,7 @@ const enhancer = (opts = {}, config) => {
         to: 'src/static',
         plugins: [
           "postcss-preset-env",
-          // PostCssUrl({ url: transformAssetUrl }),
+          PostCssUrl({ url: transformAssetUrl }),
         ]
       }
     }
