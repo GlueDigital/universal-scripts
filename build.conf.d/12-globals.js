@@ -20,6 +20,7 @@ const enhancer = (opts = {}, config) => {
     __SSR__: ssr
   }
   if (opts.id === 'client') {
+    definitions['process.env'] = {}
     for (const key in process.env) {
       definitions['process.env.' + key] = JSON.stringify(process.env[key])
     }
