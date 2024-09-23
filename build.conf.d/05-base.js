@@ -45,6 +45,7 @@ const enhancer = (opts = {}) => {
         "@routes": path.resolve(process.cwd(), "src/routes"),
         "@static": path.resolve(process.cwd(), "src/static"),
         "@hooks": path.resolve(process.cwd(), "src/hooks"),
+        "src": path.resolve(process.cwd(), "src")
       }
     },
     plugins: [
@@ -63,67 +64,34 @@ const enhancer = (opts = {}) => {
           return current
         }
       }),
-      !isProd && isClientSide && new ReactRefreshWebpackPlugin(),
+      !isProd && isClientSide && new ReactRefreshWebpackPlugin({
+        overlay: false
+      }),
     ].filter(Boolean),
     module: {
       rules: [
         {
-          test: /\.(js|jsx|mjs)$/,
+          test: /\.(js|jsx|ts|tsx)$/,
           exclude: /node_modules\/(?!universal-scripts)/,
-          loader: 'babel-loader',
+          loader: 'swc-loader',
           options: {
-            sourceType: 'unambiguous',
-            presets: [
-              [
-                "@babel/preset-env",
-                {
-                  useBuiltIns: "usage",
-                  corejs: 3
+            jsc: {
+              parser: {
+                syntax: 'typescript',  // Usa 'ecmascript' si no usas TypeScript
+                jsx: true,
+                tsx: true
+              },
+              transform: {
+                react: {
+                  runtime: 'automatic',  // Equivalente a '@babel/preset-react' con runtime automático
+                  refresh: !isProd && isClientSide  // Equivalente a React Refresh
                 }
-              ],
-              [
-                "@babel/preset-react",
-                {
-                  runtime: 'automatic'
-                },
-              ]
-            ],
-            plugins: [
-              '@babel/plugin-transform-runtime',
-              !isProd && isClientSide && require.resolve('react-refresh/babel'),
-            ].filter(Boolean),
+              },
+              target: "es2021", // Similar a @babel/preset-env, ajusta según tu objetivo
+              externalHelpers: true,  // Equivalente a '@babel/plugin-transform-runtime'
+            },
+            minify: isProd,  // SWC puede minificar el código en producción
           }
-        }, {
-          test: /\.(ts|tsx)$/,
-          exclude: /node_modules\/(?!universal-scripts)/,
-          use: [
-            {
-              loader: 'babel-loader',
-              options: {
-                sourceType: 'unambiguous',
-                presets: [
-                  [
-                    "@babel/preset-env",
-                    {
-                      useBuiltIns: "usage",
-                      corejs: 3
-                    }
-                  ],
-                  "@babel/preset-typescript",
-                  [
-                    "@babel/preset-react",
-                    {
-                      runtime: 'automatic'
-                    },
-                  ]
-                ],
-                plugins: [
-                  '@babel/plugin-transform-runtime',
-                  !isProd && isClientSide && require.resolve('react-refresh/babel'),
-                ].filter(Boolean),
-              }
-            }
-          ]
         },
         {
           test: /\.(jpg|png|gif|webp|svg|ico|avif|mp4|webm)$/i,
