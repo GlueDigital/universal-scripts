@@ -1,6 +1,6 @@
 {
   "name": "universal-scripts",
-  "version": "3.0.43",
+  "version": "3.0.45",
   "description": "Build universal apps without configuration.",
   "main": "index.js",
   "repository": "GlueDigital/universal-scripts",
@@ -23,17 +23,10 @@
     "universal-scripts": "./bin/universal-scripts.js"
   },
   "dependencies": {
-    "@babel/core": "^7.25.2",
-    "@babel/plugin-transform-runtime": "^7.25.4",
-    "@babel/preset-env": "^7.25.4",
-    "@babel/preset-react": "^7.24.7",
-    "@babel/preset-typescript": "^7.24.7",
-    "@babel/runtime": "^7.25.6",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.15",
     "@swc/core": "^1.7.26",
     "@swc/helpers": "^0.5.13",
-    "babel-jest": "^29.7.0",
-    "babel-loader": "^9.2.1",
+    "@swc/jest": "^0.2.36",
     "chalk": "^4.1.0",
     "cookie-parser": "^1.4.6",
     "copy-webpack-plugin": "^12.0.2",

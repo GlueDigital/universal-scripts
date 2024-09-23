@@ -77,20 +77,20 @@ const enhancer = (opts = {}) => {
           options: {
             jsc: {
               parser: {
-                syntax: 'typescript',  // Usa 'ecmascript' si no usas TypeScript
+                syntax: 'typescript',
                 jsx: true,
                 tsx: true
               },
               transform: {
                 react: {
-                  runtime: 'automatic',  // Equivalente a '@babel/preset-react' con runtime automático
-                  refresh: !isProd && isClientSide  // Equivalente a React Refresh
+                  runtime: 'automatic',  // Equivalent to '@babel/preset-react'
+                  refresh: !isProd && isClientSide  // Equivalent to React Refresh
                 }
               },
-              target: "es2021", // Similar a @babel/preset-env, ajusta según tu objetivo
-              externalHelpers: true,  // Equivalente a '@babel/plugin-transform-runtime'
+              target: "es2021", // Similar to @babel/preset-env
+              externalHelpers: true,  // Equivalent to '@babel/plugin-transform-runtime'
             },
-            minify: isProd,  // SWC puede minificar el código en producción
+            minify: isProd,
           }
         },
         {
