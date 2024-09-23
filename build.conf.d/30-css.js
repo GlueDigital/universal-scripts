@@ -2,7 +2,6 @@ const path = require('path')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin")
 const PostCssUrl = require('postcss-url')
-// const postcssPresetEnv = require('postcss-preset-env')
 
 const enhancer = (opts = {}, config) => {
   // Extraneous builds don't usually need css support
@@ -12,11 +11,6 @@ const enhancer = (opts = {}, config) => {
   const isServerSide = opts.id === 'server'
   const isWatch = opts.isWatch
   const isProd = process.env.NODE_ENV === 'production'
-
-  const cssLoader = {
-    loader: 'css-loader',
-    options: { sourceMap: true, importLoaders: 1 }
-  }
 
   const transformAssetUrl = (asset) => {
     const isRootImport = asset.url[0] === '/' && asset.url[1] !== '/'
@@ -47,8 +41,21 @@ const enhancer = (opts = {}, config) => {
     }
   }
 
-  const sassChain = [cssLoader, postcssLoader, sassLoader]
-  const cssChain = [cssLoader, postcssLoader]
+  const sassChain = [
+    {
+      loader: 'css-loader',
+      options: { sourceMap: true, importLoaders: 2 }
+    },
+    postcssLoader,
+    sassLoader
+  ]
+  const cssChain = [
+    {
+      loader: 'css-loader',
+      options: { sourceMap: true, importLoaders: 1 }
+    },
+    postcssLoader
+  ]
 
   if (!isServerSide) {
     const styleLoaderOptions = {}
