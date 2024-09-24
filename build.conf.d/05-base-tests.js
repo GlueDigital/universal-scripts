@@ -6,7 +6,7 @@ const enhancer = (opts = {}) => {
     roots: ['<rootDir>/src'],
     moduleDirectories: ['node_modules', '<rootDir>'],
     transform: {
-      '^.+\\.(js|jsx|ts|tsx)$': path.resolve(__dirname, '../lib/jest/swTransform')
+      '^.+\\.(js|jsx|ts|tsx)$': path.resolve(__dirname, '../lib/jest/swcTransform')
     },
     transformIgnorePatterns: [
       '[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$'
