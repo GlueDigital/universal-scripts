@@ -30,6 +30,16 @@ const enhancer = (opts = {}, config) => {
   if (opts.id === 'server') {
     if (!isWatch) {
       config.optimization.splitChunks = optimization
+    } else {
+      config.optimization.splitChunks = {
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            reuseExistingChunk: true,
+          }
+        }
+      }
     }
 
     return config
