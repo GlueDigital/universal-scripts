@@ -19,7 +19,9 @@ const enhancer = (opts = {}, config) => {
     __WATCH__: isWatch,
     __SSR__: ssr
   }
+
   if (opts.id === 'client') {
+    // Add empty object to process.env to avoid undefined on process.env on client
     definitions['process.env'] = {}
     for (const key in process.env) {
       definitions['process.env.' + key] = JSON.stringify(process.env[key])
