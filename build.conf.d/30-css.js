@@ -25,6 +25,7 @@ const enhancer = (opts = {}, config) => {
         to: 'src/static',
         plugins: [
           "postcss-preset-env",
+          "postcss-nested",
           PostCssUrl({ url: transformAssetUrl }),
         ]
       }
