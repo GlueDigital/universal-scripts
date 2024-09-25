@@ -51,7 +51,7 @@ const enhancer = (opts = {}, config) => {
       )
     } else {
       config.plugins.push(new webpack.HotModuleReplacementPlugin())
-      config.entry.main.push('webpack-hot-middleware/client?reload=true')
+      config.entry.main.push('webpack-hot-middleware/client?reload=true&noInfo=true')
     }
     return config
   }
