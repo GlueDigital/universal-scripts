@@ -20,6 +20,12 @@ if (!__WATCH__ && !__SSR__) {
 }
 
 const generateHtml = async (req, res, next) => {
+
+  if (req.originalUrl.endsWith('.json')
+      || req.originalUrl.endsWith('.js')) {
+    return res.status(404).end()
+  }
+
   // Scripts and styles of the page
   const scripts = []
   const styles = []
@@ -31,6 +37,7 @@ const generateHtml = async (req, res, next) => {
     assets = chunks.map((chunk) => chunk.name)
   } else if (req.clientStats) {
     req.clientStats.entrypoints.main.assets.forEach(asset => {
+      if (asset.name.includes('hot-update')) return
       assets = assets.concat(asset.name)
     })
   }
