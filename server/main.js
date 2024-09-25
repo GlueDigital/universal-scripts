@@ -60,7 +60,7 @@ if (__WATCH__) {
   configureHMR = (app, compiler) => {
     // Enable DEV middleware
     const devMiddleware = webpackDevMiddleware(compiler, {
-      stats: 'normal',
+      stats: 'summary',
       publicPath: '/',
       serverSideRender: true,
     })
