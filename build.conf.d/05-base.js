@@ -22,7 +22,7 @@ const enhancer = (opts = {}) => {
       path: path.resolve(
         appDirectory, 'build', id),
       pathinfo: true,
-      filename: !isClientSide ? '[name].js' : '[name].[contenthash].js',
+      filename: isClientSide ? '[name].[contenthash].js' : '[name].js',
       chunkFilename: isClientSide ? '[name].[contenthash].js' : '[name].js',
       publicPath: process.env.SUBDIRECTORY || '/',
       clean: true
