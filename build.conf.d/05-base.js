@@ -73,7 +73,7 @@ const enhancer = (opts = {}) => {
     module: {
       rules: [
         {
-          test: /\.(js|jsx|ts|tsx)$/,
+          test: /\.(js|jsx|ts|tsx|mjs)$/,
           exclude: /node_modules\/(?!universal-scripts)/,
           loader: 'swc-loader',
           options: {
@@ -89,7 +89,7 @@ const enhancer = (opts = {}) => {
                   refresh: !isProd && isClientSide  // Equivalent to React Refresh
                 }
               },
-              target: "es2021", // Similar to @babel/preset-env
+              target: "es2022", // Similar to @babel/preset-env
               externalHelpers: true,  // Equivalent to '@babel/plugin-transform-runtime'
             },
             minify: isProd,
