@@ -1,7 +1,9 @@
 import React from 'react'
-import { createStore } from '../../lib/store'
-import { CLEANUP, REQUEST_INIT } from 'universal-scripts'
+import { createStore } from '../../lib/redux/store'
+// import { CLEANUP, REQUEST_INIT } from 'universal-scripts'
 import { Provider } from 'react-redux'
+import { cleanup } from '../../lib/redux/actions'
+import { requestInit } from '../../lib/redux/slices'
 import jsesc from 'jsesc'
 
 const addRedux = async (req, res, next) => {
@@ -9,10 +11,8 @@ const addRedux = async (req, res, next) => {
   const initialState = {}
   const store = createStore(initialState)
 
-  // Dispatch a init event with the request data
-  store.dispatch({
-    type: REQUEST_INIT,
-    payload: {
+  store.dispatch(requestInit(
+    {
       headers: req.headers,
       origin: req.origin,
       path: req.path,
@@ -20,7 +20,7 @@ const addRedux = async (req, res, next) => {
       cookies: parseCookies(req.headers.cookie),
       ...req.initExtras // Allow passing in data from previous middlewares
     }
-  })
+  ))
 
   // Make it available through the context
   req.store = store
@@ -29,7 +29,7 @@ const addRedux = async (req, res, next) => {
   await next()
 
   // Clean up the resulting state
-  store.dispatch({ type: CLEANUP })
+  store.dispatch(cleanup())
   const state = store.getState()
   delete state.req // This reducer doesn't exist client-side
 

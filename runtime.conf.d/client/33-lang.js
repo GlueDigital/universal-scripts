@@ -1,9 +1,9 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { IntlProvider } from 'react-intl'
 import { useSelector } from 'react-redux'
-import { setLang } from 'universal-scripts'
+import { updateIntl } from '../../lib/redux/slices'
 import langs from 'src/locales'
+
 
 const addClientIntl = (ctx, next) => {
   // Determine language
@@ -17,7 +17,9 @@ const addClientIntl = (ctx, next) => {
   lang = availableLangs.indexOf(lang) !== -1 ? lang : availableLangs[0]
 
   // Set it
-  ctx.store && ctx.store.dispatch(setLang(lang))
+  ctx.store && ctx.store.dispatch(
+    updateIntl({ lang, messages: langs[lang] })
+  )
 
   return next()
 }
@@ -31,10 +33,6 @@ const ReduxIntlProvider = ({ children }) => {
       {children}
     </IntlProvider>
   )
-}
-
-ReduxIntlProvider.propTypes = {
-  children: PropTypes.node
 }
 
 const renderIntlProvider = async (ctx, next) =>
