@@ -1,7 +1,7 @@
 import React from 'react'
 import { IntlProvider } from 'react-intl'
 import { useSelector } from 'react-redux'
-import { setLang } from 'universal-scripts'
+import { updateIntl } from '../../lib/redux/slices'
 import langs from 'src/locales'
 
 const addIntl = async (req, res, next) => {
@@ -12,7 +12,7 @@ const addIntl = async (req, res, next) => {
   if (forceLang && availableLangs.indexOf(forceLang) >= 0) lang = forceLang
 
   // Set it
-  req.store && req.store.dispatch(setLang(lang))
+  req.store && req.store.dispatch(updateIntl({ lang, messages: langs[lang] }))
 
   return await next()
 }
@@ -22,7 +22,7 @@ export const serverMiddleware = addIntl
 const ReduxIntlProvider = ({ children }) => {
   const intl = useSelector(s => s.intl)
   return (
-    <IntlProvider key={intl.locale} {...intl}>
+    <IntlProvider key={intl.lang} locale={intl.lang} messages={intl.messages}>
       {children}
     </IntlProvider>
   )

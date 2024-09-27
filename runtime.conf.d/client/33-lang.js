@@ -9,7 +9,8 @@ const addClientIntl = (ctx, next) => {
   // Determine language
   const availableLangs = Object.keys(langs)
   const storeIntl = ctx.store && ctx.store.getState().intl
-  let lang = storeIntl && storeIntl.locale
+  let lang = storeIntl && storeIntl.lang
+
   if (!lang) {
     lang = document.documentElement.lang ||
       window.navigator.language || window.navigator.userLanguage
@@ -29,7 +30,7 @@ export const clientInit = addClientIntl
 const ReduxIntlProvider = ({ children }) => {
   const intl = useSelector(s => s.intl)
   return (
-    <IntlProvider key={intl.locale} {...intl}>
+    <IntlProvider key={intl.locale} locale={intl.lang} messages={intl.messages}>
       {children}
     </IntlProvider>
   )

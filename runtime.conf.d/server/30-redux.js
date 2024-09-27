@@ -1,6 +1,5 @@
 import React from 'react'
 import { createStore } from '../../lib/redux/store'
-// import { CLEANUP, REQUEST_INIT } from 'universal-scripts'
 import { Provider } from 'react-redux'
 import { cleanup } from '../../lib/redux/actions'
 import { requestInit } from '../../lib/redux/slices'
