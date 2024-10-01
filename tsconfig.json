@@ -1,0 +1,27 @@
+{
+  "compileOnSave": false,
+  "include": ["runtime.conf.d/**/*", "globals.d.ts"],
+  "compilerOptions": {
+      "allowSyntheticDefaultImports": true,
+      "lib": [
+          "dom",
+          "DOM.Iterable",
+          "ES2022"
+      ],
+      "jsx": "react-jsx",
+      "target": "ES2022",
+      "module": "ESNext",
+      "moduleResolution": "node",
+      "baseUrl": ".",
+      "sourceMap": true,
+      "skipLibCheck": true,
+      "paths": {
+        "@components/*": ["./src/components/*"],
+        "@utils/*": ["./src/utils/*"],
+        "@routes/*": ["./src/routes/*"],
+        "@static/*": ["./src/static/*"],
+        "@hooks/*": ["./src/hooks/*"],
+        "src/*": ["./src/*"],
+      }
+  }
+}
