@@ -1,5 +1,6 @@
-import React from 'react'
+
 import { BrowserRouter } from 'react-router-dom'
+// @ts-ignore
 import App from 'src/routes'
 
 const routerRoot = (ctx) => {
