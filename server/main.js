@@ -40,6 +40,7 @@ if (__WATCH__) {
   // We need to hot-reload serverMiddleware, but we're the ones building it.
   let serverMiddleware = null
   let serverErrorMiddleware = null
+  let clientStats = null
 
   const loadServerMiddlewareProxy = (req, res, next) => {
     if (serverMiddleware !== null && serverMiddleware.length) {
@@ -71,7 +72,7 @@ if (__WATCH__) {
     app.use(hotMiddleware)
 
     app.use((req, res, next) => {
-      req.clientStats = devMiddleware.context.stats.toJson().children[0]
+      req.clientStats = clientStats
       next()
     })
 
@@ -79,6 +80,8 @@ if (__WATCH__) {
     const mfs = devMiddleware.context.outputFileSystem
     const plugin = { name: 'universal-scripts' }
     compiler.hooks.done.tap(plugin, async stats => {
+      console.log(stats)
+      clientStats = devMiddleware.context.stats.toJson().children[0]
       const fname = path.resolve(appDirectory, 'build', 'server', 'server.js')
       try {
         const newMiddleware = mfs.readFileSync(fname).toString()
