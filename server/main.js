@@ -54,7 +54,7 @@ if (__WATCH__) {
     if (serverErrorMiddleware !== null && serverErrorMiddleware.length) {
       return groupErrorMiddlewares(serverErrorMiddleware)(err, req, res, next)
     } else {
-      console.log('Request received, but no middleware loaded yet')
+      console.log('Request received, but no error middleware loaded yet')
     }
   }
 
@@ -80,7 +80,6 @@ if (__WATCH__) {
     const mfs = devMiddleware.context.outputFileSystem
     const plugin = { name: 'universal-scripts' }
     compiler.hooks.done.tap(plugin, async stats => {
-      console.log(stats)
       clientStats = devMiddleware.context.stats.toJson().children[0]
       const fname = path.resolve(appDirectory, 'build', 'server', 'server.js')
       try {
