@@ -1,3 +1,5 @@
+import { NextFunction, Request, Response } from 'express'
+
 let StaticRouter
 
 try {
@@ -10,7 +12,7 @@ try {
 
 const App = __SSR__ && require('src/routes').default
 
-const routerRoot = (req, res, next) => {
+const routerRoot = (req: Request, res: Response, next: NextFunction) => {
   if (!App) return null
   // On the server, pass the URL from context, and use StaticRouter
   req.renderCtx = {}

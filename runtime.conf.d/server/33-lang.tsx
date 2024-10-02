@@ -29,7 +29,7 @@ const ReduxIntlProvider = ({ children }) => {
   )
 }
 
-const renderIntlProvider = async (req, res, next) =>
+const renderIntlProvider = async (req: Request, res: Response, next: NextFunction) =>
   <ReduxIntlProvider>
     {await next()}
   </ReduxIntlProvider>

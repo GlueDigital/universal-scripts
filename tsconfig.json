@@ -1,6 +1,6 @@
 {
   "compileOnSave": false,
-  "include": ["runtime.conf.d/**/*", "globals.d.ts"],
+  "include": ["runtime.conf.d/**/*", "globals.d.ts", "@types"],
   "compilerOptions": {
       "allowSyntheticDefaultImports": true,
       "lib": [
@@ -15,6 +15,8 @@
       "baseUrl": ".",
       "sourceMap": true,
       "skipLibCheck": true,
+      "typeRoots": ["./node_modules/@types", "./@types"],
+      "esModuleInterop": true,
       "paths": {
         "@components/*": ["./src/components/*"],
         "@utils/*": ["./src/utils/*"],

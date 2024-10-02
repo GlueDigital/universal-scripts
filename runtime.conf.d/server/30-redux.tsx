@@ -13,7 +13,7 @@ const addRedux = async (req: Request, res: Response, next: NextFunction) => {
   store.dispatch(requestInit(
     {
       headers: req.headers,
-      origin: req.origin,
+      origin: req.get('origin'),
       path: req.path,
       ip: req.ip,
       cookies: parseCookies(req.headers.cookie),

@@ -8,7 +8,7 @@ const ErrorHandler = __SSR__ && (() => {
   return keys.ErrorHandler
 })()
 
-const render = (req, res, root) => new Promise((resolve, reject) => {
+const render = (req: Request, res: Response, root): Promise<void> => new Promise((resolve, reject) => {
   const stream = renderToPipeableStream(root, {
     bootstrapScripts: req.assets?.scripts,
     onAllReady: () => {
