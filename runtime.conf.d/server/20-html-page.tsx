@@ -1,25 +1,26 @@
-import React from 'react'
 import { HelmetProvider } from 'react-helmet-async'
-import path from 'path'
-import fs from 'fs'
+import path from 'node:path'
+import fs from 'node:fs'
 import defaultHeaders from '../../lib/header'
 import renderHtmlLayout from '../../lib/render-html-layout'
+import { NextFunction, Request, Response } from 'express'
 
 const basename = process.env.SUBDIRECTORY || '/'
 
 let chunks = []
+
 if (!__WATCH__) {
   const fname = path.resolve('build', 'client', 'webpack-chunks.json')
-  chunks = JSON.parse(fs.readFileSync(fname)).entrypoints
+  chunks = JSON.parse(fs.readFileSync(fname, 'utf8')).entrypoints
 }
 
-let index = false
+let index = ''
 if (!__WATCH__ && !__SSR__) {
   const fname = path.resolve('build', 'client', 'index.htm')
-  index = fs.readFileSync(fname)
+  index = fs.readFileSync(fname, 'utf8')
 }
 
-const generateHtml = async (req, res, next) => {
+const generateHtml = async (req: Request, res: Response, next: NextFunction) => {
 
   if (req.originalUrl.endsWith('.json')
       || req.originalUrl.endsWith('.js')) {

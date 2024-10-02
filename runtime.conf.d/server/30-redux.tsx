@@ -1,11 +1,11 @@
-import React from 'react'
 import { createStore } from '../../lib/redux/store'
 import { Provider } from 'react-redux'
 import { cleanup } from '../../lib/redux/actions'
 import { requestInit } from '../../lib/redux/slices'
 import jsesc from 'jsesc'
+import { NextFunction, Request, Response } from 'express'
 
-const addRedux = async (req, res, next) => {
+const addRedux = async (req: Request, res: Response, next: NextFunction) => {
   // Create store
   const initialState = {}
   const store = createStore(initialState)

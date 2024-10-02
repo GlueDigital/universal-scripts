@@ -1,4 +1,5 @@
 import chalk from 'chalk'
+import { NextFunction, Request, Response } from 'express'
 import fs from 'fs'
 
 // Optional error 500 page
@@ -10,7 +11,7 @@ const customError500 = __SSR__ && (() => {
   }
 })()
 
-const handleErrors = async (err, req, res, next) => {
+const handleErrors = async (err: Error, req: Request, res: Response, next: NextFunction) => {
   // Loguea el error con la pila
   console.error(chalk.red('Error during render:\n') + err.stack)
 

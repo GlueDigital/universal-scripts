@@ -1,4 +1,4 @@
-import React from 'react'
+import { NextFunction, Request, Response } from 'express'
 import { renderToPipeableStream } from 'react-dom/server'
 
 // Optional error 500 page
@@ -27,7 +27,7 @@ const render = (req, res, root) => new Promise((resolve, reject) => {
   })
 })
 
-const renderMiddleware = async (req, res, next) => {
+const renderMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   // Run any other middlewares
   await next()
 

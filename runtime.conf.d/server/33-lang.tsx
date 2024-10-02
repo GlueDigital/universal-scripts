@@ -1,10 +1,11 @@
-import React from 'react'
 import { IntlProvider } from 'react-intl'
 import { useSelector } from 'react-redux'
 import { updateIntl } from '../../lib/redux/slices'
+// @ts-ignore
 import langs from 'src/locales'
+import { NextFunction, Request, Response } from 'express'
 
-const addIntl = async (req, res, next) => {
+const addIntl = async (req: Request, res: Response, next: NextFunction) => {
   // Determine language
   const availableLangs = Object.keys(langs)
   let lang = req.acceptsLanguages(availableLangs) || availableLangs[0]
