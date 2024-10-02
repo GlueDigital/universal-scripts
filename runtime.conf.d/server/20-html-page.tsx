@@ -75,7 +75,7 @@ const generateHtml = async (req: Request, res: Response, next: NextFunction) => 
   }
 }
 
-const staticHtml = async (req, res, next) => {
+const staticHtml = async (req: Request, res: Response, next: NextFunction) => {
   // Use Static HTML template
   await next()
   res.type('text/html')

@@ -1,11 +1,11 @@
 import { Provider } from 'react-redux'
-import { createStore } from '../../lib/redux/store'
+import { createClientStore } from '../../lib/redux/store'
 import { clientInit as clientInitAction } from '../../lib/redux/actions'
 
 const clientRedux = (ctx, next) => {
   // Create store using server data (if available)
   const initialState = window.___INITIAL_STATE__ || {}
-  const store = createStore(initialState)
+  const store = createClientStore(initialState)
 
   // Make it available through the context
   ctx.store = store

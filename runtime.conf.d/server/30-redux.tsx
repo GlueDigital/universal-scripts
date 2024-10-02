@@ -1,4 +1,4 @@
-import { createStore } from '../../lib/redux/store'
+import { createServerStore } from '../../lib/redux/store'
 import { Provider } from 'react-redux'
 import { cleanup } from '../../lib/redux/actions'
 import { requestInit } from '../../lib/redux/slices'
@@ -6,9 +6,7 @@ import jsesc from 'jsesc'
 import { NextFunction, Request, Response } from 'express'
 
 const addRedux = async (req: Request, res: Response, next: NextFunction) => {
-  // Create store
-  const initialState = {}
-  const store = createStore(initialState)
+  const store = createServerStore()
 
   store.dispatch(requestInit(
     {
@@ -17,7 +15,7 @@ const addRedux = async (req: Request, res: Response, next: NextFunction) => {
       path: req.path,
       ip: req.ip,
       cookies: parseCookies(req.headers.cookie),
-      ...req.initExtras // Allow passing in data from previous middlewares
+      // ...req.initExtras // Allow passing in data from previous middlewares
     }
   ))
 
@@ -30,10 +28,11 @@ const addRedux = async (req: Request, res: Response, next: NextFunction) => {
   // Clean up the resulting state
   store.dispatch(cleanup())
   const state = store.getState()
-  delete state.req // This reducer doesn't exist client-side
+  const copyState = structuredClone(state)
+  delete copyState.req // This reducer doesn't exist client-side
 
   // Send store contents along the page
-  const storeOutput = jsesc(state, { isScriptContext: true })
+  const storeOutput = jsesc(copyState, { isScriptContext: true })
   req.assets?.styles.unshift('<script>___INITIAL_STATE__=' + storeOutput + '</script>')
 }
 

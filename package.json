@@ -1,6 +1,6 @@
 {
   "name": "universal-scripts",
-  "version": "3.0.3-redux-2",
+  "version": "3.0.3-redux-3",
   "description": "Build universal apps without configuration.",
   "main": "index.js",
   "repository": "GlueDigital/universal-scripts",
