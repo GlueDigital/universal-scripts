@@ -1,11 +1,12 @@
 import { IntlProvider } from 'react-intl'
-import { useSelector } from 'react-redux'
 import { updateIntl } from '../../lib/redux/slices'
 // @ts-ignore
 import langs from 'src/locales'
+import { useClientSelector } from 'lib/redux/selector'
+import { ClientInit } from 'lib/redux/types'
 
 
-const addClientIntl = (ctx, next) => {
+const addClientIntl: ClientInit = (ctx, next) => {
   // Determine language
   const availableLangs = Object.keys(langs)
   const storeIntl = ctx.store && ctx.store.getState().intl
@@ -28,9 +29,9 @@ const addClientIntl = (ctx, next) => {
 export const clientInit = addClientIntl
 
 const ReduxIntlProvider = ({ children }) => {
-  const intl = useSelector((s: {intl: any})  => s.intl)
+  const intl = useClientSelector((s)  => s.intl)
   return (
-    <IntlProvider key={intl.locale} locale={intl.lang} messages={intl.messages}>
+    <IntlProvider key={intl.lang} locale={intl.lang} messages={intl.messages}>
       {children}
     </IntlProvider>
   )

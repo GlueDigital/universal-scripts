@@ -1,8 +1,9 @@
+import { ClientInit } from 'lib/redux/types'
 import ReactDOM from 'react-dom/client'
 
 let rendered
 
-const clientRender = async (ctx) => {
+const clientRender: ClientInit = async (ctx) => {
   const rootNode = document.getElementById('root')
   const children = await ctx.triggerHook('reactRoot')(ctx, false)
   if (rendered) {

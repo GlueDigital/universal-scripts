@@ -1,9 +1,11 @@
 
+
+import { ClientRoot } from 'lib/redux/types'
 import { BrowserRouter } from 'react-router-dom'
 // @ts-ignore
 import App from 'src/routes'
 
-const routerRoot = (ctx) => {
+const routerRoot: ClientRoot = (ctx) => {
   // On the client, just use BrowserRouter
   return (
     <BrowserRouter>

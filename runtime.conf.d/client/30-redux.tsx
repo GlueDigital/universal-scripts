@@ -1,8 +1,9 @@
 import { Provider } from 'react-redux'
 import { createClientStore } from '../../lib/redux/store'
 import { clientInit as clientInitAction } from '../../lib/redux/actions'
+import { ClientInit, ClientRoot } from 'lib/redux/types'
 
-const clientRedux = (ctx, next) => {
+const clientRedux: ClientInit = (ctx, next) => {
   // Create store using server data (if available)
   const initialState = window.___INITIAL_STATE__ || {}
   const store = createClientStore(initialState)
@@ -27,7 +28,7 @@ const clientRedux = (ctx, next) => {
 
 export const clientInit = clientRedux
 
-const renderIntlProvider = async (ctx, next) =>
+const renderIntlProvider: ClientRoot = async (ctx, next) =>
   <Provider store={ctx.store}>
     {await next()}
   </Provider>

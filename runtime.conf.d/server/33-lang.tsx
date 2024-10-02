@@ -1,9 +1,12 @@
 import { IntlProvider } from 'react-intl'
-import { useSelector } from 'react-redux'
 import { updateIntl } from '../../lib/redux/slices'
+import { NextFunction, Request, Response } from 'express'
+import { useServerSelector } from 'lib/redux/selector'
+
 // @ts-ignore
 import langs from 'src/locales'
-import { NextFunction, Request, Response } from 'express'
+
+
 
 const addIntl = async (req: Request, res: Response, next: NextFunction) => {
   // Determine language
@@ -21,7 +24,7 @@ const addIntl = async (req: Request, res: Response, next: NextFunction) => {
 export const serverMiddleware = addIntl
 
 const ReduxIntlProvider = ({ children }) => {
-  const intl = useSelector(s => s.intl)
+  const intl = useServerSelector((s) => s.intl)
   return (
     <IntlProvider key={intl.lang} locale={intl.lang} messages={intl.messages}>
       {children}
