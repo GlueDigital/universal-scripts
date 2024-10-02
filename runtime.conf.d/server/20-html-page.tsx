@@ -7,7 +7,7 @@ import { NextFunction, Request, Response } from 'express'
 
 const basename = process.env.SUBDIRECTORY || '/'
 
-let chunks = []
+let chunks: { name: string, size?: number }[] = []
 
 if (!__WATCH__) {
   const fname = path.resolve('build', 'client', 'webpack-chunks.json')
@@ -28,12 +28,12 @@ const generateHtml = async (req: Request, res: Response, next: NextFunction) => 
   }
 
   // Scripts and styles of the page
-  const scripts = []
-  const styles = []
-  const reqBasename = req.basename || basename
+  const scripts: string[] = []
+  const styles: string[] = []
+  const reqBasename: string = req.basename || basename
 
   // Add assets from build process or from client stats in watch mode
-  let assets = []
+  let assets: string[] = []
   if (!__WATCH__) {
     assets = chunks.map((chunk) => chunk.name)
   } else if (req.clientStats) {
@@ -55,7 +55,9 @@ const generateHtml = async (req: Request, res: Response, next: NextFunction) => 
   req.assets = { scripts, styles }
   res.status(200)
 
-  req.helmetContext = {}
+  req.helmetContext = {
+    helmet: null
+  }
 
   await next()
 
@@ -82,7 +84,7 @@ const staticHtml = async (req, res, next) => {
 
 export const serverMiddleware = index ? staticHtml : generateHtml
 
-const addDefaultHeaders = async (req, res, next) =>
+const addDefaultHeaders = async (req: Request, res: Response, next: NextFunction) =>
   <HelmetProvider context={req.helmetContext}>
     {defaultHeaders(req.store)}
     {await next()}

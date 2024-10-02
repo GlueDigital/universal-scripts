@@ -1,6 +1,6 @@
 import chalk from 'chalk'
 import { NextFunction, Request, Response } from 'express'
-import fs from 'fs'
+import fs from 'node:fs'
 
 // Optional error 500 page
 const customError500 = __SSR__ && (() => {

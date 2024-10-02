@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
+import { ReactNode } from 'react'
 import { renderToPipeableStream } from 'react-dom/server'
 
 // Optional error 500 page
@@ -8,7 +9,11 @@ const ErrorHandler = __SSR__ && (() => {
   return keys.ErrorHandler
 })()
 
-const render = (req, res, root) => new Promise((resolve, reject) => {
+const render = (
+  req: Request,
+  res: Response,
+  root: ReactNode
+): Promise<void> => new Promise((resolve, reject) => {
   const stream = renderToPipeableStream(root, {
     bootstrapScripts: req.assets?.scripts,
     onAllReady: () => {
