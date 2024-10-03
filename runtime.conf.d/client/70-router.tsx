@@ -1,6 +1,6 @@
 
 
-import { ClientRoot } from 'lib/redux/types'
+import { ClientRoot } from '../../lib/redux/types'
 import { BrowserRouter } from 'react-router-dom'
 // @ts-ignore
 import App from 'src/routes'

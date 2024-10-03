@@ -1,4 +1,4 @@
-import { ClientInit } from 'lib/redux/types'
+import { ClientInit } from '../../lib/redux/types'
 import ReactDOM from 'react-dom/client'
 
 let rendered

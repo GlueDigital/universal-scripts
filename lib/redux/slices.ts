@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { cleanup } from './actions'
 import { IncomingHttpHeaders } from 'node:http'
 
@@ -16,7 +16,7 @@ const requestSlice = createSlice({
   name: 'request',
   initialState: initialReqState,
   reducers: {
-    requestInit(state, action) {
+    requestInit(state, action: PayloadAction<ReqState>) {
       return action.payload
     }
   },
@@ -44,7 +44,7 @@ const intlSlice = createSlice({
   name: 'intl',
   initialState: initialIntlState,
   reducers: {
-    updateIntl(state, action) {
+    updateIntl(state, action: PayloadAction<IntlState>) {
       return action.payload
     },
   },

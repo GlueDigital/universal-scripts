@@ -1,9 +1,12 @@
 import { IntlProvider } from 'react-intl'
 import { updateIntl } from '../../lib/redux/slices'
+import { useAppSelector } from '../../lib/redux/selector'
+import { ClientInit, ClientRoot } from '../../lib/redux/types'
+
 // @ts-ignore
 import langs from 'src/locales'
-import { useClientSelector } from 'lib/redux/selector'
-import { ClientInit } from 'lib/redux/types'
+import { ReactNode } from 'react'
+
 
 
 const addClientIntl: ClientInit = (ctx, next) => {
@@ -28,8 +31,8 @@ const addClientIntl: ClientInit = (ctx, next) => {
 
 export const clientInit = addClientIntl
 
-const ReduxIntlProvider = ({ children }) => {
-  const intl = useClientSelector((s)  => s.intl)
+const ReduxIntlProvider = ({ children }: { children: ReactNode }) => {
+  const intl = useAppSelector((s)  => s.intl)
   return (
     <IntlProvider key={intl.lang} locale={intl.lang} messages={intl.messages}>
       {children}
@@ -37,7 +40,7 @@ const ReduxIntlProvider = ({ children }) => {
   )
 }
 
-const renderIntlProvider = async (ctx, next) =>
+const renderIntlProvider: ClientRoot = async (ctx, next) =>
   <ReduxIntlProvider>
     {await next()}
   </ReduxIntlProvider>

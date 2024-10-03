@@ -4,6 +4,7 @@ import { cleanup } from '../../lib/redux/actions'
 import { requestInit } from '../../lib/redux/slices'
 import jsesc from 'jsesc'
 import { NextFunction, Request, Response } from 'express'
+import { ReactNode } from 'react'
 
 const addRedux = async (req: Request, res: Response, next: NextFunction) => {
   const store = createServerStore()
@@ -46,7 +47,7 @@ const parseCookies = s => !s ? {} : s
 
 export const serverMiddleware = addRedux
 
-const renderIntlProvider = async (req, res, next) =>
+const renderIntlProvider = async (req: Request, res: Response, next: () => Promise<ReactNode>) =>
   <Provider store={req.store}>
     {await next()}
   </Provider>

@@ -1,22 +1,13 @@
-const { createAction } = require('@reduxjs/toolkit')
+const { cleanup, clientInit } = require('./lib/redux/actions')
+const { updateIntl, requestInit } = require('./lib/redux/slices')
 
-// Exports for user-code
-const langs = require('src/locales').default
-// import { updateIntl } from 'react-intl-redux'
-
-const cleanup = createAction('@@universal-scripts/cleanup')
-const updateIntl = createAction('@@intl/UPDATE')
-
-const setLang = lang => ({
-  type: UPDATE_INTL,
-  payload: {
-    locale: lang,
-    messages: langs[lang]
-  }
-})
+const { useAppDispatch, useAppSelector } = require('./lib/redux/selector')
 
 module.exports = {
   cleanup,
+  clientInit,
   updateIntl,
-  setLang
+  requestInit,
+  useAppDispatch,
+  useAppSelector
 }

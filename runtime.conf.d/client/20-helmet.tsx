@@ -1,6 +1,6 @@
 import { HelmetProvider } from 'react-helmet-async'
 import defaultHeaders from '../../lib/header'
-import { ClientRoot } from 'lib/redux/types'
+import { ClientRoot } from '../../lib/redux/types'
 
 const addDefaultHeaders: ClientRoot = async (ctx, next) => {
   return (

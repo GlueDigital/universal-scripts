@@ -1,7 +1,7 @@
 import { Provider } from 'react-redux'
 import { createClientStore } from '../../lib/redux/store'
 import { clientInit as clientInitAction } from '../../lib/redux/actions'
-import { ClientInit, ClientRoot } from 'lib/redux/types'
+import { ClientInit, ClientRoot } from '../../lib/redux/types'
 
 const clientRedux: ClientInit = (ctx, next) => {
   // Create store using server data (if available)

@@ -1,10 +1,11 @@
 import { IntlProvider } from 'react-intl'
 import { updateIntl } from '../../lib/redux/slices'
 import { NextFunction, Request, Response } from 'express'
-import { useServerSelector } from 'lib/redux/selector'
+import { useServerSelector } from '../../lib/redux/selector'
 
 // @ts-ignore
 import langs from 'src/locales'
+import { ReactNode } from 'react'
 
 
 
@@ -32,7 +33,7 @@ const ReduxIntlProvider = ({ children }) => {
   )
 }
 
-const renderIntlProvider = async (req: Request, res: Response, next: NextFunction) =>
+const renderIntlProvider = async (req: Request, res: Response, next: () => Promise<ReactNode>) =>
   <ReduxIntlProvider>
     {await next()}
   </ReduxIntlProvider>

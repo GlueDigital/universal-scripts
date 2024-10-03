@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express'
+import {  Request, Response } from 'express'
 
 let StaticRouter
 let isV6 = true
@@ -14,7 +14,7 @@ try {
 
 const App = __SSR__ && require('src/routes').default
 
-const routerRoot = (req: Request, res: Response, next: NextFunction) => {
+const routerRoot = (req: Request, res: Response, next) => {
   if (!App) return null
 
   const url = req.url

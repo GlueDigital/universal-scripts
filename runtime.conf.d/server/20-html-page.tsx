@@ -4,6 +4,7 @@ import fs from 'node:fs'
 import defaultHeaders from '../../lib/header'
 import renderHtmlLayout from '../../lib/render-html-layout'
 import { NextFunction, Request, Response } from 'express'
+import { ReactNode } from 'react'
 
 const basename = process.env.SUBDIRECTORY || '/'
 
@@ -84,7 +85,7 @@ const staticHtml = async (req: Request, res: Response, next: NextFunction) => {
 
 export const serverMiddleware = index ? staticHtml : generateHtml
 
-const addDefaultHeaders = async (req: Request, res: Response, next: NextFunction) =>
+const addDefaultHeaders = async (req: Request, res: Response, next: () => Promise<ReactNode>) =>
   <HelmetProvider context={req.helmetContext}>
     {defaultHeaders(req.store)}
     {await next()}
