@@ -5,12 +5,9 @@ import { HelmetServerState } from 'react-helmet-async'
 // @ts-ignore
 import { ReducerType } from 'src/store/reducers'
 
-type ReducerActions<Reducer> = Reducer extends (state: any, action: infer A) => any ? A : never
-type ProjectActions = ReducerActions<ReducerType>
-
 export type ServerRootState = ReturnType<ReturnType<typeof createServerStore>['getState']> & ReducerType
 export type ClientRootState = ReturnType<ReturnType<typeof createClientStore>['getState']> & ReducerType
-export type AppDispatch = ReturnType<typeof createServerStore>['dispatch'] & ReducerType
+export type AppDispatch = ReturnType<typeof createServerStore>['dispatch']
 export type ServerStore = ReturnType<typeof createServerStore>
 export type ClientStore = ReturnType<typeof createClientStore>
 
