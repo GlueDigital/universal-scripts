@@ -32,9 +32,12 @@ const extraMiddlewares = (() => {
 export const createServerStore = () => {
   const reducers = addServerAutoReducers(reducerList)
 
+  const middlewares = extraMiddlewares()
+
   const store = configureStore({
     reducer: reducers,
-    // middleware: middlewares,
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(middlewares),
     preloadedState: {}
   })
 
