@@ -97,14 +97,14 @@ const enhancer = (opts = {}) => {
         },
         {
           test: /\.(jpg|png|gif|webp|svg|ico|avif|mp4|webm)$/i,
-          type: 'asset',
+          type: 'asset/resource',
           generator: {
             filename: 'static/[name].[contenthash][ext]'
           }
         },
         {
           test: /\.(woff|woff2|eot|ttf|otf)$/i,
-          type: 'asset',
+          type: 'asset/resource',
           generator: {
             filename: 'static/[name].[contenthash][ext]'
           }
