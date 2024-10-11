@@ -43,7 +43,7 @@ const renderMiddleware = async (req, res, next) => {
     } else {
       await render(req, res, false)
     }
-    res.status = err.status || 500
+    res.status(err.status || 500)
   }
 }
 
