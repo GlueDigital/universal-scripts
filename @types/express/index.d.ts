@@ -21,6 +21,7 @@ declare global {
       renderCtx: StaticRouterContext
       stream: PipeableStream
       triggerHook: (name: string) => (req: Request, res: Response, initial: boolean) => ReactNode
+      initExtras: Record<string, unknown>
     }
   }
 }

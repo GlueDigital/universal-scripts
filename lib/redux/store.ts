@@ -1,11 +1,11 @@
-import { combineReducers, configureStore, Reducer } from '@reduxjs/toolkit'
+import { combineReducers, configureStore, ReducersMapObject } from '@reduxjs/toolkit'
 import { fetchReducer } from 'ruse-fetch'
 import { intlReducer, requestReducer } from './slices'
 
 // @ts-ignore
 import reducerList from 'src/store/reducers'
 
-const addClientAutoReducers = (userReducers: Reducer<{}, never, Partial<{}>>) => {
+const addClientAutoReducers = (userReducers: ReducersMapObject) => {
   const autoReducers = {
     intl: intlReducer,
     useFetch: fetchReducer,
@@ -13,7 +13,7 @@ const addClientAutoReducers = (userReducers: Reducer<{}, never, Partial<{}>>) =>
   return combineReducers({...autoReducers, ...userReducers})
 }
 
-const addServerAutoReducers = (userReducers: Reducer<{}, never, Partial<{}>>) => {
+const addServerAutoReducers = (userReducers: ReducersMapObject) => {
   const autoReducers = {
     intl: intlReducer,
     useFetch: fetchReducer,
@@ -29,43 +29,41 @@ const extraMiddlewares = (() => {
   return []
 })()
 
-export const createServerStore = () => {
-  const reducers = addServerAutoReducers(reducerList)
-
-  const middlewares = extraMiddlewares()
+const createStore = (
+  reducers: ReducersMapObject,
+  initialState: Record<string, any> | undefined = undefined,
+  isServer: boolean
+) => {
+  const autoReducers = isServer
+    ? addServerAutoReducers(reducers)
+    : addClientAutoReducers(reducers);
 
   const store = configureStore({
-    reducer: reducers,
+    reducer: autoReducers,
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(middlewares),
-    preloadedState: {}
-  })
+      getDefaultMiddleware().concat(extraMiddlewares),
+    preloadedState: initialState,
+  });
 
+  // Hot Module Replacement (HMR)
   if (module.hot) {
-    module.hot.accept('src/store/reducers', () => {
-      const newReducers = addServerAutoReducers(require('src/store/reducers').default)
-      store.replaceReducer(newReducers)
-    })
+    module.hot.accept('src/store/reducers', async () => {
+      // @ts-ignore
+      const updatedReducers = (await import('src/store/reducers')).default;
+      const newAutoReducers = isServer
+        ? addServerAutoReducers(updatedReducers)
+        : addClientAutoReducers(updatedReducers);
+      store.replaceReducer(newAutoReducers);
+    });
   }
 
-  return store
-}
+  return store;
+};
 
-export const createClientStore = (initialState: any) => {
-  const reducers = addClientAutoReducers(reducerList)
 
-  const store = configureStore({
-    reducer: reducers,
-    // middleware: middlewares,
-    preloadedState: initialState
-  })
 
-  if (module.hot) {
-    module.hot.accept('src/store/reducers', () => {
-      const newReducers = addClientAutoReducers(require('src/store/reducers').default)
-      store.replaceReducer(newReducers)
-    })
-  }
+export const createServerStore = () => createStore(reducerList, undefined, true)
 
-  return store
-}
+export const createClientStore = (initialState: any) => createStore(reducerList, initialState, false)
+
+

@@ -16,7 +16,7 @@ const addRedux = async (req: Request, res: Response, next: NextFunction) => {
       path: req.path,
       ip: req.ip,
       cookies: parseCookies(req.headers.cookie),
-      // ...req.initExtras // Allow passing in data from previous middlewares
+      ...req.initExtras // Allow passing in data from previous middlewares
     }
   ))
 
