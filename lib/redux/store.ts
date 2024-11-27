@@ -41,7 +41,19 @@ const createStore = (
   const store = configureStore({
     reducer: autoReducers,
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(extraMiddlewares),
+      getDefaultMiddleware({
+        serializableCheck: {
+          ignoredPaths: ['useFetch'],
+          ignoredActions: [
+            "useFetch/fetchError",
+            "useFetch/fetchLoading",
+            "useFetch/fetchSuccess",
+            "useFetch/fetchCleanup",
+            "useFetch/fetchUnuse",
+            "useFetch/fetchUse"
+          ]
+        },
+      }).concat(extraMiddlewares),
     preloadedState: initialState,
   });
 

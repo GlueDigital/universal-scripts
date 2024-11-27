@@ -5863,10 +5863,9 @@ run-parallel@^1.1.9:
   dependencies:
     queue-microtask "^1.2.2"
 
-ruse-fetch@^2.2.4:
-  version "2.2.4"
-  resolved "https://registry.yarnpkg.com/ruse-fetch/-/ruse-fetch-2.2.4.tgz#ebeb438f4a2731d8ce33863b32d75907456835df"
-  integrity sha512-zE4OkGOF7Rp1dU/kIYLsRetqyhQ2AcnHiwPf41EQXLKk7ZStEWEsTBRuPIEBMsRmqCngsstQoBIhMCyMKG8kmQ==
+ruse-fetch@../ruse-fetch/ruse-fetch-3.0.16.tgz:
+  version "3.0.16"
+  resolved "../ruse-fetch/ruse-fetch-3.0.16.tgz#725bc738d17119ce685a1ebfc53dd584af069534"
 
 safe-array-concat@^1.1.2:
   version "1.1.2"
