@@ -1,9 +1,14 @@
-const fs = require('fs')
-const path = require('path')
-const webpack = require('webpack')
+import fs from 'fs'
+import path from 'path'
+import webpackPackage from 'webpack'
+
+const  { DefinePlugin } = webpackPackage
 
 const appDirectory = fs.realpathSync(process.cwd())
-const pkg = require(path.join(appDirectory, 'package.json'))
+
+const pkg = await import(path.join(appDirectory, 'package.json'), {
+  assert: { type: 'json' }
+})
 
 const enhancer = (opts = {}, config) => {
   const isWatch = opts.isWatch
@@ -29,11 +34,10 @@ const enhancer = (opts = {}, config) => {
   }
 
   if (!config.plugins) config.plugins = []
-  config.plugins.push(new webpack.DefinePlugin(definitions))
+  config.plugins.push(new DefinePlugin(definitions))
 
   return config
 }
 
-module.exports = {
-  webpack: enhancer
-}
+export const webpack = enhancer
+

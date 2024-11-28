@@ -1,11 +1,15 @@
 /**
  * Generate a index.htm file on client build if SSR is disabled.
  */
-const fs = require('fs')
-const path = require('path')
+import fs from 'fs'
+import path from 'path'
 
 const appDirectory = fs.realpathSync(process.cwd())
-const pkg = require(path.join(appDirectory, 'package.json'))
+
+const pkg = await import(path.join(appDirectory, 'package.json'), {
+  assert: { type: 'json' }
+})
+
 const ssr = !pkg.universalOptions || !pkg.universalOptions.noSsr
 
 // The default template can be overriden at src/static/index.htm
@@ -72,6 +76,4 @@ const enhancer = (opts = {}, config) => {
   return config
 }
 
-module.exports = {
-  webpack: enhancer
-}
+export const webpack = enhancer

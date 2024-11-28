@@ -1,9 +1,16 @@
-const fs = require('fs')
-const path = require('path')
-const webpack = require('webpack')
-const JsconfdPlugin = require('js.conf.d-webpack')
-const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin')
-const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
+import fs from 'fs'
+import { resolve, dirname } from 'path'
+import webpackPackage from 'webpack'
+import JsconfdPlugin from 'js.conf.d-webpack'
+import DirectoryNamedWebpackPlugin from 'directory-named-webpack-plugin'
+import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+
+const { ProgressPlugin } = webpackPackage
+
 
 const appDirectory = fs.realpathSync(process.cwd())
 
@@ -19,7 +26,7 @@ const enhancer = (opts = {}) => {
     mode: isProd ? 'production' : 'development',
     performance: { hints: false },
     output: {
-      path: path.resolve(
+      path: resolve(
         appDirectory, 'build', id),
       pathinfo: true,
       filename: isClientSide ? '[name].[contenthash].js' : '[name].js',
@@ -30,8 +37,8 @@ const enhancer = (opts = {}) => {
     resolve: {
       extensions: ['.wasm', '.mjs', '.ts', '.js', '.tsx', '.jsx', '.json', '.sass', '.scss', '.css'],
       modules: [
-        path.resolve(__dirname, '..', 'node_modules'),
-        path.resolve(appDirectory, 'node_modules'),
+        resolve(__dirname, '..', 'node_modules'),
+        resolve(appDirectory, 'node_modules'),
         appDirectory
       ],
       plugins: [
@@ -41,22 +48,22 @@ const enhancer = (opts = {}) => {
         })
       ],
       alias: {
-        "@components": path.resolve(process.cwd(), "src/components"),
-        "@utils": path.resolve(process.cwd(), "src/utils"),
-        "@routes": path.resolve(process.cwd(), "src/routes"),
-        "@static": path.resolve(process.cwd(), "src/static"),
-        "@hooks": path.resolve(process.cwd(), "src/hooks"),
-        "src": path.resolve(process.cwd(), "src")
+        "@components": resolve(process.cwd(), "src/components"),
+        "@utils": resolve(process.cwd(), "src/utils"),
+        "@routes": resolve(process.cwd(), "src/routes"),
+        "@static": resolve(process.cwd(), "src/static"),
+        "@hooks": resolve(process.cwd(), "src/hooks"),
+        "src": resolve(process.cwd(), "src")
       }
     },
     plugins: [
-      new webpack.ProgressPlugin(),
+      new ProgressPlugin(),
       new JsconfdPlugin({
         folders: [
-          path.resolve(__dirname, '..', 'runtime.conf.d'),
-          path.resolve(__dirname, '..', 'runtime.conf.d', id),
-          path.resolve(appDirectory, 'runtime.conf.d'),
-          path.resolve(appDirectory, 'runtime.conf.d', id)
+          resolve(__dirname, '..', 'runtime.conf.d'),
+          resolve(__dirname, '..', 'runtime.conf.d', id),
+          resolve(appDirectory, 'runtime.conf.d'),
+          resolve(appDirectory, 'runtime.conf.d', id)
         ],
         merge: (current, add) => {
           for (const key of Object.keys(add)) {
@@ -127,6 +134,4 @@ const enhancer = (opts = {}) => {
   return config
 }
 
-module.exports = {
-  webpack: enhancer
-}
+export const webpack = enhancer

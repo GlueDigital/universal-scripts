@@ -1,5 +1,9 @@
-const path = require('path')
-const fs = require('fs')
+import path from 'path'
+import fs from 'fs'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const enhancer = (opts = {}) => {
   const config = {
@@ -31,6 +35,4 @@ const enhancer = (opts = {}) => {
   return config
 }
 
-module.exports = {
-  test: enhancer
-}
+export const test = enhancer

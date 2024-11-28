@@ -1,17 +1,19 @@
 'use strict'
-require('dotenv').config()
+import { config } from 'dotenv'
+
+config()
 
 // Babel will complain if no NODE_ENV. Set it if needed.
 process.env.NODE_ENV = process.env.NODE_ENV || 'production'
 
-const chalk = require('chalk')
+import chalk from 'chalk'
 
-const fs = require('fs-extra')
+import fs from 'fs-extra'
 fs.remove('./build/')
 
-const builder = require('../lib/builder')
+const builder = (await import('../lib/builder.js')).default
 
-const compiler = builder()
+const compiler = await builder()
 compiler.run((err, stats) => {
   let hasErrors = err
   if (!stats) {

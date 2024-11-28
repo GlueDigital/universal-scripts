@@ -57,6 +57,4 @@ const enhancer = (opts = {}, config) => {
   return config
 }
 
-module.exports = {
-  webpack: enhancer
-}
+export const webpack = enhancer

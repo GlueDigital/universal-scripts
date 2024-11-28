@@ -1,7 +1,7 @@
-const path = require('path')
-const MiniCssExtractPlugin = require("mini-css-extract-plugin")
-const CssMinimizerPlugin = require("css-minimizer-webpack-plugin")
-const PostCssUrl = require('postcss-url')
+import path from 'path'
+import MiniCssExtractPlugin from "mini-css-extract-plugin"
+import CssMinimizerPlugin from "css-minimizer-webpack-plugin"
+import PostCssUrl from 'postcss-url'
 
 const enhancer = (opts = {}, config) => {
   // Extraneous builds don't usually need css support
@@ -106,6 +106,4 @@ const enhancer = (opts = {}, config) => {
   return config
 }
 
-module.exports = {
-  webpack: enhancer
-}
+export const webpack = enhancer

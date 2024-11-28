@@ -1,7 +1,13 @@
-const fs = require('fs')
-const path = require('path')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-const webpack = require('webpack')
+import fs from 'fs'
+import path from 'path'
+import CopyWebpackPlugin from 'copy-webpack-plugin'
+import webpackPackage from 'webpack'
+import { fileURLToPath } from 'url'
+
+const { HotModuleReplacementPlugin } = webpackPackage
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const appDirectory = fs.realpathSync(process.cwd())
 
@@ -50,7 +56,7 @@ const enhancer = (opts = {}, config) => {
         })
       )
     } else {
-      config.plugins.push(new webpack.HotModuleReplacementPlugin())
+      config.plugins.push(new HotModuleReplacementPlugin())
       config.entry.main.push('webpack-hot-middleware/client?reload=true&noInfo=true')
     }
     return config
@@ -67,6 +73,4 @@ const enhancer = (opts = {}, config) => {
   return config
 }
 
-module.exports = {
-  webpack: enhancer
-}
+export const webpack = enhancer

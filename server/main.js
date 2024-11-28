@@ -1,13 +1,15 @@
-require('dotenv').config()
-const chalk = require('chalk')
-const fs = require('fs')
-const express = require('express')
-const webpackDevMiddleware = require('webpack-dev-middleware')
-const webpackHotMiddleware = require('webpack-hot-middleware')
-const path = require('path')
-const requireFromString = require('require-from-string')
-const config = require('../config')
-const cookieParser = require('cookie-parser');
+import { config } from 'dotenv'
+import chalk from 'chalk'
+import fs from 'fs'
+import express from 'express'
+import webpackDevMiddleware from 'webpack-dev-middleware'
+import webpackHotMiddleware from 'webpack-hot-middleware'
+import path from 'path'
+import appConfig from '../config.js'
+import cookieParser from 'cookie-parser'
+import requireFromString from 'require-from-string'
+
+config()
 
 const appDirectory = fs.realpathSync(process.cwd())
 const port = process.env.PORT || 3000
@@ -110,14 +112,14 @@ const serve = async (compiler) => {
   app.use(express.json())
 
   // Run anything on the `app` hook
-  config.app && config.app.forEach(f => f(app))
+  appConfig.app && appConfig.app.forEach(f => f(app))
 
   if (__WATCH__) {
     // Add the HMR and Dev Server middleware
     await configureHMR(app, compiler)
   } else {
     // Add the server-side rendering middleware (no HMR)
-    const mw = require('./serverMiddleware')
+    const mw = (await import('./serverMiddleware.js'))
     await mw.startup()
     app.use(groupMiddlewares(mw.default))
     app.use(groupErrorMiddlewares(mw.rawConfig.serverErrorMiddleware))
@@ -135,6 +137,6 @@ if (!__WATCH__) {
   // On static build, this is the entry point, so for it to actually run,
   // we must call the exported function
   serve()
-} else {
-  module.exports = serve
 }
+
+export default serve
