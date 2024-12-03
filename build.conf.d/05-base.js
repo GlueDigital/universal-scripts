@@ -4,6 +4,7 @@ const webpack = require('webpack')
 const JsconfdPlugin = require('js.conf.d-webpack')
 const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin')
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
+const { SwcMinifyWebpackPlugin } = require('swc-minify-webpack-plugin')
 
 const appDirectory = fs.realpathSync(process.cwd())
 
@@ -95,7 +96,6 @@ const enhancer = (opts = {}) => {
               target: "es2021", // Similar to @babel/preset-env
               externalHelpers: true,  // Equivalent to '@babel/plugin-transform-runtime'
             },
-            minify: isProd,
           }
         },
         {
@@ -115,7 +115,8 @@ const enhancer = (opts = {}) => {
       ]
     },
     optimization: {
-      minimizer: [],
+      minimize: isProd,
+      minimizer: [new SwcMinifyWebpackPlugin()],
       splitChunks: {
         cacheGroups: {
           vendor: {
