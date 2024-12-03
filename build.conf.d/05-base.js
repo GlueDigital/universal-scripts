@@ -78,10 +78,13 @@ const enhancer = (opts = {}) => {
           loader: 'swc-loader',
           options: {
             jsc: {
+              preserveAllComments: true, // Needed for webpack anotations
               parser: {
                 syntax: 'typescript',
                 jsx: true,
-                tsx: true
+                tsx: true,
+                dynamicImport: true,
+                topLevelAwait: true
               },
               transform: {
                 react: {
