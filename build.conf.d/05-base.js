@@ -5,12 +5,12 @@ import JsconfdPlugin from 'js.conf.d-webpack'
 import DirectoryNamedWebpackPlugin from 'directory-named-webpack-plugin'
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin'
 import { fileURLToPath } from 'url'
+import { SwcMinifyWebpackPlugin } from 'swc-minify-webpack-plugin'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
 const { ProgressPlugin } = webpackPackage
-
 
 const appDirectory = fs.realpathSync(process.cwd())
 
@@ -85,10 +85,13 @@ const enhancer = (opts = {}) => {
           loader: 'swc-loader',
           options: {
             jsc: {
+              preserveAllComments: true, // Needed for webpack anotations
               parser: {
                 syntax: 'typescript',
                 jsx: true,
-                tsx: true
+                tsx: true,
+                dynamicImport: true,
+                topLevelAwait: true
               },
               transform: {
                 react: {
@@ -99,7 +102,6 @@ const enhancer = (opts = {}) => {
               target: "es2022", // Similar to @babel/preset-env
               externalHelpers: true,  // Equivalent to '@babel/plugin-transform-runtime'
             },
-            minify: isProd,
           }
         },
         {
@@ -119,7 +121,8 @@ const enhancer = (opts = {}) => {
       ]
     },
     optimization: {
-      minimizer: [],
+      minimize: isProd,
+      minimizer: [new SwcMinifyWebpackPlugin()],
       splitChunks: {
         cacheGroups: {
           vendor: {
