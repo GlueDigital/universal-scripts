@@ -2,6 +2,10 @@ const path = require('path')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin")
 const PostCssUrl = require('postcss-url')
+const postcssCascadeLayers = require('@csstools/postcss-cascade-layers');
+const PostCssPresetEnv = require('postcss-preset-env')
+const PostCssNested = require('postcss-nested')
+const PostCssNormalize = require('postcss-normalize')
 
 const enhancer = (opts = {}, config) => {
   // Extraneous builds don't usually need css support
@@ -24,9 +28,16 @@ const enhancer = (opts = {}, config) => {
         ident: 'postcss',
         to: 'src/static',
         plugins: [
-          "postcss-preset-env",
-          "postcss-nested",
+          PostCssPresetEnv({
+            autoprefixer: { grid: true },
+            features: {
+              'nesting-rules': true,
+            },
+          }),
+          PostCssNested(),
+          postcssCascadeLayers(),
           PostCssUrl({ url: transformAssetUrl }),
+          PostCssNormalize(),
         ]
       }
     }
