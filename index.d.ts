@@ -6,10 +6,13 @@ import {
   ServerStore
 } from './lib/redux/types'
 
+import { setLang } from './lib/redux/lang'
+
 import { cleanup, clientInit } from './lib/redux/actions'
 import { requestInit, updateIntl } from './lib/redux/slices'
 
 import { useAppDispatch, useAppSelector } from './lib/redux/selector'
+
 
 export {
   AppDispatch,
@@ -22,5 +25,6 @@ export {
   requestInit,
   updateIntl,
   useAppDispatch,
-  useAppSelector
+  useAppSelector,
+  setLang
 }
