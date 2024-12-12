@@ -1,6 +1,6 @@
 {
   "name": "universal-scripts",
-  "version": "3.0.6",
+  "version": "3.1.0",
   "description": "Build universal apps without configuration.",
   "main": "index.js",
   "types": "index.d.ts",
@@ -59,7 +59,7 @@
     "redux": "^5.0.1",
     "regenerator-runtime": "^0.14.1",
     "require-from-string": "^2.0.2",
-    "ruse-fetch": "^2.2.4",
+    "ruse-fetch": "^3.0.1",
     "sass": "1.79.1",
     "sass-loader": "^16.0.1",
     "style-loader": "^4.0.0",

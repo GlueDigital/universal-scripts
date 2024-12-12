@@ -2418,7 +2418,7 @@ cssnano-utils@^5.0.0:
   resolved "https://registry.yarnpkg.com/cssnano-utils/-/cssnano-utils-5.0.0.tgz#b53a0343dd5d21012911882db6ae7d2eae0e3687"
   integrity sha512-Uij0Xdxc24L6SirFr25MlwC2rCFX6scyUmuKpzI+JQ7cyqDEwD42fJ0xfB3yLfOnRDU5LKGgjQ9FA6LYh76GWQ==
 
-cssnano@^7.0.1, cssnano@^7.0.6:
+cssnano@^7.0.1:
   version "7.0.6"
   resolved "https://registry.yarnpkg.com/cssnano/-/cssnano-7.0.6.tgz#63d54fd42bc017f6aaed69e47d9aaef85b7850ec"
   integrity sha512-54woqx8SCbp8HwvNZYn68ZFAepuouZW4lTwiMVnBErM3VkO7/Sd4oTOt3Zz3bPx3kxQ36aISppyXj2Md4lg8bw==
@@ -5903,9 +5903,10 @@ run-parallel@^1.1.9:
   dependencies:
     queue-microtask "^1.2.2"
 
-ruse-fetch@../ruse-fetch/ruse-fetch-3.0.16.tgz:
-  version "3.0.16"
-  resolved "../ruse-fetch/ruse-fetch-3.0.16.tgz#725bc738d17119ce685a1ebfc53dd584af069534"
+ruse-fetch@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/ruse-fetch/-/ruse-fetch-3.0.1.tgz#e6daa3216c1a5f483b44f22279da82a3c87b89a8"
+  integrity sha512-stkveuFePezIpBw6HzKnOq/APV12wMSnZlTlHDDbPA8vD4NxPdGQZtONXzljf57EP6+rR1C1VVLlg8R9tYqo2w==
 
 safe-array-concat@^1.1.2:
   version "1.1.2"
