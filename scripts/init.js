@@ -38,7 +38,7 @@ module.exports = (
   }
 
   appPackage.engines = {
-    node: '>=18'
+    node: '22'
   }
 
   fs.writeFileSync(
