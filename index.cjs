@@ -1,15 +1,8 @@
-const locales = require('src/locales')
 const { cleanup, clientInit } = require('./lib/redux/actions')
 const { updateIntl, requestInit } = require('./lib/redux/slices')
-const { useAppDispatch, useAppSelector } = require('./lib/redux/selector')
+const { setLang } = require('./lib/redux/lang')
 
-const setLang = (lang, setCookie = true) => {
-  if (setCookie) document.cookie = `lang=${lang}`
-  updateIntl({
-    lang,
-    messages: locales[lang]
-  })
-}
+const { useAppDispatch, useAppSelector } = require('./lib/redux/selector')
 
 module.exports = {
   cleanup,
@@ -18,5 +11,5 @@ module.exports = {
   requestInit,
   useAppDispatch,
   useAppSelector,
-  setLang
+  setLang,
 }
