@@ -14,7 +14,7 @@ const __dirname = dirname(__filename)
 const scriptPath = resolve(__dirname, '../scripts/', script)
 
 // Can be executed with this line
-await import(`../scripts/${script}.js`)
+// await import(`../scripts/${script}.js`)
 
 const result = spawn.sync(
   'node',
