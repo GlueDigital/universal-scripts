@@ -1,5 +1,5 @@
 import { updateIntl } from './slices'
-const locales = require('src/locales').default
+import locales from 'src/locales'
 
 export function setLang (lang: string, setCookie = true) {
   if (setCookie) document.cookie = `lang=${lang}`

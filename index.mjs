@@ -1,7 +1,7 @@
 import { cleanup, clientInit } from './lib/redux/actions.ts'
 import { updateIntl, requestInit } from './lib/redux/slices.ts'
 import { useAppDispatch, useAppSelector } from './lib/redux/selector.ts'
-import { setLang } from './lib/redux/lang'
+import { setLang } from './lib/redux/lang.ts'
 
 export {
   cleanup,
