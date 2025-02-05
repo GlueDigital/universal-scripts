@@ -21,6 +21,8 @@ if (!__WATCH__ && !__SSR__) {
   index = fs.readFileSync(fname, 'utf8')
 }
 
+console.log(index)
+
 const generateHtml = async (req: Request, res: Response, next: NextFunction) => {
 
   if (req.originalUrl.endsWith('.json')

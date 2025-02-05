@@ -2,6 +2,7 @@ import { createServerStore } from '../../lib/redux/store'
 import { Provider } from 'react-redux'
 import { cleanup } from '../../lib/redux/actions'
 import { requestInit } from '../../lib/redux/slices'
+import { globalVariables } from '../../lib/vars/global-vars'
 import jsesc from 'jsesc'
 import { NextFunction, Request, Response } from 'express'
 import { ReactNode } from 'react'
@@ -20,6 +21,7 @@ const addRedux = async (req: Request, res: Response, next: NextFunction) => {
     }
   ))
 
+
   // Make it available through the context
   req.store = store
 
@@ -33,7 +35,7 @@ const addRedux = async (req: Request, res: Response, next: NextFunction) => {
   delete copyState.req // This reducer doesn't exist client-side
 
   // Send store contents along the page
-  const storeOutput = jsesc(copyState, { isScriptContext: true })
+  const storeOutput = jsesc({ ...copyState, env: globalVariables }, { isScriptContext: true })
   req.assets?.styles.unshift('<script>___INITIAL_STATE__=' + storeOutput + '</script>')
 }
 

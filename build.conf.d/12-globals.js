@@ -1,14 +1,15 @@
 import fs from 'fs'
 import path from 'path'
 import webpackPackage from 'webpack'
+import { globalVariables } from '../lib/vars/global-vars.js'
 
 const  { DefinePlugin } = webpackPackage
 
 const appDirectory = fs.realpathSync(process.cwd())
 
-const pkg = await import(path.join(appDirectory, 'package.json'), {
+const pkg = (await import(path.join(appDirectory, 'package.json'), {
   assert: { type: 'json' }
-})
+})).default
 
 const enhancer = (opts = {}, config) => {
   const isWatch = opts.isWatch
@@ -25,16 +26,13 @@ const enhancer = (opts = {}, config) => {
     __SSR__: ssr
   }
 
-  if (opts.id === 'client') {
-    // Add empty object to process.env to avoid undefined on process.env on client
-    definitions['process.env'] = {}
-    for (const key in process.env) {
-      definitions['process.env.' + key] = JSON.stringify(process.env[key])
-    }
-  }
-
   if (!config.plugins) config.plugins = []
-  config.plugins.push(new DefinePlugin(definitions))
+  config.plugins.push(new DefinePlugin({
+    ...definitions,
+    'process.env': opts.id === 'client'
+      ? `window.___INITIAL_STATE__.env`
+      : globalVariables
+  }))
 
   return config
 }

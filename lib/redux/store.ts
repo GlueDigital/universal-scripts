@@ -17,7 +17,7 @@ const addServerAutoReducers = (userReducers: ReducersMapObject) => {
   const autoReducers = {
     intl: intlReducer,
     useFetch: fetchReducer,
-    req: requestReducer
+    req: requestReducer,
   }
   return combineReducers({...autoReducers, ...userReducers})
 }
