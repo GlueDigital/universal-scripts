@@ -1,7 +1,6 @@
 import fs from 'fs'
 import path from 'path'
 import webpackPackage from 'webpack'
-import { globalVariables } from '../lib/vars/global-vars.js'
 
 const  { DefinePlugin } = webpackPackage
 
@@ -27,12 +26,15 @@ const enhancer = (opts = {}, config) => {
   }
 
   if (!config.plugins) config.plugins = []
-  config.plugins.push(new DefinePlugin({
-    ...definitions,
-    'process.env': opts.id === 'client'
-      ? `window.___INITIAL_STATE__.env`
-      : globalVariables
-  }))
+  if (opts.id === 'client') {
+    config.plugins.push(new DefinePlugin({
+      ...definitions,
+      'process.env': 'window.__INITIAL_VARS__'
+    }))
+  } else {
+    config.plugins.push(new DefinePlugin(definitions))
+  }
+  
 
   return config
 }

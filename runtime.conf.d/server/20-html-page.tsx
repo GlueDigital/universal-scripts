@@ -54,6 +54,8 @@ const generateHtml = async (req: Request, res: Response, next: NextFunction) => 
     }
   }
 
+  scripts.push(reqBasename + 'envVarsJs.js')
+
   // Hacer visibles nuestros recursos para otros middlewares también
   req.assets = { scripts, styles }
   res.status(200)

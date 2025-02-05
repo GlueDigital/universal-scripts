@@ -6,9 +6,9 @@ import path from 'path'
 
 const appDirectory = fs.realpathSync(process.cwd())
 
-const pkg = await import(path.join(appDirectory, 'package.json'), {
+const pkg = (await import(path.join(appDirectory, 'package.json'), {
   assert: { type: 'json' }
-})
+})).default
 
 const ssr = !pkg.universalOptions || !pkg.universalOptions.noSsr
 

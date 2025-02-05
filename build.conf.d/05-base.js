@@ -6,6 +6,7 @@ import DirectoryNamedWebpackPlugin from 'directory-named-webpack-plugin'
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin'
 import { fileURLToPath } from 'url'
 import { SwcMinifyWebpackPlugin } from 'swc-minify-webpack-plugin'
+import { ExtractEnvKeysPlugin } from '../lib/vars/EnvPlugin.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -76,6 +77,7 @@ const enhancer = (opts = {}) => {
       !isProd && isClientSide && new ReactRefreshWebpackPlugin({
         overlay: false
       }),
+      isClientSide && new ExtractEnvKeysPlugin()
     ].filter(Boolean),
     module: {
       rules: [
