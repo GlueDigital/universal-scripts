@@ -3,6 +3,8 @@
  */
 import fs from 'fs'
 import path from 'path'
+import webpackPkg from 'webpack'
+const { sources } = webpackPkg
 
 const appDirectory = fs.realpathSync(process.cwd())
 
@@ -22,6 +24,7 @@ const defaultTemplate =
   '</head>' +
   '<body>' +
   '<div id="root"></div>' +
+  '<!-- ENV -->' +
   '<!-- SCRIPTS -->' +
   '</body>' +
   '</html>'
@@ -61,10 +64,8 @@ class GenIndexPlugin {
       .replace('<!-- SCRIPTS -->', scriptsFragment)
       .replace('<!-- STYLES -->', stylesFragment)
 
-    compilation.assets['index.htm'] = {
-      source: () => index,
-      size: () => index.length
-    }
+    // THIS SHOULB BE BEFORE COMPILATION
+    compilation.emitAsset('index.htm', new sources.RawSource(index))
   }
 }
 

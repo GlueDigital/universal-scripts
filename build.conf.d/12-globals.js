@@ -27,9 +27,13 @@ const enhancer = (opts = {}, config) => {
 
   if (!config.plugins) config.plugins = []
   if (opts.id === 'client') {
+    const envVariablesArray = Object.keys(process.env)
+      .filter((key) => key.startsWith('PUBLIC'))
+      .map((key) => [`process.env.${key}`, `window.__ENV_VARS__.${key}`])
+    const envVariables = Object.fromEntries(envVariablesArray)
     config.plugins.push(new DefinePlugin({
       ...definitions,
-      'process.env': 'window.__INITIAL_VARS__'
+      ...envVariables
     }))
   } else {
     config.plugins.push(new DefinePlugin(definitions))

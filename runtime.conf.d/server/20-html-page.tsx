@@ -21,8 +21,6 @@ if (!__WATCH__ && !__SSR__) {
   index = fs.readFileSync(fname, 'utf8')
 }
 
-console.log(index)
-
 const generateHtml = async (req: Request, res: Response, next: NextFunction) => {
 
   if (req.originalUrl.endsWith('.json')
@@ -54,8 +52,6 @@ const generateHtml = async (req: Request, res: Response, next: NextFunction) => 
     }
   }
 
-  scripts.push(reqBasename + 'envVarsJs.js')
-
   // Hacer visibles nuestros recursos para otros middlewares también
   req.assets = { scripts, styles }
   res.status(200)
@@ -83,8 +79,14 @@ const generateHtml = async (req: Request, res: Response, next: NextFunction) => 
 const staticHtml = async (req: Request, res: Response, next: NextFunction) => {
   // Use Static HTML template
   await next()
+  const envVariables = Object.fromEntries(
+    Object.entries(process.env)
+      .filter(([key]) => key.startsWith('PUBLIC'))
+  )
+  const envFragment = `<script>__ENV_VARS__=${JSON.stringify(envVariables)}</script>`
+  const newIndex = index.replace('<!-- ENV -->', envFragment)
   res.type('text/html')
-  res.send(index) // 'index' debe ser el HTML preconstruido
+  res.send(newIndex) // 'index' debe ser el HTML preconstruido
 }
 
 export const serverMiddleware = index ? staticHtml : generateHtml

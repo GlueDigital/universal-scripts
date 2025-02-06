@@ -77,7 +77,6 @@ const enhancer = (opts = {}) => {
       !isProd && isClientSide && new ReactRefreshWebpackPlugin({
         overlay: false
       }),
-      isClientSide && new ExtractEnvKeysPlugin()
     ].filter(Boolean),
     module: {
       rules: [
