@@ -1,21 +1,22 @@
 {
   "compileOnSave": false,
-  "include": ["runtime.conf.d/**/*", "globals.d.ts", "@types", "lib/redux/**/*"],
+  "include": [
+    "runtime.conf.d/**/*",
+    "globals.d.ts",
+    "@types",
+    "lib/redux/**/*"
+  ],
   "compilerOptions": {
-      "allowSyntheticDefaultImports": true,
-      "lib": [
-          "dom",
-          "DOM.Iterable",
-          "ES2022"
-      ],
-      "jsx": "react-jsx",
-      "target": "ES2022",
-      "module": "ESNext",
-      "moduleResolution": "node",
-      "baseUrl": ".",
-      "sourceMap": true,
-      "skipLibCheck": true,
-      "typeRoots": ["./node_modules/@types", "./@types"],
-      "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "lib": ["dom", "DOM.Iterable", "ES2022"],
+    "jsx": "react-jsx",
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "typeRoots": ["./node_modules/@types", "./@types"],
+    "esModuleInterop": true
   }
 }

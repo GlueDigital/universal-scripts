@@ -16,10 +16,6 @@ const scriptPath = resolve(__dirname, '../scripts/', script)
 // Can be executed with this line
 // await import(`../scripts/${script}.js`)
 
-const result = spawn.sync(
-  'node',
-  [scriptPath, ...args],
-  { stdio: 'inherit' }
-)
+const result = spawn.sync('node', [scriptPath, ...args], { stdio: 'inherit' })
 
 process.exit(result.status)

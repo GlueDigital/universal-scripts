@@ -9,17 +9,16 @@ import { ReactNode } from 'react'
 const addRedux = async (req: Request, res: Response, next: NextFunction) => {
   const store = createServerStore()
 
-  store.dispatch(requestInit(
-    {
+  store.dispatch(
+    requestInit({
       headers: req.headers,
       origin: req.get('origin'),
       path: req.path,
       ip: req.ip,
       cookies: parseCookies(req.headers.cookie),
       ...req.initExtras // Allow passing in data from previous middlewares
-    }
-  ))
-
+    })
+  )
 
   // Make it available through the context
   req.store = store
@@ -33,30 +32,36 @@ const addRedux = async (req: Request, res: Response, next: NextFunction) => {
   const copyState = structuredClone(state)
   delete copyState.req // This reducer doesn't exist client-side
 
-
   // Send store contents along the page
   const storeOutput = jsesc(copyState, { isScriptContext: true })
   const envVariables = Object.fromEntries(
-      Object.entries(process.env)
-        .filter(([key]) => key.startsWith('PUBLIC_'))
+    Object.entries(process.env).filter(([key]) => key.startsWith('PUBLIC_'))
   )
-  req.assets?.styles.unshift(`<script>__ENV_VARS__=${JSON.stringify(envVariables)}</script>`)
-  req.assets?.styles.unshift('<script>___INITIAL_STATE__=' + storeOutput + '</script>')
+  req.assets?.styles.unshift(
+    `<script>__ENV_VARS__=${JSON.stringify(envVariables)}</script>`
+  )
+  req.assets?.styles.unshift(
+    '<script>___INITIAL_STATE__=' + storeOutput + '</script>'
+  )
 }
 
-const parseCookies = s => !s ? {} : s
-  .split(';')
-  .map(v => v.split('='))
-  .reduce((acc, v) => {
-    acc[decodeURIComponent(v[0].trim())] = decodeURIComponent(v[1].trim())
-    return acc
-  }, {})
+const parseCookies = (s) =>
+  !s
+    ? {}
+    : s
+        .split(';')
+        .map((v) => v.split('='))
+        .reduce((acc, v) => {
+          acc[decodeURIComponent(v[0].trim())] = decodeURIComponent(v[1].trim())
+          return acc
+        }, {})
 
 export const serverMiddleware = addRedux
 
-const renderIntlProvider = async (req: Request, res: Response, next: () => Promise<ReactNode>) =>
-  <Provider store={req.store}>
-    {await next()}
-  </Provider>
+const renderIntlProvider = async (
+  req: Request,
+  res: Response,
+  next: () => Promise<ReactNode>
+) => <Provider store={req.store}>{await next()}</Provider>
 
 export const reactRoot = renderIntlProvider

@@ -1,4 +1,8 @@
-import { combineReducers, configureStore, ReducersMapObject } from '@reduxjs/toolkit'
+import {
+  combineReducers,
+  configureStore,
+  ReducersMapObject
+} from '@reduxjs/toolkit'
 import { fetchReducer } from 'ruse-fetch'
 import { intlReducer, requestReducer } from './slices'
 
@@ -8,18 +12,18 @@ import reducerList from 'src/store/reducers'
 const addClientAutoReducers = (userReducers: ReducersMapObject) => {
   const autoReducers = {
     intl: intlReducer,
-    useFetch: fetchReducer,
+    useFetch: fetchReducer
   }
-  return combineReducers({...autoReducers, ...userReducers})
+  return combineReducers({ ...autoReducers, ...userReducers })
 }
 
 const addServerAutoReducers = (userReducers: ReducersMapObject) => {
   const autoReducers = {
     intl: intlReducer,
     useFetch: fetchReducer,
-    req: requestReducer,
+    req: requestReducer
   }
-  return combineReducers({...autoReducers, ...userReducers})
+  return combineReducers({ ...autoReducers, ...userReducers })
 }
 
 // Optional extra middlewares
@@ -36,7 +40,7 @@ const createStore = (
 ) => {
   const autoReducers = isServer
     ? addServerAutoReducers(reducers)
-    : addClientAutoReducers(reducers);
+    : addClientAutoReducers(reducers)
 
   const store = configureStore({
     reducer: autoReducers,
@@ -45,37 +49,34 @@ const createStore = (
         serializableCheck: {
           ignoredPaths: ['useFetch'],
           ignoredActions: [
-            "useFetch/fetchError",
-            "useFetch/fetchLoading",
-            "useFetch/fetchSuccess",
-            "useFetch/fetchCleanup",
-            "useFetch/fetchUnuse",
-            "useFetch/fetchUse"
+            'useFetch/fetchError',
+            'useFetch/fetchLoading',
+            'useFetch/fetchSuccess',
+            'useFetch/fetchCleanup',
+            'useFetch/fetchUnuse',
+            'useFetch/fetchUse'
           ]
-        },
+        }
       }).concat(extraMiddlewares),
-    preloadedState: initialState,
-  });
+    preloadedState: initialState
+  })
 
   // Hot Module Replacement (HMR)
   if (module.hot) {
     module.hot.accept('src/store/reducers', async () => {
       // @ts-ignore
-      const updatedReducers = (await import('src/store/reducers')).default;
+      const updatedReducers = (await import('src/store/reducers')).default
       const newAutoReducers = isServer
         ? addServerAutoReducers(updatedReducers)
-        : addClientAutoReducers(updatedReducers);
-      store.replaceReducer(newAutoReducers);
-    });
+        : addClientAutoReducers(updatedReducers)
+      store.replaceReducer(newAutoReducers)
+    })
   }
 
-  return store;
-};
-
-
+  return store
+}
 
 export const createServerStore = () => createStore(reducerList, undefined, true)
 
-export const createClientStore = (initialState: any) => createStore(reducerList, initialState, false)
-
-
+export const createClientStore = (initialState: any) =>
+  createStore(reducerList, initialState, false)

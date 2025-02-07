@@ -13,7 +13,6 @@ import { requestInit, updateIntl } from './lib/redux/slices'
 
 import { useAppDispatch, useAppSelector } from './lib/redux/selector'
 
-
 export {
   AppDispatch,
   ClientRootState,

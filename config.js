@@ -21,6 +21,8 @@ const userConfig = path.resolve(appDirectory, 'build.conf.d')
 
 export default async function getConfig(target) {
   const specificUserConfig = path.resolve(userConfig, target)
-  const config = await jsconfd([libConfig, userConfig, specificUserConfig], { merge: arrayMerger })
+  const config = await jsconfd([libConfig, userConfig, specificUserConfig], {
+    merge: arrayMerger
+  })
   return config
 }

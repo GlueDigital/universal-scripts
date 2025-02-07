@@ -1,4 +1,4 @@
-import {  Request, Response } from 'express'
+import { Request, Response } from 'express'
 
 let StaticRouter
 let isV6 = true
@@ -6,7 +6,7 @@ let isV6 = true
 try {
   // Import v6
   StaticRouter = require('react-router-dom/server').StaticRouter
-} catch (error) {
+} catch {
   isV6 = false
   // Try to import v5
   StaticRouter = require('react-router-dom').StaticRouter
@@ -14,14 +14,14 @@ try {
 
 const App = __SSR__ && require('src/routes').default
 
-const routerRoot = (req: Request, res: Response, next) => {
+const routerRoot = (req: Request) => {
   if (!App) return null
 
   const url = req.url
 
   if (isV6) {
     return (
-      <StaticRouter location={url} >
+      <StaticRouter location={url}>
         <App />
       </StaticRouter>
     )

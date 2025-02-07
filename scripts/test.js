@@ -1,7 +1,9 @@
 'use strict'
 process.env.NODE_ENV = 'test'
 
-process.on('unhandledRejection', err => { throw err })
+process.on('unhandledRejection', (err) => {
+  throw err
+})
 
 require('dotenv').config()
 

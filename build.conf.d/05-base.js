@@ -27,8 +27,7 @@ const enhancer = (opts = {}) => {
     mode: isProd ? 'production' : 'development',
     performance: { hints: false },
     output: {
-      path: resolve(
-        appDirectory, 'build', id),
+      path: resolve(appDirectory, 'build', id),
       pathinfo: true,
       filename: isClientSide ? '[name].[contenthash].js' : '[name].js',
       chunkFilename: isClientSide ? '[name].[contenthash].js' : '[name].js',
@@ -36,7 +35,18 @@ const enhancer = (opts = {}) => {
       clean: true
     },
     resolve: {
-      extensions: ['.wasm', '.mjs', '.ts', '.js', '.tsx', '.jsx', '.json', '.sass', '.scss', '.css'],
+      extensions: [
+        '.wasm',
+        '.mjs',
+        '.ts',
+        '.js',
+        '.tsx',
+        '.jsx',
+        '.json',
+        '.sass',
+        '.scss',
+        '.css'
+      ],
       modules: [
         resolve(__dirname, '..', 'node_modules'),
         resolve(appDirectory, 'node_modules'),
@@ -49,12 +59,12 @@ const enhancer = (opts = {}) => {
         })
       ],
       alias: {
-        "@components": resolve(process.cwd(), "src/components"),
-        "@utils": resolve(process.cwd(), "src/utils"),
-        "@routes": resolve(process.cwd(), "src/routes"),
-        "@static": resolve(process.cwd(), "src/static"),
-        "@hooks": resolve(process.cwd(), "src/hooks"),
-        "src": resolve(process.cwd(), "src")
+        '@components': resolve(process.cwd(), 'src/components'),
+        '@utils': resolve(process.cwd(), 'src/utils'),
+        '@routes': resolve(process.cwd(), 'src/routes'),
+        '@static': resolve(process.cwd(), 'src/static'),
+        '@hooks': resolve(process.cwd(), 'src/hooks'),
+        src: resolve(process.cwd(), 'src')
       }
     },
     plugins: [
@@ -74,9 +84,11 @@ const enhancer = (opts = {}) => {
           return current
         }
       }),
-      !isProd && isClientSide && new ReactRefreshWebpackPlugin({
-        overlay: false
-      }),
+      !isProd &&
+        isClientSide &&
+        new ReactRefreshWebpackPlugin({
+          overlay: false
+        }),
       isClientSide && new EnvReloadPlugin()
     ].filter(Boolean),
     module: {
@@ -97,13 +109,13 @@ const enhancer = (opts = {}) => {
               },
               transform: {
                 react: {
-                  runtime: 'automatic',  // Equivalent to '@babel/preset-react'
-                  refresh: !isProd && isClientSide  // Equivalent to React Refresh
+                  runtime: 'automatic', // Equivalent to '@babel/preset-react'
+                  refresh: !isProd && isClientSide // Equivalent to React Refresh
                 }
               },
-              target: "es2022", // Similar to @babel/preset-env
-              externalHelpers: true,  // Equivalent to '@babel/plugin-transform-runtime'
-            },
+              target: 'es2022', // Similar to @babel/preset-env
+              externalHelpers: true // Equivalent to '@babel/plugin-transform-runtime'
+            }
           }
         },
         {
@@ -119,7 +131,7 @@ const enhancer = (opts = {}) => {
           generator: {
             filename: 'static/[name].[contenthash][ext]'
           }
-        },
+        }
       ]
     },
     optimization: {
@@ -129,7 +141,7 @@ const enhancer = (opts = {}) => {
         cacheGroups: {
           vendor: {
             test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
+            name: 'vendors'
           }
         }
       }

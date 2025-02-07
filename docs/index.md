@@ -1,5 +1,4 @@
-Introduction
-------------
+## Introduction
 
 _Universal Scripts_ is an alternative configuration for [Create React App](https://github.com/facebookincubator/create-react-app), designed for production sites that need features such as:
 
@@ -12,9 +11,7 @@ _Universal Scripts_ is an alternative configuration for [Create React App](https
 
 Everything on a single package, easy to keep updated, and ready to deploy to your favourite platform.
 
-
-But... why?
------------
+## But... why?
 
 When learning, Create React App is a nice way to kickstart your projects, as you can forget about handing Webpack and Babel configs, dependency updates, etc., but the defaults are designed for an easy learning experience, at the expense of some features that are needed in a modern web application.
 
@@ -26,8 +23,6 @@ Internationalization is needed on any site targeting a broad audience from multi
 
 And we also included a few other goodies, like [Sass](https://sass-lang.com/), the best known CSS extension language, or [react-helmet-async](https://github.com/staylor/react-helmet-async), a way of managing the document head.
 
-
-Sounds good?
-------------
+## Sounds good?
 
 Head to the [Getting Started](getting-started) section to try it.

@@ -1,6 +1,6 @@
 {
   "name": "universal-scripts",
-  "version": "3.2.1-40",
+  "version": "3.2.1",
   "description": "Build universal apps without configuration.",
   "type": "module",
   "main": "index.cjs",
@@ -98,7 +98,6 @@
     "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-react-hooks": "^5.1.0",
     "globals": "^15.14.0",
-    "prettier": "^3.4.2",
     "react-redux": "^9.2.0",
     "typescript-eslint": "^8.23.0"
   },

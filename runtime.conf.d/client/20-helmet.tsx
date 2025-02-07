@@ -11,5 +11,4 @@ const addDefaultHeaders: ClientRoot = async (ctx, next) => {
   )
 }
 
-
 export const reactRoot = addDefaultHeaders

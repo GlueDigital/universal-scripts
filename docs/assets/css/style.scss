@@ -1,7 +1,7 @@
 ---
 ---
 
-@import "{{ site.theme }}";
+@import '{{ site.theme }}';
 
 aside.menu {
   background-color: #2a2a2a;
@@ -38,7 +38,6 @@ code.highlighter-rouge {
   padding: 2px;
 }
 
-
 /* Mobile fixes */
 @media print, screen and (max-width: 640px) {
   aside.menu {
@@ -55,7 +54,7 @@ code.highlighter-rouge {
     padding-top: 0;
   }
   section h2 {
-    margin-top: 20px
+    margin-top: 20px;
   }
   #header {
     margin-top: 0;

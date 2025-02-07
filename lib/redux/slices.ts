@@ -16,12 +16,12 @@ const requestSlice = createSlice({
   name: 'request',
   initialState: initialReqState,
   reducers: {
-    requestInit(state, action: PayloadAction<ReqState>) {
+    requestInit(_state, action: PayloadAction<ReqState>) {
       return action.payload
     }
   },
   extraReducers(builder) {
-    builder.addCase(cleanup, (state) => {
+    builder.addCase(cleanup, () => {
       return null
     })
   }
@@ -46,13 +46,13 @@ const intlSlice = createSlice({
   reducers: {
     updateIntl(state, action: PayloadAction<IntlState>) {
       return action.payload
-    },
+    }
   },
   extraReducers(builder) {
     builder.addCase(cleanup, (state) => {
       state.lang = state.lang
     })
-    builder.addDefaultCase(state => {
+    builder.addDefaultCase((state) => {
       return state || { lang: 'en', messages: {} }
     })
   }

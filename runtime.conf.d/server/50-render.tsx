@@ -3,36 +3,39 @@ import { ReactNode } from 'react'
 import { renderToPipeableStream } from 'react-dom/server'
 
 // Optional error 500 page
-const ErrorHandler = __SSR__ && (() => {
-  const req = require.context('src/routes', false, /^\.\/index$/)
-  const keys = req(req.keys()[0])
-  return keys.ErrorHandler
-})()
+const ErrorHandler =
+  __SSR__ &&
+  (() => {
+    const req = require.context('src/routes', false, /^\.\/index$/)
+    const keys = req(req.keys()[0])
+    return keys.ErrorHandler
+  })()
 
-const render = (
+const render = (req: Request, res: Response, root: ReactNode): Promise<void> =>
+  new Promise((resolve, reject) => {
+    const stream = renderToPipeableStream(root, {
+      bootstrapScripts: req.assets?.scripts,
+      onAllReady: () => {
+        if (req.renderCtx && req.renderCtx.url) {
+          // There was a redirect
+          res.redirect(req.renderCtx.url)
+        } else {
+          res.set('Content-Type', 'text/html; charset=utf-8')
+          req.stream = stream
+        }
+        resolve()
+      },
+      onError: (e) => {
+        reject(e)
+      }
+    })
+  })
+
+const renderMiddleware = async (
   req: Request,
   res: Response,
-  root: ReactNode
-): Promise<void> => new Promise((resolve, reject) => {
-  const stream = renderToPipeableStream(root, {
-    bootstrapScripts: req.assets?.scripts,
-    onAllReady: () => {
-      if (req.renderCtx && req.renderCtx.url) {
-        // There was a redirect
-        res.redirect(req.renderCtx.url)
-      } else {
-        res.set('Content-Type', 'text/html; charset=utf-8')
-        req.stream = stream
-      }
-      resolve()
-    },
-    onError: (e) => {
-      reject(e)
-    }
-  })
-})
-
-const renderMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+  next: NextFunction
+) => {
   // Run any other middlewares
   await next()
 

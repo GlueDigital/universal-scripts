@@ -11,5 +11,5 @@ module.exports = {
   requestInit,
   useAppDispatch,
   useAppSelector,
-  setLang,
+  setLang
 }

@@ -2,5 +2,4 @@ theme: jekyll-theme-midnight
 
 title: Universal Scripts
 description: A zero-config build system for complex React apps
-show_downloads: "false"
-
+show_downloads: 'false'

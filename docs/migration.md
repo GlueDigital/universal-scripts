@@ -1,5 +1,4 @@
-Migrating from v1
------------------
+## Migrating from v1
 
 Universal Scripts v2 is a huge change from v1, and we couldn't apply all the updates while keeping backwards compatibility.
 If you have a project on v1, we recommend that you can keep using it, but if you're set on upgrading to v2, check the changelog below to find out which changes you'll need to make for it to keep working.

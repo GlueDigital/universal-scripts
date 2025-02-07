@@ -1,8 +1,6 @@
-The build system
-----------------
+## The build system
 
 This section details how Webpack is configured for generating your project's build. Familiarity with Webpack configuration is assumed.
-
 
 ### Build config
 
@@ -12,6 +10,7 @@ To learn more about the config pieces that are included by default, you can chec
 
 For some common configurations, support has been added to set them directly in your `package.json`, under the `universalOptions` key.  
 Currently, the following options are supported:
+
 - `noSsr`: disables server-side rendering (the server will return an empty index which loads the client scripts)
 
 ### Build modes
@@ -23,26 +22,23 @@ When in _watch_ mode, no files get written to disk, and both client and server a
 
 Using the _multi build_ mode reduces the number of filesystem watchers needed, and should make things faster. It also makes possible for the same dev middleware to keep track of both builds, which makes server-side HMR work the same way as client-side HMR.
 
-
 ### Client build
 
 There are two different bundles for the client side:
+
 - `polyfills`: Loaded only on browsers which require them, before starting rendering. Can be overriden by creating `src/polyfills.js` on your project.
 - `main`: Deals with everything else, including initialization and rendering. Can be configured with the runtime config system.
-
 
 ### Server build
 
 The server build varies depending on the selected mode. When on watch mode, we run `server/main.js` with Node, and it starts the compiler with `serverMiddleware` as the entrypoint, so the server can hot-reload it from memory through the compiler. On the other hand, for the _build_ mode the server can't be the one running the compiler, as we want to compile first and run the bundle later. For this reason, this build has `server/main.js` as the entrypoint, and it gets bundled directly with the `serverMiddleware`, without the HMR code.
 
-
 ### Static assets
+
 The files on `src/static` are served from that folder directly during _watch_ mode, as we don't need to keep them in memory. When generating a _build_ mode bundle, they get copied directly to the build folder.
 
 When referenced from CSS, images and fonts get a suffix with a part of the file contents hash, for cache-busting.
 
-
-Next steps
-----------
+## Next steps
 
 The build system makes it possible to run code on the client and server, but to learn more about that code, you can check the [runtime system](runtime-system).

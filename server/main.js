@@ -27,14 +27,15 @@ const groupMiddlewares = (serverMiddleware) => async (req, res, nxt) => {
 }
 
 // Group and an array of middlewares into a single one, because express doesnt support promises on next functions
-const groupErrorMiddlewares = (serverErrorMiddleware) => async (err, req, res) => {
-  const copy = [...serverErrorMiddleware]
-  const next = () => {
-    const mw = copy.shift()
-    return !mw ? null : mw(err, req, res, next)
+const groupErrorMiddlewares =
+  (serverErrorMiddleware) => async (err, req, res) => {
+    const copy = [...serverErrorMiddleware]
+    const next = () => {
+      const mw = copy.shift()
+      return !mw ? null : mw(err, req, res, next)
+    }
+    await next()
   }
-  await next()
-}
 
 let configureHMR
 
@@ -52,8 +53,6 @@ if (__WATCH__) {
     }
   }
 
-
-
   const loadServerErrorMiddlewareProxy = (err, req, res, next) => {
     if (serverErrorMiddleware !== null && serverErrorMiddleware.length) {
       return groupErrorMiddlewares(serverErrorMiddleware)(err, req, res, next)
@@ -67,7 +66,7 @@ if (__WATCH__) {
     const devMiddleware = webpackDevMiddleware(compiler, {
       stats: 'summary',
       publicPath: '/',
-      serverSideRender: true,
+      serverSideRender: true
     })
 
     const hotMiddleware = webpackHotMiddleware(compiler.compilers[0])
@@ -86,7 +85,7 @@ if (__WATCH__) {
     const mfs = devMiddleware.context.outputFileSystem
     const plugin = { name: 'universal-scripts' }
 
-    compiler.hooks.done.tap(plugin, async stats => {
+    compiler.hooks.done.tap(plugin, async () => {
       clientStats = devMiddleware.context.stats.toJson().children[0]
       const fname = path.resolve(appDirectory, 'build', 'server', 'server.js')
 
@@ -97,9 +96,12 @@ if (__WATCH__) {
         serverMiddleware = mw.default
         serverErrorMiddleware = mw.rawConfig.serverErrorMiddleware
       } catch (e) {
-        console.warn(chalk.red.bold('Couldn\'t load middleware.'))
-        console.log(chalk.red('Please fix any build errors above, and ' +
-          'it will auto-reload.'))
+        console.warn(chalk.red.bold("Couldn't load middleware."))
+        console.log(
+          chalk.red(
+            'Please fix any build errors above, and ' + 'it will auto-reload.'
+          )
+        )
         console.log('Details:', e)
       }
     })
@@ -118,14 +120,14 @@ const serve = async (compiler) => {
   app.use(express.json())
 
   // Run anything on the `app` hook
-  appConfig.app && appConfig.app.forEach(f => f(app))
+  appConfig.app && appConfig.app.forEach((f) => f(app))
 
   if (__WATCH__) {
     // Add the HMR and Dev Server middleware
     await configureHMR(app, compiler)
   } else {
     // Add the server-side rendering middleware (no HMR)
-    const mw = (await import('./serverMiddleware.js'))
+    const mw = await import('./serverMiddleware.js')
     await mw.startup()
     app.use(groupMiddlewares(mw.default))
     app.use(groupErrorMiddlewares(mw.rawConfig.serverErrorMiddleware))

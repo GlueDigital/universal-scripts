@@ -1,4 +1,3 @@
-
 // @ts-check
 
 import eslint from '@eslint/js'
@@ -11,13 +10,13 @@ import { FlatCompat } from '@eslint/eslintrc'
 const compat = new FlatCompat()
 
 const universalGlobals = {
-  "__BUILD__": false,
-  "__DEV__": false,
-  "__PROD__": false,
-  "__SERVER__": false,
-  "__CLIENT__": false,
-  "__WATCH__": false,
-  "__SSR__": false
+  __BUILD__: false,
+  __DEV__: false,
+  __PROD__: false,
+  __SERVER__: false,
+  __CLIENT__: false,
+  __WATCH__: false,
+  __SSR__: false
 }
 
 export default [
@@ -40,7 +39,8 @@ export default [
       }
     },
     rules: {
-      '@typescript-eslint/no-unused-vars': 'warn'
+      '@typescript-eslint/no-unused-vars': 'warn',
+      '@typescript-eslint/no-require-imports': 'off'
     }
   }
 ]

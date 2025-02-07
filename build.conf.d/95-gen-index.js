@@ -8,9 +8,11 @@ const { sources } = webpackPkg
 
 const appDirectory = fs.realpathSync(process.cwd())
 
-const pkg = (await import(path.join(appDirectory, 'package.json'), {
-  assert: { type: 'json' }
-})).default
+const pkg = (
+  await import(path.join(appDirectory, 'package.json'), {
+    assert: { type: 'json' }
+  })
+).default
 
 const ssr = !pkg.universalOptions || !pkg.universalOptions.noSsr
 
@@ -31,17 +33,22 @@ const defaultTemplate =
 
 // The webpack plugin which generates the index
 class GenIndexPlugin {
-  apply (compiler) {
+  apply(compiler) {
     this.publicPath = compiler.options.output.publicPath
     compiler.hooks.emit.tap('genindex', this.genIndex.bind(this))
   }
 
-  genIndex (compilation) {
+  genIndex(compilation) {
     const publicPath = this.publicPath
     const assets = Object.keys(compilation.assets)
 
     let template = defaultTemplate
-    const templateOverridePath = path.join(appDirectory, 'src', 'static', 'index.htm')
+    const templateOverridePath = path.join(
+      appDirectory,
+      'src',
+      'static',
+      'index.htm'
+    )
     if (fs.existsSync(templateOverridePath)) {
       template = fs.readFileSync(templateOverridePath).toString()
     }

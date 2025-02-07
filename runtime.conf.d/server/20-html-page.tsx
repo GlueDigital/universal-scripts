@@ -5,11 +5,10 @@ import defaultHeaders from '../../lib/header'
 import renderHtmlLayout from '../../lib/render-html-layout'
 import { NextFunction, Request, Response } from 'express'
 import { ReactNode } from 'react'
-import { getEnvVariablesKeys } from '../../lib/vars/getEnv'
 
 const basename = process.env.SUBDIRECTORY || '/'
 
-let chunks: { name: string, size?: number }[] = []
+let chunks: { name: string; size?: number }[] = []
 
 if (!__WATCH__) {
   const fname = path.resolve('build', 'client', 'webpack-chunks.json')
@@ -22,10 +21,12 @@ if (!__WATCH__ && !__SSR__) {
   index = fs.readFileSync(fname, 'utf8')
 }
 
-const generateHtml = async (req: Request, res: Response, next: NextFunction) => {
-
-  if (req.originalUrl.endsWith('.json')
-      || req.originalUrl.endsWith('.js')) {
+const generateHtml = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (req.originalUrl.endsWith('.json') || req.originalUrl.endsWith('.js')) {
     return res.status(404).end()
   }
 
@@ -39,7 +40,7 @@ const generateHtml = async (req: Request, res: Response, next: NextFunction) => 
   if (!__WATCH__) {
     assets = chunks.map((chunk) => chunk.name)
   } else if (req.clientStats) {
-    req.clientStats.entrypoints.main.assets.forEach(asset => {
+    req.clientStats.entrypoints.main.assets.forEach((asset) => {
       if (asset.name.includes('hot-update')) return
       assets = assets.concat(asset.name)
     })
@@ -77,8 +78,9 @@ const generateHtml = async (req: Request, res: Response, next: NextFunction) => 
   }
 }
 
-const envKeys = Object.keys(process.env)
-  .filter((key) => key.startsWith('PUBLIC_'))
+const envKeys = Object.keys(process.env).filter((key) =>
+  key.startsWith('PUBLIC_')
+)
 
 const staticHtml = async (req: Request, res: Response, next: NextFunction) => {
   // Use Static HTML template
@@ -91,10 +93,15 @@ const staticHtml = async (req: Request, res: Response, next: NextFunction) => {
 
 export const serverMiddleware = index ? staticHtml : generateHtml
 
-const addDefaultHeaders = async (req: Request, res: Response, next: () => Promise<ReactNode>) =>
+const addDefaultHeaders = async (
+  req: Request,
+  res: Response,
+  next: () => Promise<ReactNode>
+) => (
   <HelmetProvider context={req.helmetContext}>
     {defaultHeaders(req.store)}
     {await next()}
   </HelmetProvider>
+)
 
 export const reactRoot = addDefaultHeaders

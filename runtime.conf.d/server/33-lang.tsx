@@ -7,8 +7,6 @@ import { useServerSelector } from '../../lib/redux/selector'
 import langs from 'src/locales'
 import { ReactNode } from 'react'
 
-
-
 const addIntl = async (req: Request, res: Response, next: NextFunction) => {
   // Determine language
   const availableLangs = Object.keys(langs)
@@ -33,9 +31,10 @@ const ReduxIntlProvider = ({ children }) => {
   )
 }
 
-const renderIntlProvider = async (req: Request, res: Response, next: () => Promise<ReactNode>) =>
-  <ReduxIntlProvider>
-    {await next()}
-  </ReduxIntlProvider>
+const renderIntlProvider = async (
+  req: Request,
+  res: Response,
+  next: () => Promise<ReactNode>
+) => <ReduxIntlProvider>{await next()}</ReduxIntlProvider>
 
 export const reactRoot = renderIntlProvider

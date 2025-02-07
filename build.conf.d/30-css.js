@@ -1,13 +1,11 @@
-
 import path from 'path'
-import MiniCssExtractPlugin from "mini-css-extract-plugin"
-import CssMinimizerPlugin from "css-minimizer-webpack-plugin"
+import MiniCssExtractPlugin from 'mini-css-extract-plugin'
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
 import PostCssUrl from 'postcss-url'
 import postcssCascadeLayers from '@csstools/postcss-cascade-layers'
 import PostCssPresetEnv from 'postcss-preset-env'
 import PostCssNested from 'postcss-nested'
 import PostCssNormalize from 'postcss-normalize'
-
 
 const enhancer = (opts = {}, config) => {
   // Extraneous builds don't usually need css support
@@ -33,13 +31,13 @@ const enhancer = (opts = {}, config) => {
           PostCssPresetEnv({
             autoprefixer: { grid: true },
             features: {
-              'nesting-rules': true,
-            },
+              'nesting-rules': true
+            }
           }),
           PostCssNested(),
           postcssCascadeLayers(),
           PostCssUrl({ url: transformAssetUrl }),
-          PostCssNormalize(),
+          PostCssNormalize()
         ]
       }
     }
@@ -94,19 +92,19 @@ const enhancer = (opts = {}, config) => {
   if (!isServerSide) {
     // Production builds get optimized CSS
     if (isProd) {
-      config.optimization.minimizer.push(
-        new CssMinimizerPlugin()
-      )
+      config.optimization.minimizer.push(new CssMinimizerPlugin())
     }
 
     // Non-watch builds get CSS on a separate file
     if (!isWatch) {
-      config.module.rules.filter((rule) =>
-        rule.use && rule.use.find((entry) =>
-          entry.loader === 'css-loader')
-      ).forEach((rule) => {
-        rule.use = [MiniCssExtractPlugin.loader, ...rule.use.slice(1)]
-      })
+      config.module.rules
+        .filter(
+          (rule) =>
+            rule.use && rule.use.find((entry) => entry.loader === 'css-loader')
+        )
+        .forEach((rule) => {
+          rule.use = [MiniCssExtractPlugin.loader, ...rule.use.slice(1)]
+        })
 
       config.plugins.push(
         new MiniCssExtractPlugin({

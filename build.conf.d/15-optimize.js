@@ -4,25 +4,24 @@ const optimization = {
       test: /[\\/]node_modules[\\/]/,
       priority: -5,
       name: 'vendors',
-      chunks: "initial",
+      chunks: 'initial',
       reuseExistingChunk: true,
-      minSize: 0,
+      minSize: 0
     },
     default: {
       minChunks: 2,
       priority: -20,
-      reuseExistingChunk: true,
+      reuseExistingChunk: true
     },
     defaultVendors: false,
     reactPackage: {
       test: /[\\/]node_modules[\\/](react|react-dom|react-router|react-router-dom)[\\/]/,
       name: 'vendor_react',
-      chunks: "all",
-      priority: 10,
-     }
+      chunks: 'all',
+      priority: 10
+    }
   }
 }
-
 
 const enhancer = (opts = {}, config) => {
   const isWatch = opts.isWatch
@@ -36,7 +35,7 @@ const enhancer = (opts = {}, config) => {
           vendor: {
             test: /[\\/]node_modules[\\/]/,
             name: 'vendors',
-            reuseExistingChunk: true,
+            reuseExistingChunk: true
           }
         }
       }

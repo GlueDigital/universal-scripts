@@ -1,8 +1,6 @@
-Redux Store
------------
+## Redux Store
 
 Your project is preconfigured with a Redux store, available both at the server and the client.
-
 
 ### Reducers
 
@@ -16,11 +14,9 @@ In addittion to your reducers, there are a few already preconfigured:
 
 You can override them by creating a key with the same name, but things can fail if you break their contract.
 
-
 ### Middlewares
 
 If you need to add any extra Redux middlewares to the store, you can create `src/store/middlewares.js` and export an array of middlewares to configure them. The [thunk](https://github.com/reduxjs/redux-thunk) middleware will be added automatically.
-
 
 ### Actions
 
@@ -38,8 +34,6 @@ You can import their action types like this:
 import { CLEANUP } from 'universal-scripts'
 ```
 
-
-Next steps
-----------
+## Next steps
 
 Now that you know how the store works, you can learn more about the [build system](build-system).

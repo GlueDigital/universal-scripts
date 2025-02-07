@@ -3,9 +3,7 @@
 [![Build Status](https://travis-ci.org/GlueDigital/universal-scripts.svg?branch=master)](https://travis-ci.org/GlueDigital/universal-scripts)
 [![Dependencies](https://david-dm.org/GlueDigital/universal-scripts.svg)](https://david-dm.org/GlueDigital/universal-scripts)
 
-
-Universal Scripts
-=================
+# Universal Scripts
 
 Alternative configuration for [Create React App](https://github.com/facebookincubator/create-react-app), with enhanced functionality, including server-side rendering and internationalization.
 
@@ -13,9 +11,7 @@ Alternative configuration for [Create React App](https://github.com/facebookincu
 - Migrating from v1? Check the [migration guide](https://gluedigital.github.io/universal-scripts/migration)
 - [Report an issue](https://github.com/GlueDigital/universal-scripts/issues/new)
 
-
-Quick start
------------
+## Quick start
 
 If you have any maintained version of Node (at least v10) and NPM, just run:
 
@@ -27,9 +23,7 @@ npm start
 
 Then go to [http://localhost:3000](http://localhost:3000) to see your app.
 
-
-Why Use This?
--------------
+## Why Use This?
 
 Create React App is the best way of keeping the build config out of your project, and makes build dependencies easier to manage, as you'll only need to care about a single package. But the default configuration is geared towards showing React to novices, and is missing some functionality required for bigger apps.
 

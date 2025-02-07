@@ -7,8 +7,6 @@ import { ClientInit, ClientRoot } from '../../lib/redux/types'
 import langs from 'src/locales'
 import { ReactNode } from 'react'
 
-
-
 const addClientIntl: ClientInit = (ctx, next) => {
   // Determine language
   const availableLangs = Object.keys(langs)
@@ -16,15 +14,12 @@ const addClientIntl: ClientInit = (ctx, next) => {
   let lang = storeIntl && storeIntl.lang
 
   if (!lang) {
-    lang = document.documentElement.lang ||
-      window.navigator.language
+    lang = document.documentElement.lang || window.navigator.language
   }
   lang = availableLangs.indexOf(lang) !== -1 ? lang : availableLangs[0]
 
   // Set it
-  ctx.store && ctx.store.dispatch(
-    updateIntl({ lang, messages: langs[lang] })
-  )
+  ctx.store && ctx.store.dispatch(updateIntl({ lang, messages: langs[lang] }))
 
   return next()
 }
@@ -32,7 +27,7 @@ const addClientIntl: ClientInit = (ctx, next) => {
 export const clientInit = addClientIntl
 
 const ReduxIntlProvider = ({ children }: { children: ReactNode }) => {
-  const intl = useAppSelector((s)  => s.intl)
+  const intl = useAppSelector((s) => s.intl)
   return (
     <IntlProvider key={intl.lang} locale={intl.lang} messages={intl.messages}>
       {children}
@@ -40,9 +35,8 @@ const ReduxIntlProvider = ({ children }: { children: ReactNode }) => {
   )
 }
 
-const renderIntlProvider: ClientRoot = async (ctx, next) =>
-  <ReduxIntlProvider>
-    {await next()}
-  </ReduxIntlProvider>
+const renderIntlProvider: ClientRoot = async (ctx, next) => (
+  <ReduxIntlProvider>{await next()}</ReduxIntlProvider>
+)
 
 export const reactRoot = renderIntlProvider

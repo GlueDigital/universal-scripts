@@ -11,7 +11,7 @@ declare global {
     interface Request {
       clientStats: StatsCompilation
       assets: {
-        scripts: string[],
+        scripts: string[]
         styles: string[]
       }
       helmetContext: {
@@ -20,7 +20,9 @@ declare global {
       store: Store
       renderCtx: StaticRouterContext
       stream: PipeableStream
-      triggerHook: (name: string) => (req: Request, res: Response, initial: boolean) => ReactNode
+      triggerHook: (
+        name: string
+      ) => (req: Request, res: Response, initial: boolean) => ReactNode
       initExtras: Record<string, unknown>
     }
   }

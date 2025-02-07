@@ -2,13 +2,15 @@ import fs from 'fs'
 import path from 'path'
 import webpackPackage from 'webpack'
 
-const  { DefinePlugin } = webpackPackage
+const { DefinePlugin } = webpackPackage
 
 const appDirectory = fs.realpathSync(process.cwd())
 
-const pkg = (await import(path.join(appDirectory, 'package.json'), {
-  assert: { type: 'json' }
-})).default
+const pkg = (
+  await import(path.join(appDirectory, 'package.json'), {
+    assert: { type: 'json' }
+  })
+).default
 
 const enhancer = (opts = {}, config) => {
   const isWatch = opts.isWatch
@@ -27,10 +29,12 @@ const enhancer = (opts = {}, config) => {
 
   if (!config.plugins) config.plugins = []
   if (opts.id === 'client') {
-    config.plugins.push(new DefinePlugin({
-      ...definitions,
-      'process.env': 'window.__ENV_VARS__'
-    }))
+    config.plugins.push(
+      new DefinePlugin({
+        ...definitions,
+        'process.env': 'window.__ENV_VARS__'
+      })
+    )
   } else {
     config.plugins.push(new DefinePlugin(definitions))
   }
@@ -39,4 +43,3 @@ const enhancer = (opts = {}, config) => {
 }
 
 export const webpack = enhancer
-

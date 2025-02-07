@@ -11,7 +11,6 @@ const __dirname = path.dirname(__filename)
 
 const appDirectory = fs.realpathSync(process.cwd())
 
-
 const enhancer = (opts = {}, config) => {
   const isWatch = opts.isWatch
 
@@ -38,9 +37,7 @@ const enhancer = (opts = {}, config) => {
   if (opts.id === 'client') {
     // Add our render entrypoint
     config.entry = {
-      main: [
-        path.resolve(__dirname, '..', 'client', 'init')
-      ]
+      main: [path.resolve(__dirname, '..', 'client', 'init')]
     }
 
     if (!isWatch) {
@@ -57,7 +54,9 @@ const enhancer = (opts = {}, config) => {
       )
     } else {
       config.plugins.push(new HotModuleReplacementPlugin())
-      config.entry.main.push('webpack-hot-middleware/client?reload=true&noInfo=true')
+      config.entry.main.push(
+        'webpack-hot-middleware/client?reload=true&noInfo=true'
+      )
     }
     return config
   }
@@ -65,9 +64,7 @@ const enhancer = (opts = {}, config) => {
   // For other extraneous builds, add some sane defaults,
   // even if they will most likely be overriden
   config.entry = {
-    main: [
-      path.resolve(appDirectory, 'src', opts.id)
-    ]
+    main: [path.resolve(appDirectory, 'src', opts.id)]
   }
 
   return config

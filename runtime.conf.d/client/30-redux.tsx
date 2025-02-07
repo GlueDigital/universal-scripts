@@ -28,9 +28,8 @@ const clientRedux: ClientInit = (ctx, next) => {
 
 export const clientInit = clientRedux
 
-const renderIntlProvider: ClientRoot = async (ctx, next) =>
-  <Provider store={ctx.store}>
-    {await next()}
-  </Provider>
+const renderIntlProvider: ClientRoot = async (ctx, next) => (
+  <Provider store={ctx.store}>{await next()}</Provider>
+)
 
 export const reactRoot = renderIntlProvider

@@ -2,8 +2,9 @@ import config from '#js.conf.d'
 import webpackHotMiddlewareClient from 'webpack-hot-middleware/client.js'
 
 // Simple system to trigger middleware-like hooks
-const triggerHook = name => (ctx, initial) =>
-  config[name] && config[name].reduceRight(
+const triggerHook = (name) => (ctx, initial) =>
+  config[name] &&
+  config[name].reduceRight(
     (thisNext, hook) => () => hook(ctx, thisNext),
     () => initial
   )()
@@ -24,4 +25,3 @@ if (import.meta.webpackHot) {
     }
   })
 }
-
