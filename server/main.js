@@ -72,6 +72,8 @@ if (__WATCH__) {
 
     const hotMiddleware = webpackHotMiddleware(compiler.compilers[0])
 
+    compiler.compilers[0].webpackHotMiddleware = hotMiddleware
+
     app.use(devMiddleware)
     app.use(hotMiddleware)
 

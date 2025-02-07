@@ -38,7 +38,7 @@ const addRedux = async (req: Request, res: Response, next: NextFunction) => {
   const storeOutput = jsesc(copyState, { isScriptContext: true })
   const envVariables = Object.fromEntries(
       Object.entries(process.env)
-        .filter(([key]) => key.startsWith('PUBLIC'))
+        .filter(([key]) => key.startsWith('PUBLIC_'))
   )
   req.assets?.styles.unshift(`<script>__ENV_VARS__=${JSON.stringify(envVariables)}</script>`)
   req.assets?.styles.unshift('<script>___INITIAL_STATE__=' + storeOutput + '</script>')

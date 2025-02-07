@@ -5,6 +5,7 @@ import defaultHeaders from '../../lib/header'
 import renderHtmlLayout from '../../lib/render-html-layout'
 import { NextFunction, Request, Response } from 'express'
 import { ReactNode } from 'react'
+import { getEnvVariablesKeys } from '../../lib/vars/getEnv'
 
 const basename = process.env.SUBDIRECTORY || '/'
 
@@ -76,14 +77,13 @@ const generateHtml = async (req: Request, res: Response, next: NextFunction) => 
   }
 }
 
+const envKeys = Object.keys(process.env)
+  .filter((key) => key.startsWith('PUBLIC_'))
+
 const staticHtml = async (req: Request, res: Response, next: NextFunction) => {
   // Use Static HTML template
   await next()
-  const envVariables = Object.fromEntries(
-    Object.entries(process.env)
-      .filter(([key]) => key.startsWith('PUBLIC'))
-  )
-  const envFragment = `<script>__ENV_VARS__=${JSON.stringify(envVariables)}</script>`
+  const envFragment = `<script>__ENV_VARS__=${JSON.stringify(envKeys)}</script>`
   const newIndex = index.replace('<!-- ENV -->', envFragment)
   res.type('text/html')
   res.send(newIndex) // 'index' debe ser el HTML preconstruido
