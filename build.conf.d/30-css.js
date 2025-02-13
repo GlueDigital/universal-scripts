@@ -1,4 +1,3 @@
-import path from 'path'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
 import PostCssUrl from 'postcss-url'
@@ -6,19 +5,19 @@ import postcssCascadeLayers from '@csstools/postcss-cascade-layers'
 import PostCssPresetEnv from 'postcss-preset-env'
 import PostCssNested from 'postcss-nested'
 import PostCssNormalize from 'postcss-normalize'
+import getConfig from '../config.js'
 
-const enhancer = (opts = {}, config) => {
-  // Extraneous builds don't usually need css support
-  if (opts.id !== 'client' && opts.id !== 'server' && !opts.css) return config
-
-  // Easy access to current build config
+const getInitialStyleConfig = (opts) => {
   const isServerSide = opts.id === 'server'
-  const isWatch = opts.isWatch
-  const isProd = process.env.NODE_ENV === 'production'
 
   const transformAssetUrl = (asset) => {
     const isRootImport = asset.url[0] === '/' && asset.url[1] !== '/'
     return isRootImport ? '~src/static' + asset.url : asset.url
+  }
+
+  const cssLoader = {
+    loader: 'css-loader',
+    options: { sourceMap: true, importLoaders: 1 }
   }
 
   const postcssLoader = {
@@ -43,50 +42,50 @@ const enhancer = (opts = {}, config) => {
     }
   }
 
-  const sassLoader = {
-    loader: 'sass-loader',
-    options: {
-      sourceMap: true,
-      sassOptions: {
-        includePaths: [path.resolve('appDirectory', 'src', 'styles')]
+  const styleLoaderOptions = {}
+  if (opts.css?.insert) styleLoaderOptions.insert = opts.css.insert
+
+  const styleLoader = isServerSide
+    ? undefined
+    : {
+        loader: 'style-loader',
+        options: styleLoaderOptions
       }
-    }
-  }
 
-  const sassChain = [
-    {
-      loader: 'css-loader',
-      options: { sourceMap: true, importLoaders: 2 }
-    },
-    postcssLoader,
-    sassLoader
-  ]
-  const cssChain = [
-    {
-      loader: 'css-loader',
-      options: { sourceMap: true, importLoaders: 1 }
-    },
-    postcssLoader
-  ]
-
-  if (!isServerSide) {
-    const styleLoaderOptions = {}
-    if (opts.css?.insert) styleLoaderOptions.insert = opts.css.insert
-    const styleLoader = {
-      loader: 'style-loader',
-      options: styleLoaderOptions
-    }
-    sassChain.unshift(styleLoader)
-    cssChain.unshift(styleLoader)
+  return {
+    loaders: [styleLoader, cssLoader, postcssLoader].filter(Boolean),
+    exts: ['css']
   }
+}
+
+const enhancer = async (opts = {}, config) => {
+  // Extraneous builds don't usually need css support
+  if (opts.id !== 'client' && opts.id !== 'server' && !opts.css) return config
+
+  // Easy access to current build config
+  const isServerSide = opts.id === 'server'
+  const isWatch = opts.isWatch
+  const isProd = process.env.NODE_ENV === 'production'
+
+  const triggerHook = (name) => async (initialConfig, opts) =>
+    (await getConfig(opts.id))[name].reduce(
+      (stylesConfig, enhancer) => enhancer(stylesConfig, opts),
+      initialConfig
+    )
+
+  const initialStyleConfig = getInitialStyleConfig(opts)
+
+  const extraStyles = await triggerHook('stylesExtras')(
+    initialStyleConfig,
+    opts
+  )
+
+  const stylesChain = extraStyles.loaders.filter(Boolean)
+  const testRule = new RegExp(`\\.(${extraStyles.exts.join('|')})$`)
 
   config.module.rules.push({
-    test: /\.(scss|sass)$/,
-    use: sassChain
-  })
-  config.module.rules.push({
-    test: /\.css$/,
-    use: cssChain
+    test: testRule,
+    use: stylesChain
   })
 
   if (!isServerSide) {

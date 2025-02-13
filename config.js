@@ -2,6 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import jsconfd from 'js.conf.d'
 import { fileURLToPath } from 'url'
+import { findUniversalPlugins } from './lib/find-scripts.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -18,11 +19,17 @@ const arrayMerger = (current, add) => {
 const appDirectory = fs.realpathSync(process.cwd())
 const libConfig = path.resolve(__dirname, 'build.conf.d')
 const userConfig = path.resolve(appDirectory, 'build.conf.d')
+const pluginsConfig = findUniversalPlugins().map((plugin) =>
+  path.join(plugin, 'build.conf.d')
+)
 
 export default async function getConfig(target) {
   const specificUserConfig = path.resolve(userConfig, target)
-  const config = await jsconfd([libConfig, userConfig, specificUserConfig], {
-    merge: arrayMerger
-  })
+  const config = await jsconfd(
+    [libConfig, userConfig, specificUserConfig, ...pluginsConfig],
+    {
+      merge: arrayMerger
+    }
+  )
   return config
 }

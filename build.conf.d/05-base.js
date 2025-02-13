@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { resolve, dirname } from 'path'
+import { resolve, dirname, join } from 'path'
 import webpackPackage from 'webpack'
 import JsconfdPlugin from 'js.conf.d-webpack'
 import DirectoryNamedWebpackPlugin from 'directory-named-webpack-plugin'
@@ -7,6 +7,8 @@ import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin'
 import { fileURLToPath } from 'url'
 import { SwcMinifyWebpackPlugin } from 'swc-minify-webpack-plugin'
 import { EnvReloadPlugin } from '../lib/vars/EnvPlugin.js'
+import { findUniversalPlugins } from '../lib/find-scripts.js'
+import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -15,10 +17,17 @@ const { ProgressPlugin } = webpackPackage
 
 const appDirectory = fs.realpathSync(process.cwd())
 
+const plugins = findUniversalPlugins()
+const pluginsRuntime = plugins.map((plugin) => join(plugin, 'runtime.conf.d'))
+
 const enhancer = (opts = {}) => {
   const id = opts.id
   const isClientSide = id === 'client'
   const isProd = process.env.NODE_ENV === 'production'
+
+  const pluginsRuntimeId = plugins.map((plugin) =>
+    join(plugin, 'runtime.conf.d', id)
+  )
 
   const config = {
     name: id,
@@ -69,12 +78,18 @@ const enhancer = (opts = {}) => {
     },
     plugins: [
       new ProgressPlugin(),
+      new TsconfigPathsPlugin({
+        silent: true,
+        configFile: 'tsconfig.json'
+      }),
       new JsconfdPlugin({
         folders: [
           resolve(__dirname, '..', 'runtime.conf.d'),
           resolve(__dirname, '..', 'runtime.conf.d', id),
           resolve(appDirectory, 'runtime.conf.d'),
-          resolve(appDirectory, 'runtime.conf.d', id)
+          resolve(appDirectory, 'runtime.conf.d', id),
+          ...pluginsRuntime,
+          ...pluginsRuntimeId
         ],
         merge: (current, add) => {
           for (const key of Object.keys(add)) {
