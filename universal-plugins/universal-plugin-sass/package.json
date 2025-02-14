@@ -1,10 +1,9 @@
 {
-  "name": "universal-plugin-jest",
+  "name": "universal-plugin-sass",
   "version": "1.0.0",
   "type": "module",
   "files": [
-    "build.conf.d",
-    "lib"
+    "build.conf.d"
   ],
   "scripts": {
     "lint": "eslint .",
@@ -12,16 +11,17 @@
     "prettier": "prettier --write ."
   },
   "keywords": [
-    "Jest",
-    "test",
     "universal-scripts",
-    "universal-plugin"
+    "universal-plugin",
+    "styles",
+    "sass"
   ],
   "author": "Alex Sanchez",
   "license": "ISC",
-  "description": "Jest configuration to enable Jest on universal-scripts",
+  "description": "Sass configuration for universal-scripts",
   "dependencies": {
-    "@swc/jest": "^0.2.37",
-    "jest": "^29.7.0"
+    "css-loader": "^7.1.2",
+    "sass": "^1.84.0",
+    "sass-loader": "^16.0.4"
   }
 }

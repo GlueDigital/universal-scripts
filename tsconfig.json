@@ -16,7 +16,10 @@
     "baseUrl": ".",
     "sourceMap": true,
     "skipLibCheck": true,
-    "typeRoots": ["./node_modules/@types", "universal-scripts/@types"],
+    "typeRoots": [
+      "universal-scripts/node_modules/@types",
+      "universal-scripts/@types"
+    ],
     "esModuleInterop": true
   }
 }
