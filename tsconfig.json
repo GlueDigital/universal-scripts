@@ -1,10 +1,10 @@
 {
   "compileOnSave": false,
   "include": [
-    "runtime.conf.d/**/*",
-    "globals.d.ts",
-    "@types",
-    "lib/redux/**/*"
+    "universal-scripts/runtime.conf.d/**/*",
+    "universal-scripts/globals.d.ts",
+    "universal-scripts/@types",
+    "universal-scripts/lib/redux/**/*"
   ],
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
@@ -16,7 +16,7 @@
     "baseUrl": ".",
     "sourceMap": true,
     "skipLibCheck": true,
-    "typeRoots": ["./node_modules/@types", "./@types"],
+    "typeRoots": ["./node_modules/@types", "universal-scripts/@types"],
     "esModuleInterop": true
   }
 }
