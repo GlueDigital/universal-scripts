@@ -3,9 +3,9 @@
 _Universal Scripts_ is an alternative configuration for [Create React App](https://github.com/facebookincubator/create-react-app), designed for production sites that need features such as:
 
 - Server-Side Rendering (aka. _universal rendering_)
-- Internationalization with react-intl
-- HTML head customization with react-helmet-async
-- Redux state container
+- Internationalization with `react-intl`
+- HTML head customization with `react-helmet-async`
+- Redux state container with `redux-toolkit`
 - Sass (and SCSS) support
 - And of course, everything on React Scripts: ES6 & TypeScript support, React Router, etc.
 
