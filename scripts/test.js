@@ -1,19 +1,27 @@
 'use strict'
+
+import { config } from 'dotenv'
+
+config()
+
 process.env.NODE_ENV = 'test'
 
 process.on('unhandledRejection', (err) => {
   throw err
 })
 
-require('dotenv').config()
+import getConfig from '../config.js'
+import chalk from 'chalk'
 
-const jest = require('jest')
-const getConfig = require('../config')
-const argv = process.argv.slice(2)
+const configs = await getConfig('test')
+const testRunner = configs.test.reduce((cfg, enhancer) => enhancer({}, cfg), {})
 
-const configs = getConfig('test')
-const config = configs.test.reduce((cfg, enhancer) => enhancer({}, cfg), {})
-
-argv.push('--config', JSON.stringify(config))
-
-jest.run(argv)
+if (typeof testRunner !== 'function') {
+  console.warn(
+    chalk.yellow(
+      `${chalk.bold('⚠️ Error')}: No test runner configuration found. Please create a config or install ${chalk.underline('universal-plugin-jest')}.`
+    )
+  )
+} else {
+  testRunner()
+}

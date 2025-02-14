@@ -5,7 +5,7 @@ import postcssCascadeLayers from '@csstools/postcss-cascade-layers'
 import PostCssPresetEnv from 'postcss-preset-env'
 import PostCssNested from 'postcss-nested'
 import PostCssNormalize from 'postcss-normalize'
-import getConfig from '../config.js'
+import { triggerHook } from '../lib/plugins/trigger.js'
 
 const getInitialStyleConfig = (opts) => {
   const isServerSide = opts.id === 'server'
@@ -66,12 +66,6 @@ const enhancer = async (opts = {}, config) => {
   const isServerSide = opts.id === 'server'
   const isWatch = opts.isWatch
   const isProd = process.env.NODE_ENV === 'production'
-
-  const triggerHook = (name) => async (initialConfig, opts) =>
-    (await getConfig(opts.id))[name].reduce(
-      (stylesConfig, enhancer) => enhancer(stylesConfig, opts),
-      initialConfig
-    )
 
   const initialStyleConfig = getInitialStyleConfig(opts)
 
