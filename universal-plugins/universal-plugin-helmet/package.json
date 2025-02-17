@@ -1,0 +1,21 @@
+{
+  "name": "universal-plugin-helmet",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "prettier": "prettier --write ."
+  },
+  "keywords": [
+    "react-helmet",
+    "universal-scripts",
+    "universal-plugin"
+  ],
+  "author": "Alex Sanchez",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "react-helmet-async": "^2.0.5"
+  }
+}

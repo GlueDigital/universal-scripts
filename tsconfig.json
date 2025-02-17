@@ -4,7 +4,8 @@
     "universal-scripts/runtime.conf.d/**/*",
     "universal-scripts/globals.d.ts",
     "universal-scripts/@types",
-    "universal-scripts/lib/redux/**/*"
+    "universal-scripts/lib/redux/**/*",
+    "universal-plugins"
   ],
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,

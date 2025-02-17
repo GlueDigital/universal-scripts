@@ -1,10 +1,7 @@
-import { HelmetProvider } from 'react-helmet-async'
 import path from 'node:path'
 import fs from 'node:fs'
-import defaultHeaders from '../../lib/header'
 import renderHtmlLayout from '../../lib/render-html-layout'
 import { NextFunction, Request, Response } from 'express'
-import { ReactNode } from 'react'
 
 const basename = process.env.SUBDIRECTORY || '/'
 
@@ -58,14 +55,17 @@ const generateHtml = async (
   req.assets = { scripts, styles }
   res.status(200)
 
-  req.helmetContext = {
-    helmet: null
-  }
-
   await next()
-
   // Obtain headers from React Helmet
-  const head = req.helmetContext.helmet
+  const head = await req.triggerHook('extraHead')(req, res, {
+    title: '',
+    meta: '',
+    base: '',
+    link: '',
+    script: '',
+    style: '',
+    htmlAttributes: ''
+  })
   res.write(renderHtmlLayout(head, styles))
 
   // Send stream to client
@@ -92,16 +92,3 @@ const staticHtml = async (req: Request, res: Response, next: NextFunction) => {
 }
 
 export const serverMiddleware = index ? staticHtml : generateHtml
-
-const addDefaultHeaders = async (
-  req: Request,
-  res: Response,
-  next: () => Promise<ReactNode>
-) => (
-  <HelmetProvider context={req.helmetContext}>
-    {defaultHeaders(req.store)}
-    {await next()}
-  </HelmetProvider>
-)
-
-export const reactRoot = addDefaultHeaders

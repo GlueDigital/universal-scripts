@@ -22,7 +22,7 @@ declare global {
       stream: PipeableStream
       triggerHook: (
         name: string
-      ) => (req: Request, res: Response, initial: boolean) => ReactNode
+      ) => (req: Request, res: Response, initial: any) => ReactNode
       initExtras: Record<string, unknown>
     }
   }

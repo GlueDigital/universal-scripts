@@ -115,7 +115,7 @@ const enhancer = async (opts = {}) => {
       rules: [
         {
           test: /\.(js|jsx|ts|tsx|mjs)$/,
-          exclude: /node_modules\/(?!universal-scripts)/,
+          exclude: /node_modules\/(?!universal-scripts|universal-plugin)/,
           loader: 'swc-loader',
           options: {
             jsc: {
