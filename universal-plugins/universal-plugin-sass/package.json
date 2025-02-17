@@ -1,5 +1,5 @@
 {
-  "name": "universal-plugin-sass",
+  "name": "@gluedigital/universal-plugin-sass",
   "version": "1.0.0",
   "type": "module",
   "files": [

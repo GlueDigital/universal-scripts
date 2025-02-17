@@ -1,5 +1,5 @@
 {
-  "name": "universal-plugin-jest",
+  "name": "@gluedigital/universal-plugin-jest",
   "version": "1.0.0",
   "type": "module",
   "files": [

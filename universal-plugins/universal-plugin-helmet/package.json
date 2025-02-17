@@ -1,5 +1,5 @@
 {
-  "name": "universal-plugin-helmet",
+  "name": "@gluedigital/universal-plugin-helmet",
   "version": "1.0.0",
   "type": "module",
   "scripts": {
