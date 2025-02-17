@@ -1,6 +1,6 @@
 {
   "name": "universal-scripts",
-  "version": "3.4.0-09",
+  "version": "3.4.0",
   "description": "Build universal apps without configuration.",
   "type": "module",
   "main": "index.cjs",
@@ -27,6 +27,9 @@
     "universal-scripts": "./bin/universal-scripts.js"
   },
   "dependencies": {
+    "@gluedigital/universal-plugin-helmet": "^1.0.0",
+    "@gluedigital/universal-plugin-jest": "^1.0.0",
+    "@gluedigital/universal-plugin-sass": "^1.0.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.15",
     "@reduxjs/toolkit": "^2.5.1",
     "@swc/core": "^1.10.12",
@@ -55,7 +58,6 @@
     "postcss-preset-env": "^10.1.3",
     "postcss-url": "^10.1.3",
     "prettier": "3.4.2",
-    "react-helmet-async": "^2.0.5",
     "react-refresh": "^0.16.0",
     "require-from-string": "^2.0.2",
     "ruse-fetch": "^3.0.1",
@@ -82,7 +84,6 @@
     "@types/node": "^22.13.1",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
-    "@types/react-helmet-async": "^1.0.3",
     "@types/react-redux": "^7.1.34",
     "@types/webpack-env": "^1.18.8",
     "react-redux": "^9.2.0"
