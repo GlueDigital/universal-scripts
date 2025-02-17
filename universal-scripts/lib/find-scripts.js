@@ -1,9 +1,6 @@
-import { fileURLToPath } from 'url'
-import { dirname, resolve, join } from 'path'
+import { resolve, join } from 'path'
 import fs from 'fs'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
 const appDirectory = fs.realpathSync(process.cwd())
 
 const regex = /^(@[^/]+\/)?universal-plugin[^/]+$/
@@ -15,13 +12,30 @@ export function findUniversalPlugins() {
     withFileTypes: true
   })
 
-  const universalPlugins = folders.filter(
-    (dirent) => dirent.isDirectory() && regex.test(dirent.name)
+  let universalPlugins = folders
+    .filter((dirent) => regex.test(dirent.name))
+    .map((dirent) => join(nodeModulesPath, dirent.name))
+
+  const namespaces = folders.filter(
+    (dirent) => dirent.isDirectory() && dirent.name.startsWith('@')
   )
 
-  const names = universalPlugins.map((dirent) =>
-    join(nodeModulesPath, dirent.name)
-  )
+  namespaces.forEach((namespace) => {
+    const namespacePath = join(nodeModulesPath, namespace.name)
+    const subFolders = fs
+      .readdirSync(namespacePath, { withFileTypes: true })
+      .filter((dirent) => regex.test(`${namespace.name}/${dirent.name}`))
+      .map((dirent) => join(namespacePath, dirent.name))
 
-  return names
+    universalPlugins = [...universalPlugins, ...subFolders]
+  })
+
+  return universalPlugins
+}
+
+export function filterPluginsWithSubdir(plugins, subdir) {
+  return plugins.filter((pluginPath) => {
+    const testDirPath = join(pluginPath, subdir)
+    return fs.existsSync(testDirPath) && fs.statSync(testDirPath).isDirectory()
+  })
 }

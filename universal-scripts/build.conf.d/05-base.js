@@ -5,7 +5,10 @@ import DirectoryNamedWebpackPlugin from 'directory-named-webpack-plugin'
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin'
 import { fileURLToPath } from 'url'
 import { SwcMinifyWebpackPlugin } from 'swc-minify-webpack-plugin'
-import { findUniversalPlugins } from '../lib/find-scripts.js'
+import {
+  findUniversalPlugins,
+  filterPluginsWithSubdir
+} from '../lib/find-scripts.js'
 import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin'
 import { triggerHook } from '../lib/plugins/trigger.js'
 import { EnvReloadPlugin } from '../lib/vars/EnvPlugin.js'
@@ -16,7 +19,9 @@ const __dirname = dirname(__filename)
 const appDirectory = fs.realpathSync(process.cwd())
 
 const plugins = findUniversalPlugins()
-const pluginsRuntime = plugins.map((plugin) => join(plugin, 'runtime.conf.d'))
+const pluginsRuntime = filterPluginsWithSubdir(plugins, 'runtime.conf.d').map(
+  (plugin) => join(plugin, 'runtime.conf.d')
+)
 
 const enhancer = async (opts = {}) => {
   const id = opts.id
@@ -116,7 +121,7 @@ const enhancer = async (opts = {}) => {
         {
           test: /\.(js|jsx|ts|tsx|mjs)$/,
           exclude:
-            /node_modules\/(?!universal-scripts|^(@[^/]+\/)?universal-plugin[^/]+$)/,
+            /node_modules\/(?!universal-scripts|@[^/]+\/universal-plugin[^/]+).*/,
           loader: 'swc-loader',
           options: {
             jsc: {
