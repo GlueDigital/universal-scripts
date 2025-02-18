@@ -52,10 +52,12 @@ const getInitialStyleConfig = (opts) => {
         options: styleLoaderOptions
       }
 
-  return {
-    loaders: [styleLoader, cssLoader, postcssLoader].filter(Boolean),
-    exts: ['css']
-  }
+  return [
+    {
+      loaders: [styleLoader, cssLoader, postcssLoader].filter(Boolean),
+      exts: ['css']
+    }
+  ]
 }
 
 const enhancer = async (opts = {}, config) => {
@@ -69,17 +71,17 @@ const enhancer = async (opts = {}, config) => {
 
   const initialStyleConfig = getInitialStyleConfig(opts)
 
-  const extraStyles = await triggerHook('stylesExtras')(
+  const stylesExtras = await triggerHook('stylesExtras')(
     initialStyleConfig,
     opts
   )
 
-  const stylesChain = extraStyles.loaders.filter(Boolean)
-  const testRule = new RegExp(`\\.(${extraStyles.exts.join('|')})$`)
-
-  config.module.rules.push({
-    test: testRule,
-    use: stylesChain
+  stylesExtras.forEach((style) => {
+    const test = new RegExp(`\\.(${style.exts.join('|')})$`)
+    config.module.rules.push({
+      test,
+      use: style.loaders
+    })
   })
 
   if (!isServerSide) {
