@@ -1,5 +1,5 @@
-import path from 'node:path'
-import fs from 'node:fs'
+import { resolve } from 'node:path'
+import { readFileSync } from 'node:fs'
 import renderHtmlLayout from '../../lib/render-html-layout'
 import { NextFunction, Request, Response } from 'express'
 
@@ -8,14 +8,14 @@ const basename = process.env.SUBDIRECTORY || '/'
 let chunks: { name: string; size?: number }[] = []
 
 if (!__WATCH__) {
-  const fname = path.resolve('build', 'client', 'webpack-chunks.json')
-  chunks = JSON.parse(fs.readFileSync(fname, 'utf8')).entrypoints
+  const fname = resolve('build', 'client', 'webpack-chunks.json')
+  chunks = JSON.parse(readFileSync(fname, 'utf8')).entrypoints
 }
 
 let index = ''
 if (!__WATCH__ && !__SSR__) {
-  const fname = path.resolve('build', 'client', 'index.htm')
-  index = fs.readFileSync(fname, 'utf8')
+  const fname = resolve('build', 'client', 'index.html')
+  index = readFileSync(fname, 'utf8')
 }
 
 const generateHtml = async (
@@ -30,7 +30,7 @@ const generateHtml = async (
   // Scripts and styles of the page
   const scripts: string[] = []
   const styles: string[] = []
-  const reqBasename: string = req.basename || basename
+  const reqBasename: string = basename
 
   // Add assets from build process or from client stats in watch mode
   let assets: string[] = []

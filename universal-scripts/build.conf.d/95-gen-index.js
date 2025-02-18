@@ -1,5 +1,5 @@
 /**
- * Generate a index.htm file on client build if SSR is disabled.
+ * Generate a index.html file on client build if SSR is disabled.
  */
 import fs from 'fs'
 import path from 'path'
@@ -16,7 +16,7 @@ const pkg = (
 
 const ssr = !pkg.universalOptions || !pkg.universalOptions.noSsr
 
-// The default template can be overriden at src/static/index.htm
+// The default template can be overriden at src/static/index.html
 const defaultTemplate =
   '<!DOCTYPE html>' +
   '<html>' +
@@ -48,7 +48,7 @@ class GenIndexPlugin {
       appDirectory,
       'src',
       'static',
-      'index.htm'
+      'index.html'
     )
     if (fs.existsSync(templateOverridePath)) {
       template = fs.readFileSync(templateOverridePath).toString()
@@ -73,7 +73,7 @@ class GenIndexPlugin {
       .replace('<!-- STYLES -->', stylesFragment)
 
     // THIS SHOULB BE BEFORE COMPILATION
-    compilation.emitAsset('index.htm', new sources.RawSource(index))
+    compilation.emitAsset('index.html', new sources.RawSource(index))
   }
 }
 
