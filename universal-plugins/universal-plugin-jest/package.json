@@ -17,6 +17,9 @@
     "universal-scripts",
     "universal-plugin"
   ],
+  "engines": {
+    "node": ">=18"
+  },
   "author": "Alex Sanchez",
   "license": "ISC",
   "description": "Jest configuration to enable Jest on universal-scripts",
