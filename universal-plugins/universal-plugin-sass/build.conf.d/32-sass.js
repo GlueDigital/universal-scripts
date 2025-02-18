@@ -6,8 +6,8 @@ import { resolve } from 'path'
  * @returns updated loaders and extensions
  */
 export function stylesExtras(styleConfig, opts) {
-
-  const { exts, loaders } = styleConfig
+  const [css] = styleConfig
+  const { loaders } = css
 
   const sassLoader = {
     loader: 'sass-loader',
@@ -19,8 +19,11 @@ export function stylesExtras(styleConfig, opts) {
     }
   }
 
-  return ({
-    loaders: [...loaders, sassLoader],
-    exts: [...exts, 'scss', 'sass'],
-  })
+  return [
+    ...styleConfig,
+    {
+      loaders: [...loaders, sassLoader].filter(Boolean),
+      exts: ['scss', 'sass']
+    }
+  ]
 }
