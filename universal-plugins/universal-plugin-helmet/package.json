@@ -12,9 +12,12 @@
     "universal-scripts",
     "universal-plugin"
   ],
+  "engines": {
+    "node": ">=18"
+  },
   "author": "Alex Sanchez",
   "license": "ISC",
-  "description": "",
+  "description": "Enables full functionality of react-helmet-async for Universal-Scripts",
   "dependencies": {
     "react-helmet-async": "^2.0.5"
   }
