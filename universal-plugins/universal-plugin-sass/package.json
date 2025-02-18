@@ -16,6 +16,9 @@
     "styles",
     "sass"
   ],
+  "engines": {
+    "node": ">=18"
+  },
   "author": "Alex Sanchez",
   "license": "ISC",
   "description": "Sass configuration for universal-scripts",
