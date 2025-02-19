@@ -120,7 +120,7 @@ const serve = async (compiler) => {
   app.use(express.json())
 
   // Run anything on the `app` hook
-  appConfig.app && appConfig.app.forEach((f) => f(app))
+  if (appConfig.app) appConfig.app.forEach((f) => f(app))
 
   if (__WATCH__) {
     // Add the HMR and Dev Server middleware

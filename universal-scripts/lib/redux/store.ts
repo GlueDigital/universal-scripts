@@ -6,7 +6,7 @@ import {
 import { fetchReducer } from 'ruse-fetch'
 import { intlReducer, requestReducer } from './slices'
 
-// @ts-ignore
+// @ts-expect-error Imported from the project
 import reducerList from 'src/store/reducers'
 
 const addClientAutoReducers = (userReducers: ReducersMapObject) => {
@@ -35,7 +35,7 @@ const extraMiddlewares = (() => {
 
 const createStore = (
   reducers: ReducersMapObject,
-  initialState: Record<string, any> | undefined = undefined,
+  initialState: Record<string, unknown> | undefined = undefined,
   isServer: boolean
 ) => {
   const autoReducers = isServer
@@ -64,7 +64,7 @@ const createStore = (
   // Hot Module Replacement (HMR)
   if (module.hot) {
     module.hot.accept('src/store/reducers', async () => {
-      // @ts-ignore
+      // @ts-expect-error Imported from the project
       const updatedReducers = (await import('src/store/reducers')).default
       const newAutoReducers = isServer
         ? addServerAutoReducers(updatedReducers)
@@ -78,5 +78,5 @@ const createStore = (
 
 export const createServerStore = () => createStore(reducerList, undefined, true)
 
-export const createClientStore = (initialState: any) =>
+export const createClientStore = (initialState: Record<string, unknown>) =>
   createStore(reducerList, initialState, false)

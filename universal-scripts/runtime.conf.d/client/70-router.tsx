@@ -1,6 +1,6 @@
 import { ClientRoot } from '../../lib/redux/types'
 import { BrowserRouter } from 'react-router-dom'
-// @ts-ignore
+// @ts-expect-error Imported from the project
 import App from 'src/routes'
 
 const routerRoot: ClientRoot = () => {

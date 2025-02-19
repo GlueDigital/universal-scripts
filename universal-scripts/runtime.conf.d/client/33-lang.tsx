@@ -2,10 +2,9 @@ import { IntlProvider } from 'react-intl'
 import { updateIntl } from '../../lib/redux/slices'
 import { useAppSelector } from '../../lib/redux/selector'
 import { ClientInit, ClientRoot } from '../../lib/redux/types'
-
-// @ts-ignore
-import langs from 'src/locales'
 import { ReactNode } from 'react'
+// @ts-expect-error Imported from the project
+import langs from 'src/locales'
 
 const addClientIntl: ClientInit = (ctx, next) => {
   // Determine language
@@ -19,7 +18,7 @@ const addClientIntl: ClientInit = (ctx, next) => {
   lang = availableLangs.indexOf(lang) !== -1 ? lang : availableLangs[0]
 
   // Set it
-  ctx.store && ctx.store.dispatch(updateIntl({ lang, messages: langs[lang] }))
+  if (ctx.store) ctx.store.dispatch(updateIntl({ lang, messages: langs[lang] }))
 
   return next()
 }

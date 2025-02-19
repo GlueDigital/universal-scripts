@@ -1,5 +1,5 @@
 import chalk from 'chalk'
-import { NextFunction, Request, Response } from 'express'
+import { Request, Response } from 'express'
 import fs from 'node:fs'
 
 // Optional error 500 page

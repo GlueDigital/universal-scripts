@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as express from 'express'
 import { StatsCompilation } from 'webpack/types'
 import { HelmetServerState } from 'react-helmet-async'
@@ -22,7 +23,7 @@ declare global {
       stream: PipeableStream
       triggerHook: (
         name: string
-      ) => (req: Request, res: Response, initial: any) => ReactNode
+      ) => (req: Request, res: Response, initial: boolean) => ReactNode
       initExtras: Record<string, unknown>
     }
   }

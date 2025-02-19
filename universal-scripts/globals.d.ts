@@ -5,5 +5,5 @@ declare const __SERVER__: boolean
 
 declare interface Window {
   ___INITIAL_STATE__?: Record<string, string>
-  store?: any
+  store?: unknown
 }

@@ -2,7 +2,7 @@ import { ReactNode } from 'react'
 import { createClientStore, createServerStore } from './store'
 import { HelmetServerState } from 'react-helmet-async'
 
-// @ts-ignore
+// @ts-expect-error Imported from the project
 import { ReducerType } from 'src/store/reducers'
 
 export type ServerRootState = ReturnType<
