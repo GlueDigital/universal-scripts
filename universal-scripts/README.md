@@ -1,38 +1,25 @@
 <p align="center">
-  <a href="https://github.com/GlueDigital/universal-scripts/blob/master/LICENSE">
-    <img alt="test" src="https://img.shields.io/badge/license-MIT-blue.svg" />
-  </a>
-  <a href="https://github.com/GlueDigital/universal-scripts/issues/new">
-    <img alt="test" src="https://img.shields.io/npm/v/universal-scripts.svg?style=flat" />
-  </a>
-
+  <a href="https://github.com/GlueDigital/universal-scripts/blob/master/LICENSE"><img alt="test" src="https://img.shields.io/badge/license-MIT-blue.svg" /></a>
+  <a href="https://github.com/GlueDigital/universal-scripts/issues/new"><img alt="test" src="https:/img.shields.io/npm/v/universal-scripts.svg?style=flat" /></a>
 </p>
 <p align="center">
-  <a href="https://www.npmjs.com/package/universal-scripts">
-    <img alt="npm downloads" src="https://img.shields.io/npm/dw/universal-scripts">
-  </a>
-  <a href="https://github.com/GlueDigital/universal-scripts/blob/master/universal-scripts/package.json">
-    <img alt="node current" src="https://img.shields.io/node/v/universal-scripts">
-  </a>
+  <a href="https://www.npmjs.com/package/universal-scripts"><img alt="npm downloads" src="https://img.shields.io/npm/dw/universal-scripts"></a>
+  <a href="https://github.com/GlueDigital/universal-scripts/blob/master/universal-scripts/package.json"><img alt="node current" src="https://img.shields.io/node/v/universal-scripts"></a>
 </p>
 <p align="center">
-  <a href="https://github.com/GlueDigital/universal-scripts/issues/new">
-    <img alt="node current" src="https://img.shields.io/badge/Report%20an%20issue-red">
-  </a>
-  <a href="https://gluedigital.github.io/universal-scripts">
-    <img alt="node current" src="https://img.shields.io/badge/Complete%20documentation-orange">
-  </a>
+  <a href="https://github.com/GlueDigital/universal-scripts/issues/new"><img alt="node current" src="https://img.shields.io/badge/Report%20an%20issue-red"></a>
+  <a href="https://gluedigital.github.io/universal-scripts"><img alt="node current" src="https://img.shields.io/badge/Complete%20documentation-orange"></a>
 </p>
 
 # Universal Scripts
 
-Universal Scripts is a highly flexible framework for React projects, offering advanced features such as Server-Side Rendering (SSR) and internationalization (i18n). It allows you to extend or override existing configurations, giving you complete control over your setup.
+Universal Scripts is a highly flexible framework for React projects, offering advanced features such as Server-Side Rendering (SSR) and internationalization (i18n). It allows you to extend or override existing configuration easily, giving you complete control over your setup.
 
 - Server-Side Rendering.
-- TypeScript support with support for custom alias.
-- Internationaliztion with [`react-intl`](https://github.com/ericf/react-intl),
+- TypeScript support including custom aliases.
+- Internationalization with [`react-intl`](https://github.com/ericf/react-intl),
 - Metadata management with [`react-helmet-async`](https://github.com/staylor/react-helmet-async).
-- Redux state management with [`redux-toolkit`](https://github.com/reduxjs/redux-toolkit) with types.
+- Redux state management with [`redux-toolkit`](https://github.com/reduxjs/redux-toolkit) and types support.
 - Integrated with [`ruse-fetch`](https://github.com/GlueDigital/ruse-fetch) to provide a modern way of fetching data with `Suspense`.
 - Use [`SWC`](https://github.com/swc-project/swc) for better performance.
 - Hot Reload in Server and Client, including .env file.
@@ -44,12 +31,14 @@ You can use the pre-built templates, such as the TypeScript template, or create 
 - `src/locales`: Store your translations, the first key in `index.ts` is the default language.
 - `src/routes`: The index file serves as the root component, where you can define your application routes with `react-router`.
 - `src/static`: Contains static assets like images, fonts, etc. These files will be copied to the build.
-- `src/store`: In `reducers.ts`, you need to add your slices to reducersList and place your slices inside the `slices` folder.
-- `src/styles`: The main entry point for styles.
+- `src/store`: Add your slices and place them inside the slices folder.
+- `src/styles`: The main entry point for global styles.
 
 These are the default folders, but you can create additional ones such as components, hooks, contexts, and more. Additionally, the tsconfig file includes predefined aliases, which you can customize or extend as needed.
 
 ## Plugins
+
+In Universal, you have the flexibility to use pre-built plugins or develop your own. These plugins are designed to work seamlessly without requiring any additional configuration—just install them, and they are ready to use. This allows for a more efficient development process, enabling you to extend functionality effortlessly while maintaining a clean and modular project structure.
 
 This documentation describes the configuration of the following universal pre-installed plugins in a project:
 
@@ -62,6 +51,7 @@ This plugin introduces configuration for [`react-helmet-async`](https://github.c
     - Enables full functionality of react-helmet-async.
     - Allows dynamic <head> management in a React application.
     - Improves SEO optimization and accessibility.
+    - Enables customizable social sharing with dynamic Open Graph metadata.
 
 ### [`universal-plugin-jest`](https://github.com/GlueDigital/universal-scripts/tree/master/universal-plugins/universal-plugin-jest)
 
@@ -82,9 +72,15 @@ If you want to use for example [`universal-plugin-sass`](https://github.com/Glue
 yarn add universal-plugin-sass
 ```
 
+If using npm
+
+```sh
+npm install universal-plugin-sass
+```
+
 ## Data Fetching
 
-Universal is already configured to use [`ruse-fetch`](https://github.com/GlueDigital/ruse-fetch), where is to simple to fetch data.
+Universal is already configured to use [`ruse-fetch`](https://github.com/GlueDigital/ruse-fetch), making data fetching simple and efficient.
 
 ```typescript
 import { useFetch } from 'ruse-fetch'
