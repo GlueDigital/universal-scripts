@@ -1,6 +1,4 @@
-import { config } from 'dotenv'
-
-config()
+import 'dotenv/config'
 
 // Babel will complain if no NODE_ENV. Set it if needed.
 process.env.NODE_ENV = process.env.NODE_ENV || 'development'

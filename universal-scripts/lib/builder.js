@@ -55,7 +55,8 @@ export default async function (opts = {}) {
   const buildConfigsPromises = builds.map((target) =>
     buildConfigBuilder({
       id: target,
-      isWatch
+      isWatch,
+      ssg: !!opts.ssg
     })
   )
 

@@ -5,11 +5,11 @@ let isV6 = true
 
 try {
   // Import v6
-  StaticRouter = require('react-router-dom/server').StaticRouter
+  StaticRouter = require('react-router/server').StaticRouter
 } catch {
   isV6 = false
   // Try to import v5
-  StaticRouter = require('react-router-dom').StaticRouter
+  StaticRouter = require('react-router').StaticRouter
 }
 
 const App = __SSR__ && require('src/routes').default

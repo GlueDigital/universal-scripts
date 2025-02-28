@@ -1,4 +1,4 @@
-import { config } from 'dotenv'
+import 'dotenv/config'
 import chalk from 'chalk'
 import fs from 'fs'
 import express from 'express'
@@ -8,8 +8,6 @@ import path from 'path'
 import appConfig from '../config.js'
 import cookieParser from 'cookie-parser'
 import requireFromString from 'require-from-string'
-
-config()
 
 const appDirectory = fs.realpathSync(process.cwd())
 const port = process.env.PORT || 3000

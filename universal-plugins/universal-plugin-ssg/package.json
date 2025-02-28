@@ -1,0 +1,14 @@
+{
+  "name": "universal-plugin-ssg",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "prettier": "prettier --write ."
+  },
+  "keywords": [],
+  "author": "Alex Sanchez",
+  "license": "ISC",
+  "description": ""
+}
