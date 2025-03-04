@@ -5,12 +5,14 @@ import express from 'express'
 import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddleware from 'webpack-hot-middleware'
 import path from 'path'
-import appConfig from '../config.js'
 import cookieParser from 'cookie-parser'
 import requireFromString from 'require-from-string'
+import appConfig, { setConfigMap } from '../config.js'
 
 const appDirectory = fs.realpathSync(process.cwd())
 const port = process.env.PORT || 3000
+
+const serverConfig = await appConfig('server')
 
 // Group and an array of middlewares into a single one, because express doesnt support promises on next functions
 const groupMiddlewares = (serverMiddleware) => async (req, res, nxt) => {
@@ -112,13 +114,14 @@ if (__WATCH__) {
 const serve = async (compiler) => {
   console.log(chalk.green('Starting server.'))
   const app = express()
+  setConfigMap('app', app)
 
   app.use(cookieParser())
   app.disable('x-powered-by')
   app.use(express.json())
 
   // Run anything on the `app` hook
-  if (appConfig.app) appConfig.app.forEach((f) => f(app))
+  if (serverConfig.app) serverConfig.app.forEach((f) => f(app))
 
   if (__WATCH__) {
     // Add the HMR and Dev Server middleware
@@ -132,7 +135,11 @@ const serve = async (compiler) => {
   }
 
   // Wrap it up
-  app.listen(port)
+  const server = app.listen(port)
+
+  // Run anything on the `app` hook
+  if (serverConfig.appAfter) serverConfig.appAfter.forEach((f) => f(server))
+
   console.log(
     chalk.green('Server running at:'),
     chalk.cyan.bold('http://localhost:' + port)

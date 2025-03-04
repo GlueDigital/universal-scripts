@@ -37,3 +37,13 @@ export default async function getConfig(target) {
   )
   return config
 }
+
+const configMap = new Map()
+
+export function getConfigMap(key) {
+  return configMap.get(key)
+}
+
+export function setConfigMap(key, value) {
+  return configMap.set(key, value)
+}

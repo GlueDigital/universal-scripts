@@ -10,6 +10,9 @@ import fs from 'fs-extra'
 
 fs.remove('./build/')
 
+global.__WATCH__ = false // Signal to server that we are not doing HMR
+global.__SSG__ = true
+
 const builder = (await import('../lib/builder.js')).default
 
 const compiler = await builder({

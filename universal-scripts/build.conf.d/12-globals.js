@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import webpackPackage from 'webpack'
+import { triggerHook } from '../lib/plugins/trigger.js'
 
 const { DefinePlugin } = webpackPackage
 
@@ -12,7 +13,7 @@ const pkg = (
   })
 ).default
 
-const enhancer = (opts = {}, config) => {
+const enhancer = async (opts = {}, config) => {
   const isWatch = opts.isWatch
   const isProd = process.env.NODE_ENV === 'production'
   const ssr = !pkg.universalOptions || !pkg.universalOptions.noSsr
@@ -27,16 +28,21 @@ const enhancer = (opts = {}, config) => {
     __SSR__: ssr
   }
 
+  const allDefinitions = await triggerHook('extraDefinitions')(
+    definitions,
+    opts
+  )
+
   if (!config.plugins) config.plugins = []
   if (opts.id === 'client') {
     config.plugins.push(
       new DefinePlugin({
-        ...definitions,
+        ...allDefinitions,
         'process.env': 'window.__ENV_VARS__'
       })
     )
   } else {
-    config.plugins.push(new DefinePlugin(definitions))
+    config.plugins.push(new DefinePlugin(allDefinitions))
   }
 
   return config

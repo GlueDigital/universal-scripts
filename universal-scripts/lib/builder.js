@@ -2,7 +2,7 @@ import chalk from 'chalk'
 import fs from 'fs'
 import path from 'path'
 import webpack from 'webpack'
-import getConfig from '../config.js'
+import getConfig, { setConfigMap } from '../config.js'
 
 const appDirectory = fs.realpathSync(process.cwd())
 
@@ -36,6 +36,7 @@ const writeAssetsToJson = (statsClient) => {
 }
 
 export default async function (opts = {}) {
+  setConfigMap('opts', opts)
   const isWatch = !!opts.isWatch
 
   // Prepare the different build configs (client and server)
@@ -61,6 +62,8 @@ export default async function (opts = {}) {
   )
 
   const buildConfigs = await Promise.all(buildConfigsPromises)
+
+  setConfigMap('buildConfigs', buildConfigs)
 
   console.log(chalk.green('Build started.'))
   const compiler = webpack(buildConfigs)
