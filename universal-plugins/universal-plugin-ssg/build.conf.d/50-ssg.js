@@ -30,7 +30,7 @@ const makeRequests = async (port) => {
 }
 
 export const appAfter = (server) => {
-  if (!__SSG__) return
+  if (typeof __SSG__ === 'boolean' && !__SSG__) return
   const port = server.address().port
   makeRequests(port)
 }
