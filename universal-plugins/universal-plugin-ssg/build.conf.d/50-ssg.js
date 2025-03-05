@@ -8,10 +8,18 @@ export const extraDefinitions = async (definitions, opts = {}) => {
 }
 
 const makeRequests = async (port) => {
-  const routes = [
-    { path: '/', name: 'index' },
-    { path: '/vessels', name: 'vessels' }
-  ]
+  let routes = []
+
+  try {
+    const { getStaticRoutes } = await import(
+      `${appDirectory}/src/routes/static-routes.mjs`
+    )
+    routes = await getStaticRoutes()
+  } catch (error) {
+    routes = ['/']
+    console.warn('Error loading static routes:', error)
+  }
+
   for (const route of routes) {
     try {
       const response = await fetch(`http://localhost:${port}/${route.path}`)

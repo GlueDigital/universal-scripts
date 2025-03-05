@@ -1,14 +1,23 @@
 {
-  "name": "universal-plugin-ssg",
+  "name": "@gluedigital/universal-plugin-ssg",
   "version": "1.0.0",
   "type": "module",
+  "files": [
+    "build.conf.d",
+    "scripts"
+  ],
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "prettier": "prettier --write ."
   },
-  "keywords": [],
+  "keywords": [
+    "universal-scripts",
+    "universal-plugin",
+    "Static Site Generation",
+    "SSG"
+  ],
   "author": "Alex Sanchez",
   "license": "ISC",
-  "description": ""
+  "description": "Enable Static Site Generation in universal-scripts"
 }
