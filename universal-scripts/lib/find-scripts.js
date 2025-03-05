@@ -39,3 +39,12 @@ export function filterPluginsWithSubdir(plugins, subdir) {
     return fs.existsSync(testDirPath) && fs.statSync(testDirPath).isDirectory()
   })
 }
+
+export function findScriptInPlugin(plugins, script) {
+  const pluginRoute = plugins.find((pluginPath) => {
+    const testDirPath = join(pluginPath, 'scripts', `${script}.js`)
+    return fs.existsSync(testDirPath)
+  })
+
+  return `${pluginRoute}/scripts/${script}.js`
+}
