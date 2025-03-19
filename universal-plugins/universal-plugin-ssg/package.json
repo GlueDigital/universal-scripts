@@ -1,6 +1,7 @@
 {
   "name": "@gluedigital/universal-plugin-ssg",
   "version": "1.0.0",
+  "private": false,
   "type": "module",
   "files": [
     "build.conf.d",
