@@ -7,12 +7,9 @@ import webpackHotMiddleware from 'webpack-hot-middleware'
 import path from 'path'
 import cookieParser from 'cookie-parser'
 import requireFromString from 'require-from-string'
-import appConfig, { setConfigMap } from '../config.js'
 
 const appDirectory = fs.realpathSync(process.cwd())
 const port = process.env.PORT || 3000
-
-const serverConfig = await appConfig('server')
 
 // Group and an array of middlewares into a single one, because express doesnt support promises on next functions
 const groupMiddlewares = (serverMiddleware) => async (req, res, nxt) => {
@@ -38,6 +35,7 @@ const groupErrorMiddlewares =
   }
 
 let configureHMR
+let config
 
 if (__WATCH__) {
   // We need to hot-reload serverMiddleware, but we're the ones building it.
@@ -92,6 +90,9 @@ if (__WATCH__) {
       try {
         const newMiddleware = mfs.readFileSync(fname).toString()
         const mw = requireFromString(newMiddleware, fname)
+        config = mw.rawConfig
+
+        if (config.app) config.app.forEach((f) => f(app))
         await mw.startup()
         serverMiddleware = mw.default
         serverErrorMiddleware = mw.rawConfig.serverErrorMiddleware
@@ -114,21 +115,22 @@ if (__WATCH__) {
 const serve = async (compiler) => {
   console.log(chalk.green('Starting server.'))
   const app = express()
-  setConfigMap('app', app)
 
   app.use(cookieParser())
   app.disable('x-powered-by')
   app.use(express.json())
 
-  // Run anything on the `app` hook
-  if (serverConfig.app) serverConfig.app.forEach((f) => f(app))
-
   if (__WATCH__) {
     // Add the HMR and Dev Server middleware
     await configureHMR(app, compiler)
   } else {
-    // Add the server-side rendering middleware (no HMR)
     const mw = await import('./serverMiddleware.js')
+
+    config = mw.rawConfig
+
+    // Run anything on the `app` hook
+    if (config.app) config.app.forEach((f) => f(app))
+    // Add the server-side rendering middleware (no HMR)
     await mw.startup()
     app.use(groupMiddlewares(mw.default))
     app.use(groupErrorMiddlewares(mw.rawConfig.serverErrorMiddleware))
@@ -138,7 +140,7 @@ const serve = async (compiler) => {
   const server = app.listen(port)
 
   // Run anything on the `app` hook
-  if (serverConfig.appAfter) serverConfig.appAfter.forEach((f) => f(server))
+  if (config && config.appAfter) config.appAfter.forEach((f) => f(server))
 
   console.log(
     chalk.green('Server running at:'),
