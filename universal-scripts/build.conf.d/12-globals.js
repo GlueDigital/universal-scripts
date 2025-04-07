@@ -1,17 +1,8 @@
-import fs from 'fs'
-import path from 'path'
 import webpackPackage from 'webpack'
 import { triggerHook } from '../lib/plugins/trigger.js'
+import { pkg } from '../lib/builder.js'
 
 const { DefinePlugin } = webpackPackage
-
-const appDirectory = fs.realpathSync(process.cwd())
-
-const pkg = (
-  await import(path.join(appDirectory, 'package.json'), {
-    assert: { type: 'json' }
-  })
-).default
 
 const enhancer = async (opts = {}, config) => {
   const isWatch = opts.isWatch

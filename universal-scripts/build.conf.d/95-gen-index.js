@@ -4,15 +4,10 @@
 import fs from 'fs'
 import path from 'path'
 import webpackPkg from 'webpack'
+import { pkg } from '../lib/builder.js'
 const { sources } = webpackPkg
 
 const appDirectory = fs.realpathSync(process.cwd())
-
-const pkg = (
-  await import(path.join(appDirectory, 'package.json'), {
-    assert: { type: 'json' }
-  })
-).default
 
 const ssr = !pkg.universalOptions || !pkg.universalOptions.noSsr
 

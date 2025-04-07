@@ -6,8 +6,8 @@ import getConfig from '../config.js'
 
 const appDirectory = fs.realpathSync(process.cwd())
 
-const pkg = await import(path.join(appDirectory, 'package.json'), {
-  assert: { type: 'json' }
+export const pkg = await import(path.join(appDirectory, 'package.json'), {
+  with: { type: 'json' }
 })
 
 const writeAssetsToJson = (statsClient) => {

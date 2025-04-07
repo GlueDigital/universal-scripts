@@ -4301,23 +4301,18 @@ js-yaml@^4.1.0:
   dependencies:
     argparse "^2.0.1"
 
-js.conf.d-webpack@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/js.conf.d-webpack/-/js.conf.d-webpack-2.0.0.tgz#23bcc8852f80a4b1308c1e05c39351d9989a4d5e"
-  integrity sha512-xHMxGmpgCuhQgfx1zUV8Nebw8NLMcpaf6bATG7g669NisR/QKtekKqOJ5n7a+6iFRkdYmNGnfENAttXPHp5gDw==
+js.conf.d-webpack@2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/js.conf.d-webpack/-/js.conf.d-webpack-2.0.1.tgz#8947b321db27e93a7e42054f61fe9bc3edacee3b"
+  integrity sha512-TkyQMO1VzJmkSArW3QyiIEU+VawWj26tEEZnJcWl4PXgWr1NvvtSus8ymXHErOKC+E2sRmiyVTj/Gjv/P8dPkA==
   dependencies:
-    js.conf.d "^2.0.0"
+    js.conf.d "^2.0.1"
     webpack-virtual-modules "^0.6.2"
 
-js.conf.d@2.0.1:
+js.conf.d@2.0.1, js.conf.d@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/js.conf.d/-/js.conf.d-2.0.1.tgz#2b86b107f13f2f554d2fa907a85667db39e7cb32"
   integrity sha512-jKFwJcPU1s4urKks2BXKhBHwMajnxvkrD0Jn5Q7ooMmef62wxrgs/fr4jwTuwX5I1fUlvT2cXysn/2nNskR8MQ==
-
-js.conf.d@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/js.conf.d/-/js.conf.d-2.0.0.tgz#0a628336cca812606d1497f234a9da1b55bfdd8b"
-  integrity sha512-cq990GOa5EACj0SS21rr25EmFJgz9Wn6I7xHLEmsxTXaRyFrHSwZ6LjCGNTGR1meRGFvW2UfAHk2/tmIZaiiBg==
 
 jsesc@^3.0.2, jsesc@^3.1.0:
   version "3.1.0"
