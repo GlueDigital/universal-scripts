@@ -1,5 +1,5 @@
 import { ClientRoot } from '../../lib/redux/types'
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter } from 'react-router'
 // @ts-expect-error Imported from the project
 import App from 'src/routes'
 
