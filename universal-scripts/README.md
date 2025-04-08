@@ -177,3 +177,15 @@ This section explains how the main folders work in Universal. The core is built 
 With this structure configurations in this way, Universal enables modular, maintainable, and customizable setups. 🚀
 
 Check out the [documentation](https://gluedigital.github.io/universal-scripts) to explore all features or follow the [getting started](https://gluedigital.github.io/universal-scripts/getting-started) guide.
+
+## Configuration
+
+For common use cases, support has been added to define configuration in a `universal.config.mjs` file located at the root of your application.
+
+You can export a `plugins` object to customize specific plugin options, and a `default` export for the main Universal configuration.
+
+Currently, the following options are supported:
+
+- `noSsr`: Disables server-side rendering. The server will return a minimal HTML file that only loads the client scripts.
+
+- `extraBuilds`: An array of strings representing the names of additional builds to include.

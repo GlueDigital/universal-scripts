@@ -4,12 +4,13 @@
 import fs from 'fs'
 import path from 'path'
 import webpackPkg from 'webpack'
-import { pkg } from '../lib/builder.js'
+import { getUniversalConfig } from '../lib/universal-config'
 const { sources } = webpackPkg
 
 const appDirectory = fs.realpathSync(process.cwd())
 
-const ssr = !pkg.universalOptions || !pkg.universalOptions.noSsr
+const ssr =
+  getUniversalConfig('noSsr') == null ? true : !getUniversalConfig('noSsr')
 
 // The default template can be overriden at src/static/index.html
 const defaultTemplate =

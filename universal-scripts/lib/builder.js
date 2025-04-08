@@ -3,12 +3,7 @@ import fs from 'fs'
 import path from 'path'
 import webpack from 'webpack'
 import getConfig from '../config.js'
-
-const appDirectory = fs.realpathSync(process.cwd())
-
-export const pkg = await import(path.join(appDirectory, 'package.json'), {
-  with: { type: 'json' }
-})
+import { getUniversalConfig } from '../lib/universal-config.js'
 
 const writeAssetsToJson = (statsClient) => {
   const target = path.resolve(
@@ -48,8 +43,13 @@ export default async function (opts = {}) {
   }
 
   const builds = ['client', 'server']
-  if (pkg.universalOptions && pkg.universalOptions.extraBuilds) {
-    builds.push(...pkg.universalOptions.extraBuilds)
+  const extraBuilds = getUniversalConfig('extraBuilds')
+  if (
+    extraBuilds &&
+    Array.isArray(extraBuilds) &&
+    extraBuilds.every((b) => typeof b === 'string')
+  ) {
+    builds.push(...extraBuilds)
   }
 
   const buildConfigsPromises = builds.map((target) =>

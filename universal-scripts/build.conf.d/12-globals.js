@@ -1,13 +1,14 @@
 import webpackPackage from 'webpack'
 import { triggerHook } from '../lib/plugins/trigger.js'
-import { pkg } from '../lib/builder.js'
+import { getUniversalConfig } from '../lib/universal-config.js'
 
 const { DefinePlugin } = webpackPackage
 
 const enhancer = async (opts = {}, config) => {
   const isWatch = opts.isWatch
   const isProd = process.env.NODE_ENV === 'production'
-  const ssr = !pkg.universalOptions || !pkg.universalOptions.noSsr
+  const ssr =
+    getUniversalConfig('noSsr') == null ? true : !getUniversalConfig('noSsr')
 
   const definitions = {
     __BUILD__: opts.id,

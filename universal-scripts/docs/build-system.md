@@ -8,10 +8,13 @@ All the build config is managed with [js.conf.d](https://www.npmjs.com/package/j
 
 To learn more about the config pieces that are included by default, you can check the `build.conf.d` folder on this project's root.
 
-For some common configurations, support has been added to set them directly in your `package.json`, under the `universalOptions` key.  
-Currently, the following options are supported:
+You can now configure common settings for your app using the `universal.config.mjs` file at the root of your project. This file allows you to export a plugins object to customize plugin-specific options, as well as a default export for the main Universal configuration.
 
-- `noSsr`: disables server-side rendering (the server will return an empty index which loads the client scripts)
+Currently, Universal supports the following options:
+
+`noSsr`: disables server-side rendering, so the server returns an empty index that loads only the client scripts.
+
+`extraBuilds`: an array of strings specifying the names of additional builds.
 
 ### Build modes
 
