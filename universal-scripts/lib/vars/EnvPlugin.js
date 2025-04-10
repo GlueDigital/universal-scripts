@@ -5,31 +5,40 @@ import dotenv from 'dotenv'
 export class EnvReloadPlugin {
   constructor() {
     this.envPath = path.resolve(process.cwd(), '.env')
+    this.startTime = Date.now()
   }
 
   apply(compiler) {
     let recompiling = false
 
     compiler.hooks.afterPlugins.tap('ReloadDotenvPlugin', () => {
-      fs.watchFile(this.envPath, (curr, prev) => {
-        if (curr.mtime !== prev.mtime && !recompiling) {
-          recompiling = true
+      fs.watchFile(this.envPath, { interval: 500 }, (curr, prev) => {
+        const fileModifiedTime = curr.mtimeMs
 
-          console.log('🔄 File .env changed, reloading vars...')
+        if (
+          fileModifiedTime <= this.startTime ||
+          curr.mtimeMs === prev.mtimeMs ||
+          recompiling
+        ) {
+          return
+        }
 
-          dotenv.config({ path: this.envPath, override: true })
+        recompiling = true
 
-          if (compiler.watching) {
-            compiler.watching.invalidate(() => {
-              console.log('♻ Webpack recompiling with new .env vars')
+        console.log('🔄 File .env changed, reloading vars...')
 
-              if (compiler.webpackHotMiddleware) {
-                compiler.webpackHotMiddleware.publish({ action: 'reload-page' })
-              }
+        dotenv.config({ path: this.envPath, override: true })
 
-              setTimeout(() => (recompiling = false), 1000)
-            })
-          }
+        if (compiler.watching) {
+          compiler.watching.invalidate(() => {
+            console.log('♻ Webpack recompiling with new .env vars')
+
+            if (compiler.webpackHotMiddleware) {
+              compiler.webpackHotMiddleware.publish({ action: 'reload-page' })
+            }
+
+            setTimeout(() => (recompiling = false), 1000)
+          })
         }
       })
     })
