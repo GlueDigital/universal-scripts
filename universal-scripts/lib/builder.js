@@ -43,7 +43,7 @@ export default async function (opts = {}) {
   }
 
   const builds = ['client', 'server']
-  const extraBuilds = getUniversalConfig('extraBuilds')
+  const extraBuilds = await getUniversalConfig('extraBuilds')
   if (
     extraBuilds &&
     Array.isArray(extraBuilds) &&
