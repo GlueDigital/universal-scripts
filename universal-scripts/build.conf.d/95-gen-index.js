@@ -9,8 +9,9 @@ const { sources } = webpackPkg
 
 const appDirectory = fs.realpathSync(process.cwd())
 
-const ssr =
-  getUniversalConfig('noSsr') == null ? true : !getUniversalConfig('noSsr')
+const noSsr = await getUniversalConfig('noSsr')
+
+const ssr = noSsr == null ? true : !noSsr
 
 // The default template can be overriden at src/static/index.html
 const defaultTemplate =

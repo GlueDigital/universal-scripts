@@ -7,8 +7,9 @@ const { DefinePlugin } = webpackPackage
 const enhancer = async (opts = {}, config) => {
   const isWatch = opts.isWatch
   const isProd = process.env.NODE_ENV === 'production'
-  const ssr =
-    getUniversalConfig('noSsr') == null ? true : !getUniversalConfig('noSsr')
+  const noSsr = await getUniversalConfig('noSsr')
+
+  const ssr = noSsr == null ? true : !noSsr
 
   const definitions = {
     __BUILD__: opts.id,
