@@ -4,7 +4,7 @@
 import fs from 'fs'
 import path from 'path'
 import webpackPkg from 'webpack'
-import { getUniversalConfig } from '../lib/universal-config'
+import { getUniversalConfig } from '../lib/universal-config.js'
 const { sources } = webpackPkg
 
 const appDirectory = fs.realpathSync(process.cwd())
