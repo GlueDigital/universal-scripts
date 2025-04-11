@@ -1,5 +1,4 @@
 import config from '#js.conf.d'
-import webpackHotMiddlewareClient from 'webpack-hot-middleware/client.js'
 
 // Simple system to trigger middleware-like hooks
 const triggerHook = (name) => (ctx, initial) =>
@@ -19,6 +18,9 @@ initialize()
 // Enable HMR
 if (import.meta.webpackHot) {
   import.meta.webpackHot.accept()
+  const webpackHotMiddlewareClient = await import(
+    'webpack-hot-middleware/client.js'
+  )
   webpackHotMiddlewareClient.subscribe(function (message) {
     if (message.action === 'reload-page') {
       window.location.reload()
