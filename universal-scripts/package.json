@@ -1,6 +1,6 @@
 {
   "name": "universal-scripts",
-  "version": "3.6.2",
+  "version": "3.6.3",
   "description": "Build universal apps without configuration.",
   "type": "module",
   "main": "index.cjs",
