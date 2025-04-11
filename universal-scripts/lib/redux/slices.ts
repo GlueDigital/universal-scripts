@@ -49,6 +49,9 @@ const intlSlice = createSlice({
     }
   },
   extraReducers(builder) {
+    builder.addCase(cleanup, (state) => {
+      return { lang: state.lang, messages: {} }
+    })
     builder.addDefaultCase((state) => {
       return state || { lang: 'en', messages: {} }
     })
