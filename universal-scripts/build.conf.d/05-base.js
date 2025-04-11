@@ -60,7 +60,7 @@ const enhancer = async (opts = {}) => {
       new ReactRefreshWebpackPlugin({
         overlay: false
       }),
-    isClientSide && new EnvReloadPlugin()
+    isClientSide && !isProd && new EnvReloadPlugin()
   ]
 
   const allPlugins = await triggerHook('extraPlugins')(
