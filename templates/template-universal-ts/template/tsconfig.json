@@ -1,0 +1,34 @@
+{
+  "compileOnSave": false,
+  "include": ["src/**/*", "globals.d.ts"],
+  "compilerOptions": {
+      "allowSyntheticDefaultImports": true,
+      "lib": [
+          "dom",
+          "DOM.Iterable",
+          "ES2022"
+      ],
+      "jsx": "react-jsx",
+      "target": "ES2022",
+      "module": "ESNext",
+      "moduleResolution": "node",
+      "baseUrl": ".",
+      "noImplicitAny": false,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "esModuleInterop": true,
+      "resolveJsonModule": true,
+      "removeComments": false,
+      "preserveConstEnums": true,
+      "sourceMap": true,
+      "skipLibCheck": true,
+      "paths": {
+        "@components/*": ["./src/components/*"],
+        "@utils/*": ["./src/utils/*"],
+        "@routes/*": ["./src/routes/*"],
+        "@static/*": ["./src/static/*"],
+        "@hooks/*": ["./src/hooks/*"],
+        "src/*": ["./src/*"],
+      }
+  }
+}

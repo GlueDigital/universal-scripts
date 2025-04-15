@@ -3,7 +3,8 @@
   "private": true,
   "workspaces": [
     "universal-scripts",
-    "universal-plugins/*"
+    "universal-plugins/*",
+    "templates/*"
   ],
   "devDependencies": {
     "globals": "^15.14.0",
