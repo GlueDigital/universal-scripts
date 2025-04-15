@@ -1,24 +1,33 @@
-#!/usr/bin/env bash
-set -e
+#!/bin/bash
+set -eo pipefail
 
-# Do some cleanup, just in case
-rm -rf universal-scripts-*.tgz demo
+rm -rf universal-scripts-*.tgz ../test
 
-# Run the linter
 echo "Running linter..."
-eslint .
-
-# Try to scaffold a new project
-echo "Scaffolding demo project..."
+yarn lint
+echo "📦 Building local package..."
 npm pack
-mv universal-scripts-*.tgz universal-scripts-$(date +%s).tgz
-npx create-react-app --scripts-version `pwd`/universal-scripts-*.tgz demo
 
-# Build the new project
-echo "Building demo project..."
-( cd demo && yarn run build )
+cd ..
+mkdir test
+cd test
 
-# And clean up
-rm -rf universal-scripts-*.tgz demo
+yarn create universal-scripts test-app
 
-echo "All tests OK."
+echo "✅ Generated Project: ../test/test-app"
+
+cd ../test/test-app
+
+yarn add ../../universal-scripts/universal-scripts-*.tgz
+
+echo "✅ Installed universal-scripts"
+
+yarn build
+echo "✅ Successful build"
+
+# 🧹 Cleanup
+echo "🧹 Cleaning..."
+cd ../..
+rm -rf test universal-scripts-*.tgz
+
+echo "🏁 All Ok."
