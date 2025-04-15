@@ -1,0 +1,18 @@
+{
+  "name": "cra-template-universal",
+  "version": "2.2.0",
+  "keywords": [
+    "react",
+    "create-react-app",
+    "template",
+    "universal"
+  ],
+  "description": "A Create React App template to use with universal-scripts",
+  "repository": "GlueDigital/cra-template-universal",
+  "author": "Glue Digital <hola@glue.digital>",
+  "license": "MIT",
+  "files": [
+    "template",
+    "template.json"
+  ]
+}
