@@ -4,6 +4,7 @@ import PostCssUrl from 'postcss-url'
 import postcssCascadeLayers from '@csstools/postcss-cascade-layers'
 import PostCssPresetEnv from 'postcss-preset-env'
 import PostCssNested from 'postcss-nested'
+import PostCssImport from 'postcss-import'
 import PostCssNormalize from 'postcss-normalize'
 import { triggerHook } from '../lib/plugins/trigger.js'
 
@@ -27,6 +28,7 @@ const getInitialStyleConfig = (opts) => {
         ident: 'postcss',
         to: 'src/static',
         plugins: [
+          PostCssImport(),
           PostCssPresetEnv({
             autoprefixer: { grid: true },
             features: {
