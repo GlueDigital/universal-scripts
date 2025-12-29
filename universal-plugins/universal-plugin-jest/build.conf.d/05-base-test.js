@@ -1,7 +1,6 @@
 import { dirname, resolve } from 'path'
 import { realpathSync, readFileSync, existsSync } from 'fs'
 import { fileURLToPath } from 'url'
-import jest from 'jest'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -33,11 +32,12 @@ const enhancer = () => {
   const config = {
     roots: ['<rootDir>/src'],
     moduleDirectories: ['node_modules', '<rootDir>'],
+    testEnvironment: 'jsdom',
     transform: {
       '^.+\\.(js|jsx|ts|tsx)$': resolve(__dirname, '../lib/swcTransform')
     },
     transformIgnorePatterns: [
-      '[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$'
+      // '[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$'
     ],
     moduleNameMapper: {
       '\\.(css|sass|scss)$': resolve(__dirname, '../lib/styleMock.js'),
@@ -53,9 +53,7 @@ const enhancer = () => {
     if (existsSync(f)) config.setupFilesAfterEnv.push('<rootDir>/' + f)
   })
 
-  const args = [`--config=${JSON.stringify(config)}`]
-
-  return () => jest.run(args)
+  return config
 }
 
 export const test = enhancer
