@@ -21,9 +21,10 @@ declare global {
       store: Store
       renderCtx: StaticRouterContext
       stream: PipeableStream
+      // Initial is what the hooks start from, and get if none of them returns something else
       triggerHook: (
         name: string
-      ) => (req: Request, res: Response, initial: boolean) => ReactNode
+      ) => (req: Request, res: Response, initial: unknown) => ReactNode
       initExtras: Record<string, unknown>
     }
   }

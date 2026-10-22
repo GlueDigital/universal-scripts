@@ -29,7 +29,8 @@ const addRedux = async (req: Request, res: Response, next: NextFunction) => {
   // Clean up the resulting state
   store.dispatch(cleanup())
   const state = store.getState()
-  const copyState = structuredClone(state)
+  // The server state has the req slice, though the store's inferred type misses it
+  const copyState: typeof state & { req?: unknown } = structuredClone(state)
   delete copyState.req // This reducer doesn't exist client-side
 
   // Send store contents along the page
