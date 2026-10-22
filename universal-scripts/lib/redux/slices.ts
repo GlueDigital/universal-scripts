@@ -44,7 +44,7 @@ const intlSlice = createSlice({
   name: 'intl',
   initialState: initialIntlState,
   reducers: {
-    updateIntl(state, action: PayloadAction<IntlState>) {
+    updateIntl(_state, action: PayloadAction<IntlState>) {
       return action.payload
     }
   },

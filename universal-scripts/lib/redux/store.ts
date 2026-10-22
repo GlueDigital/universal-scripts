@@ -1,3 +1,4 @@
+/// <reference types="webpack-env" />
 import {
   combineReducers,
   configureStore,
@@ -6,7 +7,9 @@ import {
 import { fetchReducer } from 'ruse-fetch'
 import { intlReducer, requestReducer } from './slices'
 
-// @ts-expect-error Imported from the project
+// Imported from the project, so it only resolves there: expect-error would fail in the project itself
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import reducerList from 'src/store/reducers'
 
 const addClientAutoReducers = (userReducers: ReducersMapObject) => {
@@ -64,7 +67,8 @@ const createStore = (
   // Hot Module Replacement (HMR)
   if (module.hot) {
     module.hot.accept('src/store/reducers', async () => {
-      // @ts-expect-error Imported from the project
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore Imported from the project, as above
       const updatedReducers = (await import('src/store/reducers')).default
       const newAutoReducers = isServer
         ? addServerAutoReducers(updatedReducers)
